@@ -11,7 +11,7 @@ public class SimulationTest {
 
     @Test
     public void newSimulationBoardEmpty() {
-        assertTrue(new Simulation(mockUser).getBoard().isEmpty());
+        assertTrue(new Simulation(mockUser).getBoard().empty());
     }
 
     @Test

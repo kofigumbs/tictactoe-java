@@ -3,6 +3,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class GameTest {
 
@@ -53,5 +54,29 @@ public class GameTest {
     public void secondMoveO() {
         game.play(0);
         assertEquals(Board.Mark.O, game.whoseTurn());
+    }
+
+    @Test
+    public void isActuallyOver() {
+        game.play(0);
+        game.play(3);
+        game.play(1);
+        game.play(4);
+        game.play(2);
+        assertTrue(game.isOver());
+    }
+
+    @Test
+    public void catsGame() {
+        game.play(0);
+        game.play(4);
+        game.play(1);
+        game.play(2);
+        game.play(6);
+        game.play(3);
+        game.play(5);
+        game.play(8);
+        game.play(7);
+        assertTrue(game.isOver());
     }
 }

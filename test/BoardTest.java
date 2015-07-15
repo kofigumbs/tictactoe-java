@@ -18,13 +18,13 @@ public class BoardTest {
 
     @Test
     public void emptyWhenCreated() {
-        assertTrue(board.isEmpty());
+        assertTrue(board.empty());
     }
 
     @Test
     public void oneMoveNotEmpty() {
         board = board.add(0, Board.Mark.X);
-        assertFalse(board.isEmpty());
+        assertFalse(board.empty());
     }
 
     @Test
@@ -45,32 +45,21 @@ public class BoardTest {
     }
 
     @Test
-    public void emptyIsFreeAt() {
-        assertTrue(board.isFreeAt(0));
-    }
-
-    @Test
-    public void isNotFreeAt() {
-        board = board.add(0, Board.Mark.X);
-        assertFalse(board.isFreeAt(0));
-    }
-
-    @Test
     public void immutableBoard() {
         board = board.add(0, Board.Mark.X);
-        assertFalse(board.isEmpty());
+        assertFalse(board.empty());
     }
 
     @Test
     public void getTwoMovesByX() {
         board = board.add(0, Board.Mark.X).add(1, Board.Mark.X);
-        Set<Integer> movesByX = board.getMovesBy(Board.Mark.X);
+        Set<Integer> movesByX = board.get(Board.Mark.X);
         assertEquals(new HashSet<>(Arrays.asList(0, 1)), movesByX);
     }
 
     @Test
     public void isNotFull() {
-        assertFalse(board.isFull());
+        assertFalse(board.full());
     }
 
     @Test
@@ -79,22 +68,9 @@ public class BoardTest {
                 .add(0, Board.Mark.X).add(1, Board.Mark.X).add(2, Board.Mark.O)
                 .add(3, Board.Mark.O).add(4, Board.Mark.O).add(5, Board.Mark.X)
                 .add(6, Board.Mark.X).add(7, Board.Mark.O).add(8, Board.Mark.X);
-        assertTrue(board.isFull());
+        assertTrue(board.full());
     }
 
-    @Test
-    public void simpleGameOver() {
-        assertFalse(board.isGameOver());
-    }
-
-    @Test
-    public void filledBoardGameOver() {
-        board = board
-                .add(0, Board.Mark.X).add(1, Board.Mark.O).add(2, Board.Mark.X)
-                .add(3, Board.Mark.O).add(4, Board.Mark.X).add(5, Board.Mark.O)
-                .add(6, Board.Mark.X).add(7, Board.Mark.O).add(8, Board.Mark.X);
-        assertTrue(board.isGameOver());
-    }
     @Test
     public void winner() {
         board = board
@@ -103,14 +79,18 @@ public class BoardTest {
                 .add(6, Board.Mark.X).add(7, Board.Mark.O).add(8, Board.Mark.X);
         assertEquals(Board.Mark.X, board.getWinner());
     }
+    @Test
+    public void noAvailabilities() {
+        int count = 0;
+        for (int i : board.availabilities())
+            count++;
+        assertEquals(9, count);
+    }
 
     @Test
-    public void catsGame() {
-        board = board
-                .add(0, Board.Mark.X).add(1, Board.Mark.X).add(2, Board.Mark.O)
-                .add(3, Board.Mark.O).add(4, Board.Mark.O).add(5, Board.Mark.X)
-                .add(6, Board.Mark.X).add(7, Board.Mark.O).add(8, Board.Mark.X);
-        assertEquals(null, board.getWinner());
-        assertTrue(board.isGameOver());
+    public void numberOfAvailabilites() {
+        assertEquals(9, board.numberOfAvailabilities());
+        assertEquals(8, board.add(0, Board.Mark.O).numberOfAvailabilities());
     }
+
 }

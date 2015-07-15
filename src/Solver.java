@@ -5,7 +5,6 @@ import java.util.List;
 public class Solver {
 
     private static final int MAX_SCORE = 10;
-    private static final Board.Validator validator = new Board.Validator();
 
     public static Board move(Board board, Board.Mark mark) {
         if (board.isEmpty())

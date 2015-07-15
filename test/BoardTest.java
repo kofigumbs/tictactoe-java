@@ -10,12 +10,10 @@ import static org.junit.Assert.*;
 public class BoardTest {
 
     Board board;
-    Board.Validator validator;
 
     @Before
     public void setup() {
         board = new Board();
-        validator = new Board.Validator();
     }
 
     @Test

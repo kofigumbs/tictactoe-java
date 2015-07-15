@@ -87,10 +87,4 @@ public class Board {
         result.trimToSize();
         return result.toString();
     }
-
-    public static class Validator {
-
-
-    }
-
 }

@@ -1,0 +1,57 @@
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+public class GameTest {
+
+    Game game;
+
+    @Before
+    public void setup() {
+        game = new Game();
+    }
+
+    @Test
+    public void newGameIsNotOver() {
+        assertFalse(game.isOver());
+    }
+
+    @Test
+    public void playOnceNotOver() {
+        game.play(0);
+        assertFalse(game.isOver());
+    }
+
+    @Test
+    public void firstPlayLastMove() {
+        game.play(0);
+        assertEquals("X >> 0", game.lastMove());
+    }
+
+    @Test
+    public void secondPlayLastMove() {
+        game.play(0);
+        game.play(1);
+        assertEquals("O >> 1", game.lastMove());
+    }
+
+    @Test
+    public void getBoard() {
+        game.play(0);
+        game.play(1);
+        assertEquals("XO-\n---\n---", game.getBoard().toString());
+    }
+
+    @Test
+    public void startOnX() {
+        assertEquals(Board.Mark.X, game.whoseTurn());
+    }
+
+    @Test
+    public void secondMoveO() {
+        game.play(0);
+        assertEquals(Board.Mark.O, game.whoseTurn());
+    }
+}

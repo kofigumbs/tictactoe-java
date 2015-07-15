@@ -3,26 +3,24 @@ import java.util.Scanner;
 
 public class Simulation {
 
-    private Board board = new Board();
-    private Scanner inputScanner = new Scanner(System.in);
-    private Board.Mark nextTurn = Board.Mark.X;
+    private Game game = new Game();
+    private Scanner inputScanner;
+
+    Simulation(InputStream userInput) {
+        inputScanner = new Scanner(userInput);
+    }
 
     public Board getBoard() {
-        return board;
+        return game.getBoard();
     }
 
     public Board.Mark nextTurn() {
-        return nextTurn;
-    }
-
-    public void setInput(InputStream inputStream) {
-        inputScanner = new Scanner(inputStream);
+        return game.whoseTurn();
     }
 
     public void userMove(){
         int position = inputScanner.nextInt();
-        board = board.add(position, nextTurn());
-        nextTurn = nextTurn.equals(Board.Mark.X) ? Board.Mark.O : Board.Mark.X;
+        game.play(position);
     }
 
 }

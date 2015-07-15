@@ -10,10 +10,12 @@ import static org.junit.Assert.*;
 public class BoardTest {
 
     Board board;
+    Board.Validator validator;
 
     @Before
     public void setup() {
         board = new Board();
+        validator = new Board.Validator();
     }
 
     @Test
@@ -80,5 +82,37 @@ public class BoardTest {
                 .add(3, Board.Mark.O).add(4, Board.Mark.O).add(5, Board.Mark.X)
                 .add(6, Board.Mark.X).add(7, Board.Mark.O).add(8, Board.Mark.X);
         assertTrue(board.isFull());
+    }
+
+    @Test
+    public void simpleGameOver() {
+        assertFalse(board.isGameOver());
+    }
+
+    @Test
+    public void filledBoardGameOver() {
+        board = board
+                .add(0, Board.Mark.X).add(1, Board.Mark.O).add(2, Board.Mark.X)
+                .add(3, Board.Mark.O).add(4, Board.Mark.X).add(5, Board.Mark.O)
+                .add(6, Board.Mark.X).add(7, Board.Mark.O).add(8, Board.Mark.X);
+        assertTrue(board.isGameOver());
+    }
+    @Test
+    public void winner() {
+        board = board
+                .add(0, Board.Mark.X).add(1, Board.Mark.O).add(2, Board.Mark.X)
+                .add(3, Board.Mark.O).add(4, Board.Mark.X).add(5, Board.Mark.O)
+                .add(6, Board.Mark.X).add(7, Board.Mark.O).add(8, Board.Mark.X);
+        assertEquals(Board.Mark.X, board.getWinner());
+    }
+
+    @Test
+    public void catsGame() {
+        board = board
+                .add(0, Board.Mark.X).add(1, Board.Mark.X).add(2, Board.Mark.O)
+                .add(3, Board.Mark.O).add(4, Board.Mark.O).add(5, Board.Mark.X)
+                .add(6, Board.Mark.X).add(7, Board.Mark.O).add(8, Board.Mark.X);
+        assertEquals(null, board.getWinner());
+        assertTrue(board.isGameOver());
     }
 }

@@ -5,11 +5,19 @@ public class Board {
     public enum Mark {
         X, O
     }
+
     public static final int CAPACITY = 9;
+    private static final List[] WINNING_COMBINGATIONS = new List[]{
+            Arrays.asList(0, 1, 2), Arrays.asList(3, 4, 5),
+            Arrays.asList(6, 7, 8), Arrays.asList(0, 4, 8),
+            Arrays.asList(0, 3, 6), Arrays.asList(1, 4, 7),
+            Arrays.asList(2, 5, 8), Arrays.asList(2, 4, 6)
+    };
 
     private final int size;
     private final Mark[] state = new Mark[CAPACITY];
     private final Map<Mark, Set<Integer>> moves = new HashMap<>();
+
     Board() {
         size = 0;
         for (Mark mark : Mark.values())
@@ -46,8 +54,20 @@ public class Board {
         return state[position] == null;
     }
 
+    public boolean isGameOver()  {
+        return isFull() || getWinner() != null;
+    }
+
     public Set<Integer> getMovesBy(Mark mark) {
         return moves.get(mark);
+    }
+
+    public Board.Mark getWinner() {
+        for (Board.Mark mark : Board.Mark.values())
+            for (List winningCombination : WINNING_COMBINGATIONS)
+                if (getMovesBy(mark).containsAll(winningCombination))
+                    return mark;
+        return null;
     }
 
     @Override
@@ -66,6 +86,11 @@ public class Board {
         result.setLength(CAPACITY + dimension - 1);
         result.trimToSize();
         return result.toString();
+    }
+
+    public static class Validator {
+
+
     }
 
 }

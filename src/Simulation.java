@@ -5,13 +5,14 @@ public class Simulation {
 
     private Board board = new Board();
     private Scanner inputScanner = new Scanner(System.in);
+    private Board.Mark nextTurn = Board.Mark.X;
 
     public Board getBoard() {
         return board;
     }
 
-    public String nextTurn() {
-        return "X";
+    public Board.Mark nextTurn() {
+        return nextTurn;
     }
 
     public void setInput(InputStream inputStream) {
@@ -19,9 +20,9 @@ public class Simulation {
     }
 
     public void userMove(){
-        int row = inputScanner.nextInt();
-        int column = inputScanner.nextInt();
-        board = board.add(row, column, nextTurn());
+        int position = inputScanner.nextInt();
+        board = board.add(position, nextTurn());
+        nextTurn = nextTurn.equals(Board.Mark.X) ? Board.Mark.O : Board.Mark.X;
     }
 
 }

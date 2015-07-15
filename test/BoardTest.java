@@ -1,56 +1,84 @@
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
 public class BoardTest {
 
+    Board board;
+
+    @Before
+    public void setup() {
+        board = new Board();
+    }
+
     @Test
     public void emptyWhenCreated() {
-        assertTrue(new Board().isEmpty());
+        assertTrue(board.isEmpty());
     }
 
     @Test
     public void oneMoveNotEmpty() {
-        Board board = new Board();
-        board = board.add(0, 0, "X");
+        board = board.add(0, Board.Mark.X);
         assertFalse(board.isEmpty());
     }
 
     @Test
     public void emptyToString() {
-        assertEquals("---\n---\n---", new Board().toString());
+        assertEquals("---\n---\n---", board.toString());
     }
 
     @Test
     public void oneMoveToString() {
-        Board board = new Board();
-        board = board.add(0, 0, "X");
+        board = board.add(0, Board.Mark.X);
         assertEquals("X--\n---\n---", board.toString());
     }
 
     @Test
     public void twoMoveToString() {
-        Board board = new Board();
-        board = board.add(0, 0, "X").add(0, 1, "O");
+        board = board.add(0, Board.Mark.X).add(1, Board.Mark.O);
         assertEquals("XO-\n---\n---", board.toString());
     }
 
     @Test
     public void emptyIsFreeAt() {
-        assertTrue(new Board().isFreeAt(0, 0));
+        assertTrue(board.isFreeAt(0));
     }
 
     @Test
     public void isNotFreeAt() {
-        Board board = new Board();
-        board = board.add(0, 0, "X");
-        assertFalse(board.isFreeAt(0, 0));
+        board = board.add(0, Board.Mark.X);
+        assertFalse(board.isFreeAt(0));
     }
 
     @Test
     public void immutableBoard() {
-        Board board = new Board();
-        board = board.add(0, 0, "X");
+        board = board.add(0, Board.Mark.X);
         assertFalse(board.isEmpty());
+    }
+
+    @Test
+    public void getTwoMovesByX() {
+        board = board.add(0, Board.Mark.X).add(1, Board.Mark.X);
+        Set<Integer> movesByX = board.getMovesBy(Board.Mark.X);
+        assertEquals(new HashSet<>(Arrays.asList(0, 1)), movesByX);
+    }
+
+    @Test
+    public void isNotFull() {
+        assertFalse(board.isFull());
+    }
+
+    @Test
+    public void isFull() {
+        board = board
+                .add(0, Board.Mark.X).add(1, Board.Mark.X).add(2, Board.Mark.O)
+                .add(3, Board.Mark.O).add(4, Board.Mark.O).add(5, Board.Mark.X)
+                .add(6, Board.Mark.X).add(7, Board.Mark.O).add(8, Board.Mark.X);
+        assertTrue(board.isFull());
     }
 }

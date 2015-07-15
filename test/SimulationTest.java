@@ -14,16 +14,27 @@ public class SimulationTest {
 
     @Test
     public void firstMoveX() {
-        assertEquals("X", new Simulation().nextTurn());
+        assertEquals(Board.Mark.X, new Simulation().nextTurn());
     }
 
     @Test
     public void sendOneMove() {
-        String input = "0\n0\n";
+        String input = "0\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
         Simulation simulation = new Simulation();
         simulation.setInput(inputStream);
         simulation.userMove();
         assertEquals(simulation.getBoard().toString(), "X--\n---\n---");
+    }
+
+    @Test
+    public void twoUserMoves() {
+        String input = "0\n1\n";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        Simulation simulation = new Simulation();
+        simulation.setInput(inputStream);
+        simulation.userMove();
+        simulation.userMove();
+        assertEquals(simulation.getBoard().toString(), "XO-\n---\n---");
     }
 }

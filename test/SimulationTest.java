@@ -15,11 +15,6 @@ public class SimulationTest {
     }
 
     @Test
-    public void firstMoveX() {
-        assertEquals(Board.Mark.X, new Simulation(mockUser).nextTurn());
-    }
-
-    @Test
     public void sendOneMove() {
         String input = "0\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());

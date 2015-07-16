@@ -14,13 +14,24 @@ public class Simulation {
         return game.getBoard();
     }
 
-    public Board.Mark nextTurn() {
-        return game.whoseTurn();
-    }
-
     public void userMove(){
         int position = inputScanner.nextInt();
         game.play(position);
+    }
+
+    public static void main(String[] args) {
+        Simulation simulation = new Simulation(System.in);
+        int i = 0;
+        while (!simulation.game.getBoard().isGameOver()) {
+            System.out.println(simulation.getBoard());
+            if (i % 2 == 0) {
+                simulation.userMove();
+            }
+            else {
+                Solver.move(simulation.game);
+            }
+        }
+        System.out.println(simulation.getBoard());
     }
 
 }

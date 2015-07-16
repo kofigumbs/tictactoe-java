@@ -80,17 +80,8 @@ public class BoardTest {
         assertEquals(Board.Mark.X, board.getWinner());
     }
     @Test
-    public void noAvailabilities() {
-        int count = 0;
-        for (int i : board.availabilities())
-            count++;
-        assertEquals(9, count);
+    public void availabilities() {
+        assertEquals(9, board.getEmpty().size());
+        assertEquals(8, board.add(1, Board.Mark.O).getEmpty().size());
     }
-
-    @Test
-    public void numberOfAvailabilites() {
-        assertEquals(9, board.numberOfAvailabilities());
-        assertEquals(8, board.add(0, Board.Mark.O).numberOfAvailabilities());
-    }
-
 }

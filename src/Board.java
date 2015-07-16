@@ -18,76 +18,50 @@ public class Board {
     };
 
     private final Mark[] state = new Mark[CAPACITY];
-    private final Map<Mark, Set<Integer>> moves = new HashMap<>();
-
-    Board() {
-        for (Mark mark : Mark.values())
-            moves.put(mark, new TreeSet<>());
-    }
 
     private Board(Board old, int position, Mark mark) {
         for (int i = 0; i < CAPACITY; i++)
             state[i] = old.state[i];
         state[position] = mark;
-
-        for (Mark oldMark : old.moves.keySet()) {
-            moves.put(oldMark, new TreeSet<>());
-            for (Integer oldPosition : old.moves.get(oldMark))
-                moves.get(oldMark).add(oldPosition);
-        }
     }
 
-    public int numberOfAvailabilities() {
-        int spaces = 0;
-        for (int ignored : availabilities())
-            spaces++;
-        return spaces;
+    public Board(){}
+
+    public Set<Integer> getEmpty() {
+        return get(null);
+    }
+
+    public Set<Integer> get(Board.Mark mark) {
+        Set<Integer> result = new HashSet<>();
+        for (int position = 0; position < state.length; position++)
+            if (state[position] == mark)
+                result.add(position);
+        return result;
     }
 
     public Board add(int position, Mark mark) {
-        moves.get(mark).add(position);
         return new Board(this, position, mark);
     }
 
     public boolean empty() {
-        return numberOfAvailabilities() == CAPACITY;
+        return get(null).size() == CAPACITY;
     }
 
     public boolean full() {
-        return numberOfAvailabilities() == 0;
-    }
-
-    public Iterable<Integer> availabilities() {
-        return () -> new Iterator<Integer>() {
-            int position = 0;
-
-            @Override
-            public boolean hasNext() {
-                while (position < CAPACITY && state[position] != null)
-                    position++;
-                return position < CAPACITY;
-            }
-
-            @Override
-            public Integer next() {
-                return position++;
-            }
-        };
+        return get(null).size() == 0;
     }
 
     public boolean isGameOver()  {
         return full() || getWinner() != null;
     }
 
-    public Set<Integer> get(Mark mark) {
-        return moves.get(mark);
-    }
-
     public Board.Mark getWinner() {
         for (Board.Mark mark : Board.Mark.values())
-            for (List winningCombination : WINNING_COMBINGATIONS)
-                if (get(mark).containsAll(winningCombination))
+            for (List winningCombination : WINNING_COMBINGATIONS) {
+                Set<Integer> combo = get(mark);
+                if (combo.containsAll(winningCombination))
                     return mark;
+            }
         return null;
     }
 

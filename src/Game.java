@@ -43,7 +43,6 @@ public class Game {
         return null;
     }
 
-
     public Board.Mark whoseTurn() {
         return next;
     }

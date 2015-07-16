@@ -5,7 +5,6 @@ import java.util.List;
 public class Solver {
 
     private static final int MAX_SCORE = 10;
-    private static int result;
 
     public static void move(Game game) {
         if (game.lastMove() == null)
@@ -13,63 +12,58 @@ public class Solver {
             // just take first slot
             game.play(0);
         else {
-            minimax(game.getBoard(), game.whoseTurn(), game.whoseTurn());
-            game.play(result);
+            int move = new Minimax(game).getMove();
+            game.play(move);
         }
     }
 
-    private static int score(Board board, Board.Mark mark) {
-        Board.Mark winner = board.getWinner();
-        if (winner == mark)
-            return 10;
-        else if (winner == null)
-            return 0;
-        else
-            return -10;
-    }
+    private static class Minimax {
 
-    private static int minimax(Board board, Board.Mark current, Board.Mark cpu) {
-        if (board.isGameOver()) return score(board, cpu);
-        List<Integer> scores = new ArrayList<>();
-        List<Integer> moves = new ArrayList<>();
+        Integer result;
+        Game game;
 
-        for (int i : board.availabilities()) {
-            Board possibility = board.add(i, current);
-            scores.add(minimax(possibility, current.other(), cpu));
-            moves.add(i);
+        Minimax(Game game) {
+            this.game = game;
         }
 
-        if (current != cpu) {
-            int maxScoreIndex = scores.indexOf(Collections.max(scores));
-            result = moves.get(maxScoreIndex);
-            return scores.get(maxScoreIndex);
-        } else {
-            int minScoreIndex = scores.indexOf(Collections.min(scores));
-            result = moves.get(minScoreIndex);
-            return scores.get(minScoreIndex);
-        }
-    }
-
-    public static class MoveScore implements Comparable<MoveScore> {
-        final int move;
-        final int score;
-
-        MoveScore(int move, int score) {
-            this.move = move;
-            this.score = score;
+        public int getMove() {
+            run(game.getBoard(), game.whoseTurn(), game.whoseTurn(), 0);
+            int result = this.result;
+            this.result = null;  // clear old result for safety
+            return result;
         }
 
-        @Override
-        public int compareTo(MoveScore o) {
-            return this.score != o.score ?
-                    this.score - o.score : o.move - this.move;
+        private int run(Board board, Board.Mark current, Board.Mark cpu, int depth) {
+            if (board.isGameOver()) return score(board, cpu, depth);
+            List<Integer> scores = new ArrayList<>();
+            List<Integer> moves = new ArrayList<>();
+
+            for (int position : board.getEmpty()) {
+                Board possibility = board.add(position, current);
+                scores.add(run(possibility, current.other(), cpu, depth + 1));
+                moves.add(position);
+            }
+
+            if (current.equals(cpu)) {
+                int maxScoreIndex = scores.indexOf(Collections.max(scores));
+                result = moves.get(maxScoreIndex);
+                return scores.get(maxScoreIndex);
+            } else {
+                int minScoreIndex = scores.indexOf(Collections.min(scores));
+                result = moves.get(minScoreIndex);
+                return scores.get(minScoreIndex);
+            }
         }
 
-        @Override
-        public boolean equals(Object obj) {
-            return obj instanceof MoveScore
-                    && move == ((MoveScore)obj).move
-                    && score == ((MoveScore)obj).score;
+        private int score(Board board, Board.Mark mark, int depth) {
+            Board.Mark winner = board.getWinner();
+            if (mark == winner)
+                return MAX_SCORE - depth;
+            else if (winner == null)
+                return 0;
+            else
+                return depth - MAX_SCORE;
         }
     }
+
 }

@@ -24,34 +24,38 @@ public class SolverTest {
     public void blockWinningPlay() {
         game.play(0);
         game.play(4);
-        game.play(1);
+        game.play(6);
         Solver.move(game);
-        assertEquals("XXO\n-O-\n---", game.getBoard().toString());
+        assertEquals("X--\nOO-\nX--", game.getBoard().toString());
     }
 
     @Test
-    public void makeWinningPlay() {
+    public void xMakeWinningPlay() {
         game.play(0);
-        game.play(4);
         game.play(1);
+        game.play(4);
         game.play(5);
         Solver.move(game);
-        assertEquals("XXX\n-OO\n---", game.getBoard().toString());
+        assertEquals("XO-\n-XO\n--X", game.getBoard().toString());
     }
 
     @Test
-    public void moveScoreComparison() {
-        Solver.MoveScore oneTwo = new Solver.MoveScore(1, 2);
-        Solver.MoveScore twoThree = new Solver.MoveScore(2, 3);
-        assertTrue(oneTwo.compareTo(twoThree) < 0);
-        assertTrue(twoThree.compareTo(oneTwo) > 0);
+    public void oMakeWinningPlay() {
+        game.play(0);
+        game.play(2);
+        game.play(1);
+        game.play(5);
+        game.play(3);
+        Solver.move(game);
+        assertEquals("XXO\nX-O\n--O", game.getBoard().toString());
     }
 
     @Test
     public void twoSolversTie() {
-        while (game.getBoard().isGameOver())
+        while (!game.isOver())
             Solver.move(game);
+        System.out.println(game.getBoard());
         assertNull(game.getWinner());
+        assertTrue(game.getBoard().full());
     }
 }
-

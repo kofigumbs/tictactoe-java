@@ -28,7 +28,7 @@ public class Simulation {
                 simulation.userMove();
             }
             else {
-                Solver.move(simulation.game);
+                Minimax.run(simulation.game);
             }
         }
         System.out.println(simulation.getBoard());

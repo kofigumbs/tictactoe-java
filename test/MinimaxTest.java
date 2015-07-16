@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class SolverTest {
+public class MinimaxTest {
 
     Game game;
 
@@ -16,7 +16,7 @@ public class SolverTest {
 
     @Test
     public void testFirstMove() {
-        Solver.move(game);
+        Minimax.run(game);
         assertEquals("X--\n---\n---", game.getBoard().toString());
     }
 
@@ -25,7 +25,7 @@ public class SolverTest {
         game.play(0);
         game.play(4);
         game.play(6);
-        Solver.move(game);
+        Minimax.run(game);
         assertEquals("X--\nOO-\nX--", game.getBoard().toString());
     }
 
@@ -35,7 +35,7 @@ public class SolverTest {
         game.play(1);
         game.play(4);
         game.play(5);
-        Solver.move(game);
+        Minimax.run(game);
         assertEquals("XO-\n-XO\n--X", game.getBoard().toString());
     }
 
@@ -46,15 +46,14 @@ public class SolverTest {
         game.play(1);
         game.play(5);
         game.play(3);
-        Solver.move(game);
+        Minimax.run(game);
         assertEquals("XXO\nX-O\n--O", game.getBoard().toString());
     }
 
     @Test
     public void twoSolversTie() {
         while (!game.isOver())
-            Solver.move(game);
-        System.out.println(game.getBoard());
+            Minimax.run(game);
         assertNull(game.getWinner());
         assertTrue(game.getBoard().full());
     }

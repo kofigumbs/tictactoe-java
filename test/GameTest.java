@@ -79,4 +79,11 @@ public class GameTest {
         game.play(7);
         assertTrue(game.isOver());
     }
+    @Test
+    public void clonable() {
+        game.play(0);
+        assertEquals(Board.Mark.O, game.clone().whoseTurn());
+        assertEquals("X >> 0", game.clone().lastMove());
+        assertEquals(Board.Mark.O, game.whoseTurn());
+    }
 }

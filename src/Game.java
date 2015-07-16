@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
-public class Game {
+public class Game implements Cloneable {
 
     private static final List[] WINNING_COMBINATIONS = new List[]{
             Arrays.asList(0, 1, 2), Arrays.asList(3, 4, 5),
@@ -45,5 +45,15 @@ public class Game {
 
     public Board.Mark whoseTurn() {
         return next;
+    }
+
+    @Override
+    protected Game clone() {
+        Game copy = new Game();
+        copy.next = next;
+        copy.board = board;
+        for (int move : history)
+            copy.history.push(move);
+        return copy;
     }
 }

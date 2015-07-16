@@ -72,14 +72,6 @@ public class BoardTest {
     }
 
     @Test
-    public void winner() {
-        board = board
-                .add(0, Board.Mark.X).add(1, Board.Mark.O).add(2, Board.Mark.X)
-                .add(3, Board.Mark.O).add(4, Board.Mark.X).add(5, Board.Mark.O)
-                .add(6, Board.Mark.X).add(7, Board.Mark.O).add(8, Board.Mark.X);
-        assertEquals(Board.Mark.X, board.getWinner());
-    }
-    @Test
     public void availabilities() {
         assertEquals(9, board.getEmpty().size());
         assertEquals(8, board.add(1, Board.Mark.O).getEmpty().size());

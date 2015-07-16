@@ -16,7 +16,7 @@ public class Game implements Cloneable {
     private Board board = new Board();
 
     public boolean isOver() {
-        return board.full() || board.getWinner() != null;
+        return board.full() || getWinner() != null;
     }
 
     public void play(int position) {

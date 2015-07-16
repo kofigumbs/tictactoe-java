@@ -22,7 +22,7 @@ public class Simulation {
     public static void main(String[] args) {
         Simulation simulation = new Simulation(System.in);
         int i = 0;
-        while (!simulation.game.getBoard().isGameOver()) {
+        while (!simulation.game.isOver()) {
             System.out.println(simulation.getBoard());
             if (i % 2 == 0) {
                 simulation.userMove();

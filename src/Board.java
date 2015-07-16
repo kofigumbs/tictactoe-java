@@ -51,20 +51,6 @@ public class Board {
         return get(null).size() == 0;
     }
 
-    public boolean isGameOver()  {
-        return full() || getWinner() != null;
-    }
-
-    public Board.Mark getWinner() {
-        for (Board.Mark mark : Board.Mark.values())
-            for (List winningCombination : WINNING_COMBINGATIONS) {
-                Set<Integer> combo = get(mark);
-                if (combo.containsAll(winningCombination))
-                    return mark;
-            }
-        return null;
-    }
-
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();

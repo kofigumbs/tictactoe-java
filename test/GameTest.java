@@ -42,7 +42,7 @@ public class GameTest {
     public void getBoard() {
         game.play(0);
         game.play(1);
-        assertEquals("XO-\n---\n---", game.getBoard().toString());
+        assertEquals("XO-------", game.getBoard().toString());
     }
 
     @Test

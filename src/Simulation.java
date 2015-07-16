@@ -1,13 +1,15 @@
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 public class Simulation {
 
     private Game game = new Game();
-    private Scanner inputScanner;
+    private Scanner userInputScanner;
 
     Simulation(InputStream userInput) {
-        inputScanner = new Scanner(userInput);
+        userInputScanner = new Scanner(userInput);
     }
 
     public Board getBoard() {
@@ -15,23 +17,31 @@ public class Simulation {
     }
 
     public void userMove(){
-        int position = inputScanner.nextInt();
+        int position = userInputScanner.nextInt();
         game.play(position);
+    }
+
+    public void start(OutputStream outputSream) {
+        PrintStream printStream = new PrintStream(outputSream);
+        printStream.print("Would you like to go first? (y/n) ");
+        boolean userTurn = userInputScanner.next().toLowerCase().startsWith("y");
+        while (!game.isOver()) {
+            if (userTurn)
+                userMove();
+            else
+                Minimax.run(game);
+            userTurn = !userTurn;
+            printStream.println(game.getBoard() + "\n");
+        }
+        printStream.println(game.getBoard());
+    }
+
+    public boolean ended() {
+        return true;
     }
 
     public static void main(String[] args) {
         Simulation simulation = new Simulation(System.in);
-        int i = 0;
-        while (!simulation.game.isOver()) {
-            System.out.println(simulation.getBoard());
-            if (i % 2 == 0) {
-                simulation.userMove();
-            }
-            else {
-                Minimax.run(simulation.game);
-            }
-        }
-        System.out.println(simulation.getBoard());
+        simulation.start(System.out);
     }
-
 }

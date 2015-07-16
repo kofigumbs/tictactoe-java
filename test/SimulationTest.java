@@ -1,36 +1,38 @@
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SimulationTest {
 
-    ByteArrayInputStream mockUser = new ByteArrayInputStream("".getBytes());
-
     @Test
     public void newSimulationBoardEmpty() {
-        assertTrue(new Simulation(mockUser).getBoard().empty());
+        ByteArrayInputStream inputStream = new ByteArrayInputStream("".getBytes());
+        assertTrue(new Simulation(inputStream).getBoard().empty());
     }
 
     @Test
-    public void sendOneMove() {
-        String input = "0\n";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
-        Simulation simulation = new Simulation(inputStream);
-        simulation.userMove();
-        assertEquals(simulation.getBoard().toString(), "X--\n---\n---");
-    }
-
-    @Test
-    public void twoUserMoves() {
+    public void userMoves() {
         String input = "0\n1\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
         Simulation simulation = new Simulation(inputStream);
         simulation.userMove();
+        assertEquals("X--------", simulation.getBoard().toString());
         simulation.userMove();
-        assertEquals(simulation.getBoard().toString(), "XO-\n---\n---");
+        assertEquals("XO-------", simulation.getBoard().toString());
     }
 
+    @Test
+    public void fullSimulation() {
+        ByteArrayInputStream inputStream =
+                new ByteArrayInputStream("y\n0\n2\n5\n".getBytes());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Simulation simulation = new Simulation(inputStream);
+        simulation.start(outputStream);
+        assertTrue(simulation.ended());
+        assertEquals("XOX-OX-O-", simulation.getBoard().toString());
+    }
 }

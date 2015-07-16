@@ -54,18 +54,12 @@ public class Board {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        int dimension = (int) Math.sqrt(CAPACITY);
         for (int i = 0; i < CAPACITY; i++) {
             if (state[i] == null)
                 result.append("-");
             else
                 result.append(state[i]);
-
-            if (i % dimension == dimension - 1)
-                result.append("\n");
         }
-        result.setLength(CAPACITY + dimension - 1);
-        result.trimToSize();
         return result.toString();
     }
 }

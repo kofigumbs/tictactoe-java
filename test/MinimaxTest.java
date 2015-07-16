@@ -17,7 +17,7 @@ public class MinimaxTest {
     @Test
     public void testFirstMove() {
         Minimax.run(game);
-        assertEquals("X--\n---\n---", game.getBoard().toString());
+        assertEquals("X--------", game.getBoard().toString());
     }
 
     @Test
@@ -26,7 +26,7 @@ public class MinimaxTest {
         game.play(4);
         game.play(6);
         Minimax.run(game);
-        assertEquals("X--\nOO-\nX--", game.getBoard().toString());
+        assertEquals("X--OO-X--", game.getBoard().toString());
     }
 
     @Test
@@ -36,7 +36,7 @@ public class MinimaxTest {
         game.play(4);
         game.play(5);
         Minimax.run(game);
-        assertEquals("XO-\n-XO\n--X", game.getBoard().toString());
+        assertEquals("XO--XO--X", game.getBoard().toString());
     }
 
     @Test
@@ -47,7 +47,7 @@ public class MinimaxTest {
         game.play(5);
         game.play(3);
         Minimax.run(game);
-        assertEquals("XXO\nX-O\n--O", game.getBoard().toString());
+        assertEquals("XXOX-O--O", game.getBoard().toString());
     }
 
     @Test

@@ -29,19 +29,19 @@ public class BoardTest {
 
     @Test
     public void emptyToString() {
-        assertEquals("---\n---\n---", board.toString());
+        assertEquals("---------", board.toString());
     }
 
     @Test
     public void oneMoveToString() {
         board = board.add(0, Board.Mark.X);
-        assertEquals("X--\n---\n---", board.toString());
+        assertEquals("X--------", board.toString());
     }
 
     @Test
     public void twoMoveToString() {
         board = board.add(0, Board.Mark.X).add(1, Board.Mark.O);
-        assertEquals("XO-\n---\n---", board.toString());
+        assertEquals("XO-------", board.toString());
     }
 
     @Test

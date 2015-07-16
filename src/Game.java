@@ -1,6 +1,5 @@
 import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
 public class Game {
 
@@ -11,16 +10,12 @@ public class Game {
             Arrays.asList(2, 5, 8), Arrays.asList(2, 4, 6)
     };
 
-    private Board.Mark next = Board.Mark.X;
-    private Stack<Integer> history = new Stack<>();
     private Board board = new Board();
+    private Board.Mark next = Board.Mark.X;
 
     public Game(Game original) {
-        this();
         next = original.next;
         board = original.board;
-        for (int move : original.history)
-            history.push(move);
     }
 
     public Game() {
@@ -30,16 +25,12 @@ public class Game {
         return board.full() || getWinner() != null;
     }
 
-    public void play(int position) {
-        history.push(position);
+    public boolean play(int position) {
+        if (!board.validate(position))
+            return false;
         board = board.add(position, next);
         next = next.other();
-    }
-
-    public String lastMove() {
-        if (history.isEmpty())
-            return null;
-        return next.other() + " >> " + history.peek();
+        return true;
     }
 
     public Board getBoard() {

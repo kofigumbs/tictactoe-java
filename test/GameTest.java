@@ -1,9 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class GameTest {
 
@@ -23,19 +21,6 @@ public class GameTest {
     public void playOnceNotOver() {
         game.play(0);
         assertFalse(game.isOver());
-    }
-
-    @Test
-    public void firstPlayLastMove() {
-        game.play(0);
-        assertEquals("X >> 0", game.lastMove());
-    }
-
-    @Test
-    public void secondPlayLastMove() {
-        game.play(0);
-        game.play(1);
-        assertEquals("O >> 1", game.lastMove());
     }
 
     @Test
@@ -82,8 +67,16 @@ public class GameTest {
     @Test
     public void copyConstructor() {
         game.play(0);
-        assertEquals(Board.Mark.O, new Game(game).whoseTurn());
-        assertEquals("X >> 0", new Game(game).lastMove());
-        assertEquals(Board.Mark.O, new Game(game).whoseTurn());
+        Game copy = new Game(game);
+        assertEquals(Board.Mark.O, copy.whoseTurn());
+        copy.play(1);
+        assertEquals(Board.Mark.X, copy.whoseTurn());
+        assertEquals(Board.Mark.O, game.whoseTurn());
+    }
+    @Test
+    public void moveOnOccupiedSpace() {
+        game.play(4);
+        assertFalse(game.play(4));
+        assertEquals("----X----", game.getBoard().toString());
     }
 }

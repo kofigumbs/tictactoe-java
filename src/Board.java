@@ -4,19 +4,19 @@ public class Board {
 
     public enum Mark {
         X, O;
+
         Mark other() {
             return this == X ? O : X;
         }
     }
-
     public static final int CAPACITY = 9;
+
     private static final List[] WINNING_COMBINGATIONS = new List[]{
             Arrays.asList(0, 1, 2), Arrays.asList(3, 4, 5),
             Arrays.asList(6, 7, 8), Arrays.asList(0, 4, 8),
             Arrays.asList(0, 3, 6), Arrays.asList(1, 4, 7),
             Arrays.asList(2, 5, 8), Arrays.asList(2, 4, 6)
     };
-
     private final Mark[] state = new Mark[CAPACITY];
 
     private Board(Board old, int position, Mark mark) {
@@ -49,6 +49,14 @@ public class Board {
 
     public boolean full() {
         return get(null).size() == 0;
+    }
+
+    public boolean validate(int position) {
+        try {
+            return state[position] == null;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
     }
 
     @Override

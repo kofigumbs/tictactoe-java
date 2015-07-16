@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class Simulation {
 
+    private static final String PROMPT = " >> ";
     private static final String PRETTY_BOARD =
             "   %c | %c | %c \n" +
                     "  -----------\n" +
@@ -37,14 +38,11 @@ public class Simulation {
     }
 
     public void consumeMove() {
-        int move;
-        do {
-            printStream.print(game.whoseTurn() + " >> ");
-            move = userInputScanner.nextInt();
-            if (move < 0 || move > Board.CAPACITY)
-                printStream.println("Invalid move!");
-        } while (move < 0 || move > Board.CAPACITY);
-        game.play(move);
+        while (true) {
+            if (game.play(userInputScanner.nextInt()))
+                return;
+            printStream.print("Invalid move!" + PROMPT);
+        }
     }
 
     public void prettyPrint() {
@@ -58,15 +56,20 @@ public class Simulation {
     public void start() {
         boolean userTurn = onboard();
         while (!game.isOver()) {
+            printStream.print(game.whoseTurn() + PROMPT);
             if (userTurn) {
                 consumeMove();
             } else {
-                Minimax.run(game);
-                printStream.println(game.lastMove());
+                int move = Minimax.run(game);
+                printStream.println(Integer.toString(move));
             }
             userTurn = !userTurn;
             prettyPrint();
         }
+
+        Board.Mark winner = game.getWinner();
+        String label = winner == null ? "Nobody" : winner.toString();
+        printStream.println(label + " wins!");
     }
 
     public static void main(String[] args) {

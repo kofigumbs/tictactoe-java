@@ -55,4 +55,15 @@ public class SimulationTest {
         assertEquals(-1, inputStream.read());
     }
 
+    @Test
+    public void moveOnOccupiedSpace() {
+        ByteArrayInputStream inputStream =
+                new ByteArrayInputStream("4\n4\n5\n".getBytes());
+        Simulation simulation = new Simulation(inputStream, outputStream);
+        simulation.consumeMove();
+        simulation.consumeMove();
+        assertEquals("----XO---", simulation.getBoard().toString());
+        assertEquals(-1, inputStream.read());
+    }
+
 }

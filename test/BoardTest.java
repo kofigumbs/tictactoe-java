@@ -76,4 +76,11 @@ public class BoardTest {
         assertEquals(9, board.getEmpty().size());
         assertEquals(8, board.add(1, Board.Mark.O).getEmpty().size());
     }
+
+    @Test
+    public void validate() {
+        assertTrue(board.validate(0));
+        assertFalse(board.validate(98));
+        assertFalse(board.add(0, Board.Mark.O).validate(0));
+    }
 }

@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 public class SimulationTest {
 
-    ByteArrayOutputStream outputStream;
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     ByteArrayInputStream emptyInputStream
             = new ByteArrayInputStream("".getBytes());
 
@@ -28,10 +28,11 @@ public class SimulationTest {
         String input = "0\n1\n";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
         Simulation simulation = new Simulation(inputStream, outputStream);
-        simulation.userMove();
+        simulation.consumeMove();
         assertEquals("X--------", simulation.getBoard().toString());
-        simulation.userMove();
+        simulation.consumeMove();
         assertEquals("XO-------", simulation.getBoard().toString());
+        assertEquals(-1, inputStream.read());
     }
 
     @Test
@@ -40,28 +41,18 @@ public class SimulationTest {
                 new ByteArrayInputStream("y\n0\n2\n5\n".getBytes());
         Simulation simulation = new Simulation(inputStream, outputStream);
         simulation.start();
-        assertTrue(simulation.ended());
         assertEquals("XOX-OX-O-", simulation.getBoard().toString());
+        assertEquals(-1, inputStream.read());
     }
 
     @Test
-    public void prettyPrintEmpty() {
-        String pretty = "   - | - | - " +
-                "   - | - | - " +
-                "   - | - | - " + "\n";
-        new Simulation(emptyInputStream, outputStream).prettyPrint();
-        assertEquals(pretty, outputStream.toString());
+    public void moveOutOfRange() {
+        ByteArrayInputStream inputStream =
+                new ByteArrayInputStream("-1\n99\n4".getBytes());
+        Simulation simulation = new Simulation(inputStream, outputStream);
+        simulation.consumeMove();
+        assertEquals("----X----", simulation.getBoard().toString());
+        assertEquals(-1, inputStream.read());
     }
 
-    @Test
-    public void prettyPrintFirstMove() {
-        String pretty = "   X | - | - " +
-                "   - | - | - " +
-                "   - | - | - " + "\n";
-        ByteArrayInputStream userInput = new ByteArrayInputStream("0\n".getBytes());
-        Simulation simulation = new Simulation(userInput, outputStream);
-        simulation.userMove();
-        simulation.prettyPrint();
-        assertEquals(pretty, outputStream.toString());
-    }
 }

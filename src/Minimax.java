@@ -22,9 +22,9 @@ public class Minimax {
         List<Integer> moves = new ArrayList<>();
 
         for (int position : game.getBoard().getEmpty()) {
-            Game clone = game.clone();
-            clone.play(position);
-            scores.add(run(clone, self, depth + 1, result));
+            Game copy = new Game(game);
+            copy.play(position);
+            scores.add(run(copy, self, depth + 1, result));
             moves.add(position);
         }
 

@@ -80,10 +80,10 @@ public class GameTest {
         assertTrue(game.isOver());
     }
     @Test
-    public void clonable() {
+    public void copyConstructor() {
         game.play(0);
-        assertEquals(Board.Mark.O, game.clone().whoseTurn());
-        assertEquals("X >> 0", game.clone().lastMove());
-        assertEquals(Board.Mark.O, game.whoseTurn());
+        assertEquals(Board.Mark.O, new Game(game).whoseTurn());
+        assertEquals("X >> 0", new Game(game).lastMove());
+        assertEquals(Board.Mark.O, new Game(game).whoseTurn());
     }
 }

@@ -6,7 +6,8 @@ public class Minimax {
 
     private static final int MAX_SCORE = 10;
 
-    /* caller is responsible for ensuring that game is not over */
+    /* makes move and returns the position it took
+     * caller is responsible for ensuring that game is not over */
     public static int run(Game game) {
         Result result = new Result();
         if (!game.getBoard().empty())

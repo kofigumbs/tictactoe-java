@@ -6,15 +6,17 @@ public class Minimax {
 
     private static final int MAX_SCORE = 10;
 
+    /* caller is responsible for ensuring that game is not over */
     public static int run(Game game) {
         Result result = new Result();
         if (!game.getBoard().empty())
-            // if board is unplayed, calculations are not worth it
+            // if board is empty, calculations are not worth it
             run(game, game.whoseTurn(), 0, result);
         game.play(result.value);
         return result.value;
     }
 
+    /* recursively evaluates all possible moves */
     private static int run(Game game, Board.Mark self, int depth, Result result) {
         if (game.isOver())
             return score(game, self, depth);

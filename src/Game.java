@@ -13,6 +13,7 @@ public class Game {
     private Board board = new Board();
     private Board.Mark next = Board.Mark.X;
 
+    /* creates deep copy of original game */
     public Game(Game original) {
         next = original.next;
         board = original.board;
@@ -25,6 +26,7 @@ public class Game {
         return board.full() || getWinner() != null;
     }
 
+    /* returns whether move was successful */
     public boolean play(int position) {
         if (!board.validate(position))
             return false;
@@ -37,6 +39,7 @@ public class Game {
         return board;
     }
 
+    /* returns null if game is not over or if game ended in tie */
     public Board.Mark getWinner() {
         for (Board.Mark mark : Board.Mark.values())
             for (List winningCombination : WINNING_COMBINATIONS)

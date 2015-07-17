@@ -9,23 +9,20 @@ public class Board {
             return this == X ? O : X;
         }
     }
+
     public static final int CAPACITY = 9;
 
-    private static final List[] WINNING_COMBINGATIONS = new List[]{
-            Arrays.asList(0, 1, 2), Arrays.asList(3, 4, 5),
-            Arrays.asList(6, 7, 8), Arrays.asList(0, 4, 8),
-            Arrays.asList(0, 3, 6), Arrays.asList(1, 4, 7),
-            Arrays.asList(2, 5, 8), Arrays.asList(2, 4, 6)
-    };
     private final Mark[] state = new Mark[CAPACITY];
 
-    private Board(Board old, int position, Mark mark) {
+    /* creates deep copy of original board with mark added at position */
+    private Board(Board original, int position, Mark mark) {
         for (int i = 0; i < CAPACITY; i++)
-            state[i] = old.state[i];
+            state[i] = original.state[i];
         state[position] = mark;
     }
 
-    public Board(){}
+    public Board() {
+    }
 
     public Set<Integer> getEmpty() {
         return get(null);
@@ -39,6 +36,7 @@ public class Board {
         return result;
     }
 
+    /* Caller is responsible to validate(position) beforehand */
     public Board add(int position, Mark mark) {
         return new Board(this, position, mark);
     }

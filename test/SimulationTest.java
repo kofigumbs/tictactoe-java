@@ -10,8 +10,10 @@ import static org.junit.Assert.assertTrue;
 public class SimulationTest {
 
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    ByteArrayInputStream emptyInputStream
-            = new ByteArrayInputStream("".getBytes());
+
+    private ByteArrayInputStream inputStream(String contents) {
+        return new ByteArrayInputStream(contents.getBytes());
+    }
 
     @Before
     public void setup() {
@@ -20,13 +22,12 @@ public class SimulationTest {
 
     @Test
     public void newSimulationBoardEmpty() {
-        assertTrue(new Simulation(emptyInputStream, outputStream).getBoard().empty());
+        assertTrue(new Simulation(inputStream(""), outputStream).getBoard().empty());
     }
 
     @Test
     public void userMoves() {
-        String input = "0\n1\n";
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        ByteArrayInputStream inputStream = inputStream("0\n1\n");
         Simulation simulation = new Simulation(inputStream, outputStream);
         simulation.consumeMove();
         assertEquals("X--------", simulation.getBoard().toString());
@@ -37,8 +38,7 @@ public class SimulationTest {
 
     @Test
     public void fullSimulation() {
-        ByteArrayInputStream inputStream =
-                new ByteArrayInputStream("y\n0\n2\n5\n".getBytes());
+        ByteArrayInputStream inputStream = inputStream("y\n0\n2\n5\n");
         Simulation simulation = new Simulation(inputStream, outputStream);
         simulation.start();
         assertEquals("XOX-OX-O-", simulation.getBoard().toString());
@@ -47,8 +47,7 @@ public class SimulationTest {
 
     @Test
     public void moveOutOfRange() {
-        ByteArrayInputStream inputStream =
-                new ByteArrayInputStream("-1\n99\n4".getBytes());
+        ByteArrayInputStream inputStream = inputStream("-1\n99\n4");
         Simulation simulation = new Simulation(inputStream, outputStream);
         simulation.consumeMove();
         assertEquals("----X----", simulation.getBoard().toString());
@@ -57,8 +56,7 @@ public class SimulationTest {
 
     @Test
     public void moveOnOccupiedSpace() {
-        ByteArrayInputStream inputStream =
-                new ByteArrayInputStream("4\n4\n5\n".getBytes());
+        ByteArrayInputStream inputStream = inputStream("4\n4\n5\n");
         Simulation simulation = new Simulation(inputStream, outputStream);
         simulation.consumeMove();
         simulation.consumeMove();

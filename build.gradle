@@ -1,0 +1,32 @@
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'jacoco'
+mainClassName = 'Simulation'
+repositories {
+    mavenCentral()
+}
+dependencies {
+  testCompile 'junit:junit:4.12'
+}
+sourceSets {
+    test {
+        java.srcDirs = ["test"]
+    }
+    main {
+        java.srcDirs = ["src"]
+    }
+}
+run{
+    standardInput = System.in
+}
+jacoco {
+    toolVersion = "0.7.1.201405082137"
+    reportsDir = file("$buildDir/jacoco")
+}
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacoco"
+    }
+}

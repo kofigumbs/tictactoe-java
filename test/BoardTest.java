@@ -24,7 +24,7 @@ public class BoardTest {
     @Test
     public void oneMoveNotEmpty() {
         board = board.add(0, Board.Mark.X);
-        assertFalse(board.empty());
+        assertTrue(board.empty());
     }
 
     @Test

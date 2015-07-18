@@ -18,7 +18,7 @@ public class BoardTest {
 
     @Test
     public void emptyWhenCreated() {
-        assertTrue(board.empty());
+        assertFalse(board.empty());
     }
 
     @Test

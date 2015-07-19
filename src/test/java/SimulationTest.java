@@ -1,3 +1,6 @@
+package test.java;
+
+import main.java.Simulation;
 import org.junit.Before;
 import org.junit.Test;
 

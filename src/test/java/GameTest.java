@@ -1,3 +1,7 @@
+package test.java;
+
+import main.java.Board;
+import main.java.Game;
 import org.junit.Before;
 import org.junit.Test;
 

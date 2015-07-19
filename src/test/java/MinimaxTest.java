@@ -1,3 +1,7 @@
+package test.java;
+
+import main.java.Game;
+import main.java.Minimax;
 import org.junit.Before;
 import org.junit.Test;
 

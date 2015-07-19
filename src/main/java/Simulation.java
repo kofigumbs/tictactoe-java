@@ -1,3 +1,5 @@
+package main.java;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -38,7 +40,7 @@ public class Simulation {
         printStream.format(PRETTY_BOARD, marks);
     }
 
-    Simulation(InputStream userInput, OutputStream outputStream) {
+    public Simulation(InputStream userInput, OutputStream outputStream) {
         userInputScanner = new Scanner(userInput);
         printStream = new PrintStream(outputStream);
     }

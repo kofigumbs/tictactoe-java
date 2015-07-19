@@ -1,7 +1,7 @@
 apply plugin: 'application'
 apply plugin: 'java'
 apply plugin: 'jacoco'
-mainClassName = 'Simulation'
+mainClassName = 'main.java.Simulation'
 repositories {
     mavenCentral()
 }
@@ -10,7 +10,4 @@ dependencies {
 }
 run{
     standardInput = System.in
-}
-jacoco {
-    applyTo run
 }

@@ -11,3 +11,10 @@ dependencies {
 run{
     standardInput = System.in
 }
+jar {
+    manifest {
+        attributes("Implementation-Title": "Tic Tac Toe",
+                   "Implementation-Version": 1.0,
+                   "Main-Class": "main.java.Simulation")
+    }
+}

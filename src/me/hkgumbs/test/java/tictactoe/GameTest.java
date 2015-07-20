@@ -2,85 +2,55 @@ package me.hkgumbs.test.java.tictactoe;
 
 import me.hkgumbs.main.java.tictactoe.Board;
 import me.hkgumbs.main.java.tictactoe.Game;
+import me.hkgumbs.main.java.tictactoe.Mark;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class GameTest {
 
-    Game game;
+    Board board;
 
     @Before
     public void setup() {
-        game = new Game();
+        board = new Board();
     }
 
     @Test
     public void newGameIsNotOver() {
-        assertFalse(game.isOver());
+        assertFalse(Game.over(board));
     }
 
     @Test
     public void playOnceNotOver() {
-        game.play(0);
-        assertFalse(game.isOver());
-    }
-
-    @Test
-    public void getBoard() {
-        game.play(0);
-        game.play(1);
-        assertEquals("XO-------", game.getBoard().toString());
-    }
-
-    @Test
-    public void startOnX() {
-        assertEquals(Board.Mark.X, game.whoseTurn());
-    }
-
-    @Test
-    public void secondMoveO() {
-        game.play(0);
-        assertEquals(Board.Mark.O, game.whoseTurn());
+        assertFalse(Game.over(board.add(0, Mark.X)));
     }
 
     @Test
     public void isActuallyOver() {
-        game.play(0);
-        game.play(3);
-        game.play(1);
-        game.play(4);
-        game.play(2);
-        assertTrue(game.isOver());
+        board = board
+                .add(0, Mark.X).add(3, Mark.O).add(1, Mark.X)
+                .add(4, Mark.O).add(2, Mark.X);
+        assertTrue(Game.over(board));
     }
 
     @Test
     public void catsGame() {
-        game.play(0);
-        game.play(4);
-        game.play(1);
-        game.play(2);
-        game.play(6);
-        game.play(3);
-        game.play(5);
-        game.play(8);
-        game.play(7);
-        assertTrue(game.isOver());
+        board = board
+                .add(0, Mark.X) .add(4, Mark.O) .add(1, Mark.X)
+                .add(2, Mark.O) .add(6, Mark.X) .add(3, Mark.O)
+                .add(5, Mark.X) .add(8, Mark.O) .add(7, Mark.X);
+        assertTrue(Game.over(board));
+        assertNull(Game.winner(board));
     }
+
     @Test
-    public void copyConstructor() {
-        game.play(0);
-        Game copy = new Game(game);
-        assertEquals(Board.Mark.O, copy.whoseTurn());
-        copy.play(1);
-        assertEquals(Board.Mark.X, copy.whoseTurn());
-        assertEquals(Board.Mark.O, game.whoseTurn());
-    }
-    @Test
-    public void moveOnOccupiedSpace() {
-        game.play(4);
-        assertFalse(game.play(4));
-        assertEquals("----X----", game.getBoard().toString());
+    public void validate() {
+        assertTrue(Game.validate(board, 0));
+        assertFalse(Game.validate(board, 98));
+        assertFalse(Game.validate(board.add(0, Mark.O), 0));
     }
 }

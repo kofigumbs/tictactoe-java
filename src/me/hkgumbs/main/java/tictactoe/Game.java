@@ -12,45 +12,20 @@ public class Game {
             Arrays.asList(2, 5, 8), Arrays.asList(2, 4, 6)
     };
 
-    private Board board = new Board();
-    private Board.Mark next = Board.Mark.X;
-
-    /* creates deep copy of original game */
-    public Game(Game original) {
-        next = original.next;
-        board = original.board;
-    }
-
-    public Game() {
-    }
-
-    public boolean isOver() {
-        return board.full() || getWinner() != null;
-    }
-
-    /* returns whether move was successful */
-    public boolean play(int position) {
-        if (!board.validate(position))
-            return false;
-        board = board.add(position, next);
-        next = next.other();
-        return true;
-    }
-
-    public Board getBoard() {
-        return board;
+    public static boolean over(Board board) {
+        return board.full() || winner(board) != null;
     }
 
     /* returns null if game is not over or if game ended in tie */
-    public Board.Mark getWinner() {
-        for (Board.Mark mark : Board.Mark.values())
+    public static Mark winner(Board board) {
+        for (Mark mark : Mark.values())
             for (List winningCombination : WINNING_COMBINATIONS)
                 if (board.get(mark).containsAll(winningCombination))
                     return mark;
         return null;
     }
 
-    public Board.Mark whoseTurn() {
-        return next;
+    public static boolean validate(Board board, int move) {
+        return board.getEmpty().contains(move);
     }
 }

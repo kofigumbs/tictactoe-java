@@ -1,6 +1,8 @@
 package me.hkgumbs.test.java.tictactoe;
 
+import me.hkgumbs.main.java.tictactoe.Board;
 import me.hkgumbs.main.java.tictactoe.Game;
+import me.hkgumbs.main.java.tictactoe.Mark;
 import me.hkgumbs.main.java.tictactoe.Minimax;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,56 +11,69 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+
+//
+//import me.hkgumbs.main.java.tictactoe.Game;
+//import me.hkgumbs.main.java.tictactoe.Minimax;
+//import org.junit.Before;
+//import org.junit.Test;
+//
+//import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.assertNull;
+//import static org.junit.Assert.assertTrue;
+//
 public class MinimaxTest {
 
-    Game game;
+    Board board;
 
     @Before
     public void setup() {
-        game = new Game();
+        board = new Board();
     }
 
     @Test
     public void testFirstMove() {
-        Minimax.run(game);
-        assertEquals("X--------", game.getBoard().toString());
+        int result = new Minimax(Mark.X).run(board);
+        assertEquals(0, result);
     }
 
     @Test
     public void blockWinningPlay() {
-        game.play(0);
-        game.play(4);
-        game.play(6);
-        Minimax.run(game);
-        assertEquals("X--OO-X--", game.getBoard().toString());
+        board = board
+                .add(0, Mark.X).add(4, Mark.O).add(6, Mark.X);
+        int result = new Minimax(Mark.O).run(board);
+        assertEquals(3, result);
     }
 
     @Test
     public void xMakeWinningPlay() {
-        game.play(0);
-        game.play(1);
-        game.play(4);
-        game.play(5);
-        Minimax.run(game);
-        assertEquals("XO--XO--X", game.getBoard().toString());
+        board = board
+                .add(0, Mark.X).add(1, Mark.O).add(4, Mark.X).add(5, Mark.O);
+        int result = new Minimax(Mark.X).run(board);
+        assertEquals(8, result);
     }
 
     @Test
     public void oMakeWinningPlay() {
-        game.play(0);
-        game.play(2);
-        game.play(1);
-        game.play(5);
-        game.play(3);
-        Minimax.run(game);
-        assertEquals("XXOX-O--O", game.getBoard().toString());
+        board = board
+                .add(0, Mark.X).add(2, Mark.O).add(1, Mark.X)
+                .add(5, Mark.O).add(3, Mark.X);
+        int result = new Minimax(Mark.O).run(board);
+        assertEquals(8, result);
     }
 
     @Test
     public void twoSolversTie() {
-        while (!game.isOver())
-            Minimax.run(game);
-        assertNull(game.getWinner());
-        assertTrue(game.getBoard().full());
+        boolean xTurn = true;
+        Minimax x = new Minimax(Mark.X);
+        Minimax o = new Minimax(Mark.O);
+        while (!Game.over(board)) {
+            Minimax current = xTurn ? x : o;
+            int move = current.run(board);
+            board = board.add(move, current.mark);
+            xTurn = !xTurn;
+        }
+        assertNull(Game.winner(board));
+        assertTrue(board.full());
     }
 }

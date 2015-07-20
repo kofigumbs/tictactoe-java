@@ -1,71 +1,60 @@
 package me.hkgumbs.test.java.tictactoe;
 
 import me.hkgumbs.main.java.tictactoe.Simulation;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class SimulationTest {
 
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    String prompt = "";
 
-    private ByteArrayInputStream inputStream(String contents) {
-        return new ByteArrayInputStream(contents.getBytes());
-    }
-
-    @Before
-    public void setup() {
-        outputStream = new ByteArrayOutputStream();
-    }
-
-    @Test
-    public void newSimulationBoardEmpty() {
-        assertTrue(new Simulation(inputStream(""), outputStream).getBoard()
-                .empty());
+    private Simulation simlulate(String contents) {
+        return new Simulation(
+                new ByteArrayInputStream(contents.getBytes()),
+                new ByteArrayOutputStream());
     }
 
     @Test
     public void userMoves() {
-        ByteArrayInputStream inputStream = inputStream("0\n1\n");
-        Simulation simulation = new Simulation(inputStream, outputStream);
-        simulation.consumeMove();
-        assertEquals("X--------", simulation.getBoard().toString());
-        simulation.consumeMove();
-        assertEquals("XO-------", simulation.getBoard().toString());
-        assertEquals(-1, inputStream.read());
-    }
-
-    @Test
-    public void fullSimulation() {
-        ByteArrayInputStream inputStream = inputStream("y\n0\n2\n5\n");
-        Simulation simulation = new Simulation(inputStream, outputStream);
-        simulation.start();
-        assertEquals("XOX-OX-O-", simulation.getBoard().toString());
-        assertEquals(-1, inputStream.read());
+        Simulation simulation = simlulate("0\n1\n");
+        assertEquals(0, simulation.parseValidMove(prompt));
+        assertEquals(1, simulation.parseValidMove(prompt));
     }
 
     @Test
     public void moveOutOfRange() {
-        ByteArrayInputStream inputStream = inputStream("-1\n99\n4");
-        Simulation simulation = new Simulation(inputStream, outputStream);
-        simulation.consumeMove();
-        assertEquals("----X----", simulation.getBoard().toString());
-        assertEquals(-1, inputStream.read());
+        Simulation simulation = simlulate("-1\n99\n0");
+        assertEquals(0, simulation.parseValidMove(prompt));;
     }
 
     @Test
-    public void moveOnOccupiedSpace() {
-        ByteArrayInputStream inputStream = inputStream("4\n4\n5\n");
-        Simulation simulation = new Simulation(inputStream, outputStream);
-        simulation.consumeMove();
-        simulation.consumeMove();
-        assertEquals("----XO---", simulation.getBoard().toString());
-        assertEquals(-1, inputStream.read());
+    public void parseInvalidMove() {
+        Simulation simulation = simlulate("asdf\n0\n");
+        assertEquals(0, simulation.parseValidMove(prompt));
+    }
+
+    @Test
+    public void parseYesNoUppercase() {
+        Simulation simulation = simlulate("asdf\nYES\nNO");
+        assertTrue(simulation.parseYesOrNo(prompt));
+        assertFalse(simulation.parseYesOrNo(prompt));
+    }
+
+    @Test
+    public void parseYNLowercaseWithInvalid() {
+        Simulation simulation = simlulate("asdf\nNOPE\ny\nn");
+        assertTrue(simulation.parseYesOrNo(prompt));
+        assertFalse(simulation.parseYesOrNo(prompt));
+    }
+    @Test
+    public void multiWordResponse() {
+        Simulation simulation = simlulate("foo bar y\nn\nasdf asdf\n0\n");
+        assertFalse(simulation.parseYesOrNo(prompt));
+        assertEquals(0, simulation.parseValidMove(prompt));
     }
 
 }

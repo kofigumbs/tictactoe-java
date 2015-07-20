@@ -3,81 +3,87 @@ package me.hkgumbs.main.java.tictactoe;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Scanner;
+import java.util.*;
 
 public class Simulation {
 
     private static final String PROMPT = " >> ";
-    private static final String PRETTY_BOARD =
-            "   %c | %c | %c \n" +
-                    "  -----------\n" +
-                    "   %c | %c | %c \n" +
-                    "  -----------\n" +
-                    "   %c | %c | %c \n\n";
+    private static final String ONBOARD = "Welcome to Tic Tac Toe!\n" +
+            "Make a move by entering an empty space id\n" +
+            "   0 | 1 | 2 \n" +
+            "  -----------  \n" +
+            "   3 | 4 | 5 \n" +
+            "  -----------  \n" +
+            "   6 | 7 | 8 \n\n" +
+            "Would you like to go first? (y/n) ";
 
-    private Game game = new Game();
+    private Board board = new Board();
+    private Mark turn = Mark.X;
+    private Minimax cpu;
     private Scanner userInputScanner;
     private PrintStream printStream;
-
-    /* prints all the information in the beginning of the simulation */
-    private boolean onboard() {
-        Object[] ids = new Object[Board.CAPACITY];
-        for (int i = 0; i < ids.length; i++)
-            ids[i] = Character.forDigit(i, 10);
-        printStream.println("Welcome to Tic Tac Toe!");
-        printStream.println("Make a move by entering an empty space id");
-        printStream.format(PRETTY_BOARD, ids);
-        printStream.print("Would you like to go first? (y/n) ");
-        return userInputScanner.next().toLowerCase().startsWith("y");
-    }
-
-    /* prints the game board in a nice format */
-    private void prettyPrint() {
-        String ugly = getBoard().toString();
-        Object[] marks = new Object[Board.CAPACITY];
-        for (int i = 0; i < marks.length; i++)
-            marks[i] = ugly.charAt(i);
-        printStream.format(PRETTY_BOARD, marks);
-    }
 
     public Simulation(InputStream userInput, OutputStream outputStream) {
         userInputScanner = new Scanner(userInput);
         printStream = new PrintStream(outputStream);
     }
 
-    public Board getBoard() {
-        return game.getBoard();
-    }
-
     /* reads first valid move from input stream */
-    public void consumeMove() {
+    public int parseValidMove(String initialPrompt) {
+        printStream.print(initialPrompt);
         while (true) {
-            if (game.play(userInputScanner.nextInt()))
-                return;
+            try {
+                String response = userInputScanner.nextLine();
+                response = response.split(" ", 2)[0];
+                int move = Integer.parseInt(response);
+                if (Game.validate(board, move))
+                    return move;
+            } catch (NumberFormatException e) {
+                /* caused when non-numeric text is entered */
+            }
             printStream.print("Invalid move!" + PROMPT);
         }
     }
 
+    public boolean parseYesOrNo(String initialPrompt) {
+        printStream.print(initialPrompt);
+        while (true) {
+            String response = userInputScanner.nextLine().toLowerCase();
+            response = response.split(" ", 2)[0];
+            if (response.equals("y") || response.equals("yes"))
+                return true;
+            else if (response.equals("n") || response.equals("no"))
+                return false;
+            printStream.print("Invalid response!" + PROMPT);
+        }
+    }
+
     public void start() {
-        boolean userTurn = onboard();
-        while (!game.isOver()) {
-            printStream.print(game.whoseTurn() + PROMPT);
-            if (userTurn) {
-                consumeMove();
-            } else {
-                int move = Minimax.run(game);
+        cpu = new Minimax(parseYesOrNo(ONBOARD) ? Mark.O : Mark.X);
+
+        while (!Game.over(board)) {
+            int move = turn == cpu.mark ?
+                    parseValidMove(turn + PROMPT) : cpu.run(board);
+            board = board.add(move, turn);
+            turn = turn.other();
+
+            if (turn == cpu.mark)
+                /* printing the move keeps format consistent between human and
+                 * cpu players */
                 printStream.println(Integer.toString(move));
-            }
-            userTurn = !userTurn;
-            prettyPrint();
+            printStream.println(board.format());
         }
 
-        Board.Mark winner = game.getWinner();
+        Mark winner = Game.winner(board);
         String label = winner == null ? "Nobody" : winner.toString();
         printStream.println(label + " wins!");
     }
 
     public static void main(String[] args) {
-        new Simulation(System.in, System.out).start();
+        try {
+            new Simulation(System.in, System.out).start();
+        } catch (NoSuchElementException e) {
+            /* user terminated program */
+        }
     }
 }

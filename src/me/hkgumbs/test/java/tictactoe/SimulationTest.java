@@ -1,6 +1,6 @@
-package test.java;
+package me.hkgumbs.test.java.tictactoe;
 
-import main.java.Simulation;
+import me.hkgumbs.main.java.tictactoe.Simulation;
 import org.junit.Before;
 import org.junit.Test;
 

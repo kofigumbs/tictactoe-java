@@ -1,7 +1,7 @@
-package test.java;
+package me.hkgumbs.test.java.tictactoe;
 
-import main.java.Game;
-import main.java.Minimax;
+import me.hkgumbs.main.java.tictactoe.Game;
+import me.hkgumbs.main.java.tictactoe.Minimax;
 import org.junit.Before;
 import org.junit.Test;
 

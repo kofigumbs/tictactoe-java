@@ -1,7 +1,7 @@
-package test.java;
+package me.hkgumbs.test.java.tictactoe;
 
-import main.java.Board;
-import main.java.Game;
+import me.hkgumbs.main.java.tictactoe.Board;
+import me.hkgumbs.main.java.tictactoe.Game;
 import org.junit.Before;
 import org.junit.Test;
 

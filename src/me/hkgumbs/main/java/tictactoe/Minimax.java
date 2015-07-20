@@ -22,7 +22,8 @@ public class Minimax {
     /* recursively evaluates all possible moves
      * returns score of best outcome
      * stores best move in result */
-    private static int run(Game game, Board.Mark self, int depth, Result result) {
+    private static int run(
+            Game game, Board.Mark self, int depth, Result result) {
         if (game.isOver())
             return score(game, self, depth);
 

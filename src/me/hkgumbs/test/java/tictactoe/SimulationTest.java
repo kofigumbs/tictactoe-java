@@ -25,7 +25,8 @@ public class SimulationTest {
 
     @Test
     public void newSimulationBoardEmpty() {
-        assertTrue(new Simulation(inputStream(""), outputStream).getBoard().empty());
+        assertTrue(new Simulation(inputStream(""), outputStream).getBoard()
+                .empty());
     }
 
     @Test

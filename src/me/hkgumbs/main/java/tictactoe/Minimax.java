@@ -53,13 +53,12 @@ public class Minimax extends Player {
         super(mark);
     }
 
-    /* returns the position of best move
-     * caller is responsible for ensuring that game is not over */
+    /* caller is responsible for ensuring that game is not over */
     @Override
     public int consider(Board board) {
         Result result = new Result();
         if (board.empty())
-            // if board is empty, calculations are not worth it
+            /* if board is empty, calculations are not worth it */
             return 0;
 
         consider(board, mark, 0, result);

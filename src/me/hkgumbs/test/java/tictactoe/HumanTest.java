@@ -40,6 +40,7 @@ public class HumanTest {
         Player human = birth("asdf\n7");
         assertEquals(7, human.consider(board));
     }
+
     @Test
     public void multiWordResponse() {
         Player human = birth("foo bar y\nn\nasdf asdf\n0\n");

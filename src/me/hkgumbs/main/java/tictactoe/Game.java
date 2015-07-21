@@ -16,7 +16,6 @@ public class Game {
         return board.full() || winner(board) != null;
     }
 
-    /* returns null if game is not over or if game ended in tie */
     public static Board.Mark winner(Board board) {
         for (Board.Mark mark : Board.Mark.values())
             for (List winningCombination : WINNING_COMBINATIONS)

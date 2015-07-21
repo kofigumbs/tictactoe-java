@@ -9,7 +9,7 @@ public abstract class Player {
 
     public boolean yesOrNo() {
         return false;
-    };
+    }
 
     public abstract int consider(Board board);
 }

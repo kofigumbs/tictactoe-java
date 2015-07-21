@@ -32,8 +32,7 @@ public class Board {
         return result;
     }
 
-    /* overwrites previous addition if given occupied position
-     * throws IndexOutOfBoundsException if position is outside [0, CAPACITY) */
+    /* caller is responsible to enforce overwrites and bounds [0, CAPACITY) */
     public Board add(int position, Mark mark) {
         Board result = new Board();
         for (int i = 0; i < CAPACITY; i++)

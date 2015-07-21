@@ -17,8 +17,8 @@ public class Game {
     }
 
     /* returns null if game is not over or if game ended in tie */
-    public static Mark winner(Board board) {
-        for (Mark mark : Mark.values())
+    public static Board.Mark winner(Board board) {
+        for (Board.Mark mark : Board.Mark.values())
             for (List winningCombination : WINNING_COMBINATIONS)
                 if (board.get(mark).containsAll(winningCombination))
                     return mark;

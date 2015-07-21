@@ -2,7 +2,6 @@ package me.hkgumbs.test.java.tictactoe;
 
 import me.hkgumbs.main.java.tictactoe.Board;
 import me.hkgumbs.main.java.tictactoe.Game;
-import me.hkgumbs.main.java.tictactoe.Mark;
 import me.hkgumbs.main.java.tictactoe.Minimax;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,40 +32,41 @@ public class MinimaxTest {
 
     @Test
     public void testFirstMove() {
-        int result = new Minimax(Mark.X).run(board);
+        int result = new Minimax(Board.Mark.X).run(board);
         assertEquals(0, result);
     }
 
     @Test
     public void blockWinningPlay() {
         board = board
-                .add(0, Mark.X).add(4, Mark.O).add(6, Mark.X);
-        int result = new Minimax(Mark.O).run(board);
+                .add(0, Board.Mark.X).add(4, Board.Mark.O).add(6, Board.Mark.X);
+        int result = new Minimax(Board.Mark.O).run(board);
         assertEquals(3, result);
     }
 
     @Test
     public void xMakeWinningPlay() {
         board = board
-                .add(0, Mark.X).add(1, Mark.O).add(4, Mark.X).add(5, Mark.O);
-        int result = new Minimax(Mark.X).run(board);
+                .add(0, Board.Mark.X).add(1, Board.Mark.O)
+                .add(4, Board.Mark.X).add(5, Board.Mark.O);
+        int result = new Minimax(Board.Mark.X).run(board);
         assertEquals(8, result);
     }
 
     @Test
     public void oMakeWinningPlay() {
         board = board
-                .add(0, Mark.X).add(2, Mark.O).add(1, Mark.X)
-                .add(5, Mark.O).add(3, Mark.X);
-        int result = new Minimax(Mark.O).run(board);
+                .add(0, Board.Mark.X).add(2, Board.Mark.O).add(1, Board.Mark.X)
+                .add(5, Board.Mark.O).add(3, Board.Mark.X);
+        int result = new Minimax(Board.Mark.O).run(board);
         assertEquals(8, result);
     }
 
     @Test
     public void twoSolversTie() {
         boolean xTurn = true;
-        Minimax x = new Minimax(Mark.X);
-        Minimax o = new Minimax(Mark.O);
+        Minimax x = new Minimax(Board.Mark.X);
+        Minimax o = new Minimax(Board.Mark.O);
         while (!Game.over(board)) {
             Minimax current = xTurn ? x : o;
             int move = current.run(board);

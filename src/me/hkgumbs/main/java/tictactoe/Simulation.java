@@ -14,7 +14,7 @@ public class Simulation {
             "Would you like to go first? (y/n) ";
 
     private Board board = new Board();
-    private Mark turn = Mark.X;
+    private Board.Mark turn = Board.Mark.X;
     private Minimax cpu;
     private Scanner userInputScanner;
     private PrintStream printStream;
@@ -55,7 +55,7 @@ public class Simulation {
     }
 
     public void start() {
-        cpu = new Minimax(parseYesOrNo(ONBOARD) ? Mark.X : Mark.O);
+        cpu = new Minimax(parseYesOrNo(ONBOARD) ? Board.Mark.X : Board.Mark.O);
 
         while (!Game.over(board)) {
             int move = turn == cpu.mark ?
@@ -70,7 +70,7 @@ public class Simulation {
             printStream.println(board.format());
         }
 
-        Mark winner = Game.winner(board);
+        Board.Mark winner = Game.winner(board);
         String label = winner == null ? "Nobody" : winner.toString();
         printStream.println(label + " wins!");
     }

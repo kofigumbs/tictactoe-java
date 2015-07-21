@@ -12,9 +12,9 @@ public class Minimax {
 
     private static final int MAX_SCORE = 10;
 
-    public final Mark mark;
+    public final Board.Mark mark;
 
-    public Minimax(Mark mark) {
+    public Minimax(Board.Mark mark) {
         this.mark = mark;
     }
 
@@ -34,7 +34,7 @@ public class Minimax {
      * returns score of best outcome
      * stores best move in result */
     private int run(
-            Board board, Mark current, int depth, Result result) {
+            Board board, Board.Mark current, int depth, Result result) {
         if (Game.over(board))
             return score(board, depth);
 
@@ -57,7 +57,7 @@ public class Minimax {
     }
 
     private int score(Board board, int depth) {
-        Mark winner = Game.winner(board);
+        Board.Mark winner = Game.winner(board);
         if (winner == mark)
             return MAX_SCORE - depth;
         else if (winner == mark.other())

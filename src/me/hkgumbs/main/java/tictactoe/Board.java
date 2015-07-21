@@ -6,6 +6,14 @@ import java.util.*;
 
 public class Board {
 
+    public enum Mark {
+        O, X;
+
+        public Mark other() {
+            return this == X ? O : X;
+        }
+    }
+
     public static final int CAPACITY = 9;
 
     private static final String PRETTY = "  %s|%s|%s\n" +
@@ -65,5 +73,4 @@ public class Board {
             result.append(mark == null ? "-" : mark.toString());
         return result.toString();
     }
-
 }

@@ -3,81 +3,71 @@ package me.hkgumbs.main.java.tictactoe;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.*;
+import java.util.NoSuchElementException;
 
 public class Simulation {
 
-    private static final String PROMPT = " >> ";
-    private static final String ONBOARD = "Welcome to Tic Tac Toe!\n" +
-            "Make a move by entering an empty space id\n" +
-            new Board().format() +
-            "Would you like to go first? (y/n) ";
+    public enum State {
+        INITIAL, HUMAN_TURN, CPU_TURN, COMPLETED, TERMINATED
+    }
 
-    private Board board = new Board();
-    private Board.Mark turn = Board.Mark.X;
-    private Minimax cpu;
-    private Scanner userInputScanner;
-    private PrintStream printStream;
+    private static final String PROMPT = " >> ";
+    private static final String GO_FIRST = "Would you like to go first? (y/n) ";
+    private static final String ONBOARD = "Welcome to Tic Tac Toe!\n" +
+            "Make a move by entering an empty space id\n";
+    private static final String PLAY_AGAIN =
+            "Would you like to play again? (y/n) ";
+
+    private State state = State.INITIAL;
+    private Board board;
+    private Player cpu;
+    private Player human;
+    private PrintStream output;
 
     public Simulation(InputStream userInput, OutputStream outputStream) {
-        userInputScanner = new Scanner(userInput);
-        printStream = new PrintStream(outputStream);
+        cpu = new Minimax(Board.Mark.O);
+        human = new Human(Board.Mark.X, userInput, outputStream);
+        output = new PrintStream(outputStream);
+        output.println(ONBOARD);
     }
 
-    /* reads first valid move from input stream */
-    public int parseValidMove(String initialPrompt) {
-        printStream.print(initialPrompt);
-        while (true) {
-            try {
-                String response = userInputScanner.nextLine();
-                response = response.split(" ", 2)[0];
-                int move = Integer.parseInt(response);
-                if (Game.validate(board, move))
-                    return move;
-            } catch (NumberFormatException e) {
-                /* caused when non-numeric text is entered */
-            }
-            printStream.print("Invalid move!" + PROMPT);
-        }
+    public State state() {
+        return state;
     }
 
-    public boolean parseYesOrNo(String initialPrompt) {
-        printStream.print(initialPrompt);
-        while (true) {
-            String response = userInputScanner.nextLine().toLowerCase();
-            response = response.split(" ", 2)[0];
-            if (response.equals("y") || response.equals("yes"))
-                return true;
-            else if (response.equals("n") || response.equals("no"))
-                return false;
-            printStream.print("Invalid response!" + PROMPT);
-        }
-    }
+    public State next() {
+        if (state == State.INITIAL) {
+            board = new Board();
+            output.println(board.format());
+            output.print(GO_FIRST);
+            state = human.yesOrNo() ? State.HUMAN_TURN : State.CPU_TURN;
 
-    public void start() {
-        cpu = new Minimax(parseYesOrNo(ONBOARD) ? Board.Mark.X : Board.Mark.O);
+        } else if (state == State.HUMAN_TURN) {
+            output.print(human.mark + PROMPT);
+            board = board.add(human.consider(board), human.mark);
+            output.println(board.format());
+            state = Game.over(board) ? State.COMPLETED : State.CPU_TURN;
 
-        while (!Game.over(board)) {
-            int move = turn == cpu.mark ?
-                    parseValidMove(turn + PROMPT) : cpu.run(board);
-            board = board.add(move, turn);
-            turn = turn.other();
+        } else if (state == State.CPU_TURN) {
+            int move = cpu.consider(board);
+            board = board.add(move, cpu.mark);
+            output.println(cpu.mark + PROMPT + move + "\n" + board.format());
+            state = Game.over(board) ? State.COMPLETED : State.HUMAN_TURN;
 
-            if (turn == cpu.mark)
-                /* printing the move keeps format consistent between human and
-                 * cpu players */
-                printStream.println(Integer.toString(move));
-            printStream.println(board.format());
+        } else if (state == State.COMPLETED) {
+            Board.Mark winner = Game.winner(board);
+            output.println((winner == null ? "Nobody" : winner) + " wins!");
+            output.print(PLAY_AGAIN);
+            state = human.yesOrNo() ? State.INITIAL : State.TERMINATED;
         }
 
-        Board.Mark winner = Game.winner(board);
-        String label = winner == null ? "Nobody" : winner.toString();
-        printStream.println(label + " wins!");
+        return state;
     }
 
     public static void main(String[] args) {
         try {
-            new Simulation(System.in, System.out).start();
+            Simulation simulation = new Simulation(System.in, System.out);
+            while (simulation.next() != State.TERMINATED) ;
         } catch (NoSuchElementException e) {
             /* user terminated program */
         }

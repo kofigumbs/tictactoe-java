@@ -39,9 +39,9 @@ public class SimulationTest {
 
     @Test
     public void parseYesNoUppercase() {
-        Simulation simulation = simlulate("asdf\nYES\nNO");
-        assertTrue(simulation.parseYesOrNo(prompt));
+        Simulation simulation = simlulate("asdf\nNO\nYES");
         assertFalse(simulation.parseYesOrNo(prompt));
+        assertTrue(simulation.parseYesOrNo(prompt));
     }
 
     @Test

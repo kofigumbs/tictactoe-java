@@ -16,19 +16,12 @@ public class Mark {
         return this == X ? O : X;
     }
 
-    public static Iterable<Mark> values() {
-        return Arrays.asList(X, O);
-    }
-
-    public static String toString(Mark mark) {
-        if (mark == null)
-            return "-";
-        else
-            return mark.toString();
-    }
-
     @Override
     public String toString() {
         return value;
+    }
+
+    public static Iterable<Mark> values() {
+        return Arrays.asList(X, O);
     }
 }

@@ -8,11 +8,11 @@ public class Board {
 
     public static final int CAPACITY = 9;
 
-    private static final String PRETTY = "   %s | %s | %s \n" +
+    private static final String PRETTY = "  %s|%s|%s\n" +
             "  -----------  \n" +
-            "   %s | %s | %s \n" +
+            "  %s|%s|%s\n" +
             "  -----------  \n" +
-            "   %s | %s | %s \n";
+            "  %s|%s|%s\n";
 
     private final Mark[] state = new Mark[CAPACITY];
 
@@ -24,7 +24,8 @@ public class Board {
         return result;
     }
 
-    /* Caller is responsible to validate(position) beforehand */
+    /* overwrites previous addition if given occupied position
+     * throws IndexOutOfBoundsException if position is outside [0, CAPACITY) */
     public Board add(int position, Mark mark) {
         Board result = new Board();
         for (int i = 0; i < CAPACITY; i++)
@@ -48,7 +49,10 @@ public class Board {
     public String format() {
         Object[] marks = new Object[Board.CAPACITY];
         for (int i = 0; i < marks.length; i++)
-            marks[i] = Mark.toString(state[i]);
+            if (state[i] == null)
+                marks[i] = "(" + i + ")";
+            else
+                marks[i] = " " + state[i].toString() + " ";
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         new PrintStream(stream).format(PRETTY, marks);
         return stream.toString();
@@ -58,7 +62,8 @@ public class Board {
     public String toString() {
         StringBuilder result = new StringBuilder();
         for (Mark mark : state)
-            result.append(Mark.toString(mark));
+            result.append(mark == null ? "-" : mark.toString());
         return result.toString();
     }
+
 }

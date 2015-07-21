@@ -10,11 +10,7 @@ public class Simulation {
     private static final String PROMPT = " >> ";
     private static final String ONBOARD = "Welcome to Tic Tac Toe!\n" +
             "Make a move by entering an empty space id\n" +
-            "   0 | 1 | 2 \n" +
-            "  -----------  \n" +
-            "   3 | 4 | 5 \n" +
-            "  -----------  \n" +
-            "   6 | 7 | 8 \n\n" +
+            new Board().format() +
             "Would you like to go first? (y/n) ";
 
     private Board board = new Board();
@@ -59,7 +55,7 @@ public class Simulation {
     }
 
     public void start() {
-        cpu = new Minimax(parseYesOrNo(ONBOARD) ? Mark.O : Mark.X);
+        cpu = new Minimax(parseYesOrNo(ONBOARD) ? Mark.X : Mark.O);
 
         while (!Game.over(board)) {
             int move = turn == cpu.mark ?

@@ -18,7 +18,7 @@ public class Minimax {
         this.mark = mark;
     }
 
-    /* makes move and returns the position it took
+    /* returns the position of best move
      * caller is responsible for ensuring that game is not over */
     public int run(Board board) {
         Result result = new Result();
@@ -58,11 +58,12 @@ public class Minimax {
 
     private int score(Board board, int depth) {
         Mark winner = Game.winner(board);
-        if (mark == winner)
+        if (winner == mark)
             return MAX_SCORE - depth;
-        else if (winner == null)
-            return 0;
-        else
+        else if (winner == mark.other())
             return depth - MAX_SCORE;
+        else
+            return 0;
+
     }
 }

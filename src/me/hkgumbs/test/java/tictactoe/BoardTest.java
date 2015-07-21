@@ -82,18 +82,18 @@ public class BoardTest {
     }
 
     @Test
-    public void prettPrint() {
-        assertEquals("   - | - | - \n" +
+    public void prettyPrint() {
+        assertEquals("  (0)|(1)|(2)\n" +
                         "  -----------  \n" +
-                        "   - | - | - \n" +
+                        "  (3)|(4)|(5)\n" +
                         "  -----------  \n" +
-                        "   - | - | - \n",
+                        "  (6)|(7)|(8)\n",
                 board.format());
-        assertEquals("   X | O | - \n" +
+        assertEquals("   X | O |(2)\n" +
                         "  -----------  \n" +
-                        "   - | - | - \n" +
+                        "  (3)|(4)|(5)\n" +
                         "  -----------  \n" +
-                        "   - | - | - \n",
+                        "  (6)|(7)|(8)\n",
                 board.add(0, Mark.X).add(1, Mark.O).format());
     }
 

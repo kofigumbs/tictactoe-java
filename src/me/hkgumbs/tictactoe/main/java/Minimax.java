@@ -1,4 +1,4 @@
-package me.hkgumbs.main.java.tictactoe;
+package me.hkgumbs.tictactoe.main.java;
 
 import java.util.ArrayList;
 import java.util.Collections;

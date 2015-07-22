@@ -1,4 +1,4 @@
-package me.hkgumbs.main.java.tictactoe;
+package me.hkgumbs.tictactoe.main.java;
 
 public abstract class Player {
     public final Board.Mark mark;

@@ -1,8 +1,8 @@
-package me.hkgumbs.test.java.tictactoe;
+package me.hkgumbs.tictactoe.test.java;
 
-import me.hkgumbs.main.java.tictactoe.Board;
-import me.hkgumbs.main.java.tictactoe.Game;
-import me.hkgumbs.main.java.tictactoe.Minimax;
+import me.hkgumbs.tictactoe.main.java.Board;
+import me.hkgumbs.tictactoe.main.java.Game;
+import me.hkgumbs.tictactoe.main.java.Minimax;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,17 +10,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-
-//
-//import me.hkgumbs.main.java.tictactoe.Game;
-//import me.hkgumbs.main.java.tictactoe.Minimax;
-//import org.junit.Before;
-//import org.junit.Test;
-//
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertNull;
-//import static org.junit.Assert.assertTrue;
-//
 public class MinimaxTest {
 
     Board board;

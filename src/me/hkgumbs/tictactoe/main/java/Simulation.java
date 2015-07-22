@@ -1,4 +1,4 @@
-package me.hkgumbs.main.java.tictactoe;
+package me.hkgumbs.tictactoe.main.java;
 
 import java.io.InputStream;
 import java.io.OutputStream;

@@ -1,8 +1,8 @@
-package me.hkgumbs.test.java.tictactoe;
+package me.hkgumbs.tictactoe.test.java;
 
-import me.hkgumbs.main.java.tictactoe.Board;
-import me.hkgumbs.main.java.tictactoe.Human;
-import me.hkgumbs.main.java.tictactoe.Player;
+import me.hkgumbs.tictactoe.main.java.Board;
+import me.hkgumbs.tictactoe.main.java.Human;
+import me.hkgumbs.tictactoe.main.java.Player;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;

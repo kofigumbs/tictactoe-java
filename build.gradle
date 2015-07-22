@@ -1,19 +1,19 @@
 apply plugin: 'application'
 apply plugin: 'java'
 apply plugin: 'jacoco'
-mainClassName = 'me.hkgumbs.main.java.tictactoe.Simulation'
+mainClassName = 'Simulation'
 repositories {
     mavenCentral()
 }
 sourceSets {
     main {
         java {
-            srcDirs = ["src/me/hkgumbs/main/java/tictactoe"]
+            srcDirs = ["src/me/hkgumbs/tictactoe/main/java"]
         }
     }
     test {
         java {
-            srcDirs = ["src/me/hkgumbs/test/java/tictactoe"]
+            srcDirs = ["src/me/hkgumbs/tictactoe/test/java"]
         }
     }
 }
@@ -27,6 +27,6 @@ jar {
     manifest {
         attributes("Implementation-Title": "Tic Tac Toe",
                    "Implementation-Version": 1.0,
-                   "Main-Class": "me.hkgumbs.main.java.tictactoe.Simulation")
+                   "Main-Class": "Simulation")
     }
 }

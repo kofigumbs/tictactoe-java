@@ -1,9 +1,21 @@
 apply plugin: 'application'
 apply plugin: 'java'
 apply plugin: 'jacoco'
-mainClassName = 'main.java.Simulation'
+mainClassName = 'Simulation'
 repositories {
     mavenCentral()
+}
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src/me/hkgumbs/tictactoe/main/java"]
+        }
+    }
+    test {
+        java {
+            srcDirs = ["src/me/hkgumbs/tictactoe/test/java"]
+        }
+    }
 }
 dependencies {
     testCompile 'junit:junit:4.12'
@@ -15,6 +27,6 @@ jar {
     manifest {
         attributes("Implementation-Title": "Tic Tac Toe",
                    "Implementation-Version": 1.0,
-                   "Main-Class": "main.java.Simulation")
+                   "Main-Class": "Simulation")
     }
 }

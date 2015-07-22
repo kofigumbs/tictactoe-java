@@ -1,6 +1,6 @@
-package test.java;
+package me.hkgumbs.tictactoe.test.java;
 
-import main.java.Board;
+import me.hkgumbs.tictactoe.main.java.Board;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -81,9 +81,32 @@ public class BoardTest {
     }
 
     @Test
-    public void validate() {
-        assertTrue(board.validate(0));
-        assertFalse(board.validate(98));
-        assertFalse(board.add(0, Board.Mark.O).validate(0));
+    public void prettyPrint() {
+        assertEquals("  (0)|(1)|(2)\n" +
+                        "  -----------  \n" +
+                        "  (3)|(4)|(5)\n" +
+                        "  -----------  \n" +
+                        "  (6)|(7)|(8)\n",
+                board.format());
+        assertEquals("   X | O |(2)\n" +
+                        "  -----------  \n" +
+                        "  (3)|(4)|(5)\n" +
+                        "  -----------  \n" +
+                        "  (6)|(7)|(8)\n",
+                board.add(0, Board.Mark.X).add(1, Board.Mark.O).format());
     }
+
+    @Test
+    public void markOther() {
+        assertEquals(Board.Mark.X, Board.Mark.O.other());
+        assertEquals(Board.Mark.O, Board.Mark.X.other());
+    }
+
+    @Test
+    public void markString() {
+        assertEquals(Board.Mark.O.toString(), "O");
+        assertEquals(Board.Mark.X.toString(), "X");
+    }
+
+
 }

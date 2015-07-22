@@ -1,8 +1,9 @@
-package me.hkgumbs.tictactoe.test.java;
+package me.hkgumbs.tictactoe.test.java.player;
 
-import me.hkgumbs.tictactoe.main.java.Board;
-import me.hkgumbs.tictactoe.main.java.Human;
-import me.hkgumbs.tictactoe.main.java.Player;
+import me.hkgumbs.tictactoe.main.java.board.Board;
+import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
+import me.hkgumbs.tictactoe.main.java.player.Human;
+import me.hkgumbs.tictactoe.main.java.player.Player;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -14,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 
 public class HumanTest {
 
-    private Board board = new Board();
+    private Board board = new SquareBoard(3);
 
     private Human birth(String contents) {
         return new Human(Board.Mark.X,

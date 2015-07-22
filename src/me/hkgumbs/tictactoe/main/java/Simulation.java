@@ -1,5 +1,11 @@
 package me.hkgumbs.tictactoe.main.java;
 
+import me.hkgumbs.tictactoe.main.java.board.Board;
+import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
+import me.hkgumbs.tictactoe.main.java.player.Human;
+import me.hkgumbs.tictactoe.main.java.player.Minimax;
+import me.hkgumbs.tictactoe.main.java.player.Player;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -37,21 +43,21 @@ public class Simulation {
 
     public State next() {
         if (state == State.INITIAL) {
-            board = new Board();
-            output.println(board.format());
+            board = new SquareBoard(3);
+//            output.println(board.format());
             output.print(GO_FIRST);
             state = human.yesOrNo() ? State.HUMAN_TURN : State.CPU_TURN;
 
         } else if (state == State.HUMAN_TURN) {
-            output.print(human.mark + PROMPT);
-            board = board.add(human.consider(board), human.mark);
-            output.println(board.format());
+            output.print(human.getMark() + PROMPT);
+            board = board.add(human.consider(board), human.getMark());
+//            output.println(board.format());
             state = Game.over(board) ? State.COMPLETED : State.CPU_TURN;
 
         } else if (state == State.CPU_TURN) {
             int move = cpu.consider(board);
-            board = board.add(move, cpu.mark);
-            output.println(cpu.mark + PROMPT + move + "\n" + board.format());
+            board = board.add(move, cpu.getMark());
+//            output.println(cpu.mark + PROMPT + move + "\n" + board.format());
             state = Game.over(board) ? State.COMPLETED : State.HUMAN_TURN;
 
         } else if (state == State.COMPLETED) {

@@ -1,6 +1,7 @@
-package me.hkgumbs.tictactoe.test.java;
+package me.hkgumbs.tictactoe.test.java.board;
 
-import me.hkgumbs.tictactoe.main.java.Board;
+import me.hkgumbs.tictactoe.main.java.board.Board;
+import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,18 +17,18 @@ public class BoardTest {
 
     @Before
     public void setup() {
-        board = new Board();
+        board = new SquareBoard(3);
     }
 
     @Test
     public void emptyWhenCreated() {
-        assertTrue(board.empty());
+        assertTrue(board.isEmpty());
     }
 
     @Test
     public void oneMoveNotEmpty() {
         board = board.add(0, Board.Mark.X);
-        assertFalse(board.empty());
+        assertFalse(board.isEmpty());
     }
 
     @Test
@@ -50,19 +51,19 @@ public class BoardTest {
     @Test
     public void immutableBoard() {
         board = board.add(0, Board.Mark.X);
-        assertFalse(board.empty());
+        assertFalse(board.isEmpty());
     }
 
     @Test
     public void getTwoMovesByX() {
         board = board.add(0, Board.Mark.X).add(1, Board.Mark.X);
-        Set<Integer> movesByX = board.get(Board.Mark.X);
+        Set<Integer> movesByX = board.getSpaceIds(Board.Mark.X);
         assertEquals(new HashSet<>(Arrays.asList(0, 1)), movesByX);
     }
 
     @Test
     public void isNotFull() {
-        assertFalse(board.full());
+        assertFalse(board.isFull());
     }
 
     @Test
@@ -71,29 +72,13 @@ public class BoardTest {
                 .add(0, Board.Mark.X).add(1, Board.Mark.X).add(2, Board.Mark.O)
                 .add(3, Board.Mark.O).add(4, Board.Mark.O).add(5, Board.Mark.X)
                 .add(6, Board.Mark.X).add(7, Board.Mark.O).add(8, Board.Mark.X);
-        assertTrue(board.full());
+        assertTrue(board.isFull());
     }
 
     @Test
     public void availabilities() {
-        assertEquals(9, board.getEmpty().size());
-        assertEquals(8, board.add(1, Board.Mark.O).getEmpty().size());
-    }
-
-    @Test
-    public void prettyPrint() {
-        assertEquals("  (0)|(1)|(2)\n" +
-                        "  -----------  \n" +
-                        "  (3)|(4)|(5)\n" +
-                        "  -----------  \n" +
-                        "  (6)|(7)|(8)\n",
-                board.format());
-        assertEquals("   X | O |(2)\n" +
-                        "  -----------  \n" +
-                        "  (3)|(4)|(5)\n" +
-                        "  -----------  \n" +
-                        "  (6)|(7)|(8)\n",
-                board.add(0, Board.Mark.X).add(1, Board.Mark.O).format());
+        assertEquals(9, board.getEmptySpaceIds().size());
+        assertEquals(8, board.add(1, Board.Mark.O).getEmptySpaceIds().size());
     }
 
     @Test
@@ -108,5 +93,28 @@ public class BoardTest {
         assertEquals(Board.Mark.X.toString(), "X");
     }
 
+    @Test
+    public void emptyBoardIterable() {
+        int count = 0;
+        Board board = new SquareBoard(3);
+        for (Board.Mark ignored : board)
+            count++;
+        assertEquals(board.getCapacity(), count);
+    }
+
+    @Test
+    public void nonEmptyBoardIterable() {
+        int xCount = 0;
+        int yCount = 0;
+        Board board = new SquareBoard(3)
+                .add(0, Board.Mark.X).add(1, Board.Mark.O).add(2, Board.Mark.X);
+        for (Board.Mark mark : board)
+            if (mark == Board.Mark.X)
+                xCount++;
+            else if (mark == Board.Mark.O)
+                yCount++;
+        assertEquals(2, xCount);
+        assertEquals(1, yCount);
+    }
 
 }

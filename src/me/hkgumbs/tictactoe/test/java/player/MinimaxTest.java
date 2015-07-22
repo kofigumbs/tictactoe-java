@@ -1,8 +1,9 @@
-package me.hkgumbs.tictactoe.test.java;
+package me.hkgumbs.tictactoe.test.java.player;
 
-import me.hkgumbs.tictactoe.main.java.Board;
+import me.hkgumbs.tictactoe.main.java.board.Board;
+import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
 import me.hkgumbs.tictactoe.main.java.Game;
-import me.hkgumbs.tictactoe.main.java.Minimax;
+import me.hkgumbs.tictactoe.main.java.player.Minimax;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ public class MinimaxTest {
 
     @Before
     public void setup() {
-        board = new Board();
+        board = new SquareBoard(3);
     }
 
     @Test
@@ -59,10 +60,10 @@ public class MinimaxTest {
         while (!Game.over(board)) {
             Minimax current = xTurn ? x : o;
             int move = current.consider(board);
-            board = board.add(move, current.mark);
+            board = board.add(move, current.getMark());
             xTurn = !xTurn;
         }
         assertNull(Game.winner(board));
-        assertTrue(board.full());
+        assertTrue(board.isFull());
     }
 }

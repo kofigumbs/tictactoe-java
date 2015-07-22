@@ -1,6 +1,7 @@
 package me.hkgumbs.tictactoe.test.java;
 
-import me.hkgumbs.tictactoe.main.java.Board;
+import me.hkgumbs.tictactoe.main.java.board.Board;
+import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
 import me.hkgumbs.tictactoe.main.java.Game;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +16,7 @@ public class GameTest {
 
     @Before
     public void setup() {
-        board = new Board();
+        board = new SquareBoard(3);
     }
 
     @Test

@@ -1,10 +1,15 @@
-package me.hkgumbs.tictactoe.main.java;
+package me.hkgumbs.tictactoe.main.java.player;
+
+import me.hkgumbs.tictactoe.main.java.board.Board;
+import me.hkgumbs.tictactoe.main.java.Game;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Minimax extends Player {
+
+    private Board.Mark mark;
 
     private static class Result {
         int value;
@@ -23,7 +28,7 @@ public class Minimax extends Player {
         List<Integer> scores = new ArrayList<>();
         List<Integer> moves = new ArrayList<>();
 
-        for (int position : board.getEmpty()) {
+        for (int position : board.getEmptySpaceIds()) {
             Board copy = board.add(position, current);
             scores.add(consider(copy, current.other(), depth + 1, result));
             moves.add(position);
@@ -50,15 +55,20 @@ public class Minimax extends Player {
     }
 
     public Minimax(Board.Mark mark) {
-        super(mark);
+        this.mark = mark;
+    }
+
+    @Override
+    public Board.Mark getMark() {
+        return mark;
     }
 
     /* caller is responsible for ensuring that game is not over */
     @Override
     public int consider(Board board) {
         Result result = new Result();
-        if (board.empty())
-            /* if board is empty, calculations are not worth it */
+        if (board.isEmpty())
+            /* if board is isEmpty, calculations are not worth it */
             return 0;
 
         consider(board, mark, 0, result);

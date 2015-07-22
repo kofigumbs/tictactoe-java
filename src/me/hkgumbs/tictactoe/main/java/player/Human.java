@@ -1,4 +1,7 @@
-package me.hkgumbs.tictactoe.main.java;
+package me.hkgumbs.tictactoe.main.java.player;
+
+import me.hkgumbs.tictactoe.main.java.board.Board;
+import me.hkgumbs.tictactoe.main.java.Game;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,12 +10,13 @@ import java.util.Scanner;
 
 public class Human extends Player {
 
-    private Scanner input;
-    private PrintStream error;
+    private final Scanner input;
+    private final PrintStream error;
+    private final Board.Mark mark;
 
     public Human(Board.Mark mark,
                  InputStream inputStream, OutputStream errorStream) {
-        super(mark);
+        this.mark = mark;
         input = new Scanner(inputStream);
         error = new PrintStream(errorStream);
     }
@@ -31,6 +35,11 @@ public class Human extends Player {
             }
             error.print("Invalid move! ");
         }
+    }
+
+    @Override
+    public Board.Mark getMark() {
+        return mark;
     }
 
     @Override

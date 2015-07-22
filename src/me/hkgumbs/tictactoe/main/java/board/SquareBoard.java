@@ -8,8 +8,10 @@ public class SquareBoard extends Board {
 
     protected final Mark[] state;
     private final int capacity;
+    private final int dimension;
 
     public SquareBoard(int dimension) {
+        this.dimension = dimension;
         capacity = dimension * dimension;
         state = new Mark[capacity];
     }
@@ -17,7 +19,8 @@ public class SquareBoard extends Board {
     /* caller is responsible to enforce overwrites and bounds
      * throws IndexOutOfBoundsException if position out of bounds */
     public Board add(int position, Mark mark) {
-        SquareBoard result = new SquareBoard(3);
+
+        SquareBoard result = new SquareBoard(dimension);
         for (int i = 0; i < getCapacity(); i++)
             result.state[i] = state[i];
         result.state[position] = mark;

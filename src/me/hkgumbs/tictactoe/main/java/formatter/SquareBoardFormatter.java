@@ -42,7 +42,7 @@ public class SquareBoardFormatter implements BoardFormatter {
     }
 
     private int getDividerLength() {
-        return (dimension + padding * 2) * dimension + dimension - 1;
+        return (padding * 2 + 3) * dimension + dimension - 1;
     }
 
     private String getHorizontalDivider() {
@@ -64,7 +64,7 @@ public class SquareBoardFormatter implements BoardFormatter {
 
     private static String getSlotRepresentation(Board.Mark mark, int position) {
         if (mark == null)
-            return "(" + position + ")";
+            return "(" + Integer.toHexString(position) + ")";
         else
             return " " + mark.toString() + " ";
     }

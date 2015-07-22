@@ -2,12 +2,10 @@ package me.hkgumbs.tictactoe.main.java.player;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
 
-public abstract class Player {
-    public abstract Board.Mark getMark();
+public interface Player {
+    Board.Mark getMark();
 
-    public boolean yesOrNo() {
-        return false;
-    }
+    int evaluate(Board board);
 
-    public abstract int consider(Board board);
+    boolean yesOrNo();
 }

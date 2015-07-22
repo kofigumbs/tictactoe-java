@@ -1,13 +1,13 @@
 package me.hkgumbs.tictactoe.main.java.player;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
-import me.hkgumbs.tictactoe.main.java.Game;
+import me.hkgumbs.tictactoe.main.java.rules.Rules;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Minimax extends Player {
+public class Minimax implements Player {
 
     private Board.Mark mark;
 
@@ -22,7 +22,7 @@ public class Minimax extends Player {
      * stores best move in result */
     private int consider(
             Board board, Board.Mark current, int depth, Result result) {
-        if (Game.over(board))
+        if (Rules.gameIsOver(board))
             return score(board, depth);
 
         List<Integer> scores = new ArrayList<>();
@@ -44,7 +44,7 @@ public class Minimax extends Player {
     }
 
     private int score(Board board, int depth) {
-        Board.Mark winner = Game.winner(board);
+        Board.Mark winner = Rules.determineWinner(board);
         if (winner == mark)
             return MAX_SCORE - depth;
         else if (winner == mark.other())
@@ -65,7 +65,7 @@ public class Minimax extends Player {
 
     /* caller is responsible for ensuring that game is not over */
     @Override
-    public int consider(Board board) {
+    public int evaluate(Board board) {
         Result result = new Result();
         if (board.isEmpty())
             /* if board is isEmpty, calculations are not worth it */
@@ -73,5 +73,10 @@ public class Minimax extends Player {
 
         consider(board, mark, 0, result);
         return result.value;
+    }
+
+    @Override
+    public boolean yesOrNo() {
+        return false;
     }
 }

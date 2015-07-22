@@ -26,27 +26,27 @@ public class HumanTest {
     @Test
     public void humanPlayerMoves() {
         Player human = birth("0\n1\n");
-        assertEquals(0, human.consider(board));
-        assertEquals(1, human.consider(board));
+        assertEquals(0, human.evaluate(board));
+        assertEquals(1, human.evaluate(board));
     }
 
     @Test
     public void moveOutOfRange() {
         Player human = birth("-1\n99\n7");
-        assertEquals(7, human.consider(board));
+        assertEquals(7, human.evaluate(board));
     }
 
     @Test
     public void parseInvalidMove() {
         Player human = birth("asdf\n7");
-        assertEquals(7, human.consider(board));
+        assertEquals(7, human.evaluate(board));
     }
 
     @Test
     public void multiWordResponse() {
         Player human = birth("foo bar y\nn\nasdf asdf\n0\n");
         assertFalse(human.yesOrNo());
-        assertEquals(0, human.consider(board));
+        assertEquals(0, human.evaluate(board));
     }
 
     @Test

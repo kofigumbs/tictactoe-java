@@ -7,14 +7,15 @@ import java.util.Set;
 public class SquareBoard extends Board {
 
     protected final Mark[] state;
-    private final int size;
+    private final int capacity;
 
-    public SquareBoard(int size) {
-        this.size = size;
-        state = new Mark[size * size];
+    public SquareBoard(int dimension) {
+        capacity = dimension * dimension;
+        state = new Mark[capacity];
     }
 
-    /* caller is responsible to enforce overwrites and bounds [0, CAPACITY) */
+    /* caller is responsible to enforce overwrites and bounds
+     * throws IndexOutOfBoundsException if position out of bounds */
     public Board add(int position, Mark mark) {
         SquareBoard result = new SquareBoard(3);
         for (int i = 0; i < getCapacity(); i++)
@@ -25,7 +26,7 @@ public class SquareBoard extends Board {
 
     @Override
     public int getCapacity() {
-        return size * size;
+        return capacity;
     }
 
     @Override

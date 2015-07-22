@@ -1,14 +1,14 @@
 package me.hkgumbs.tictactoe.main.java.player;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
-import me.hkgumbs.tictactoe.main.java.Game;
+import me.hkgumbs.tictactoe.main.java.rules.Rules;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-public class Human extends Player {
+public class Human implements Player {
 
     private final Scanner input;
     private final PrintStream error;
@@ -22,13 +22,13 @@ public class Human extends Player {
     }
 
     @Override
-    public int consider(Board board) {
+    public int evaluate(Board board) {
         while (true) {
             try {
                 String response = input.nextLine();
                 response = response.split(" ", 2)[0];
                 int move = Integer.parseInt(response);
-                if (Game.validate(board, move))
+                if (Rules.validate(board, move))
                     return move;
             } catch (NumberFormatException e) {
                 /* caused when non-numeric text is entered */

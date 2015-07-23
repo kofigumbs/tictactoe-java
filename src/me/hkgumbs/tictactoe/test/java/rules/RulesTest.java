@@ -49,8 +49,8 @@ public class RulesTest {
 
     @Test
     public void validate() {
-        assertTrue(Rules.validate(board, 0));
-        assertFalse(Rules.validate(board, 98));
-        assertFalse(Rules.validate(board.add(0, Board.Mark.O), 0));
+        assertTrue(Rules.validateMove(board, 0));
+        assertFalse(Rules.validateMove(board, 98));
+        assertFalse(Rules.validateMove(board.add(0, Board.Mark.O), 0));
     }
 }

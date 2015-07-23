@@ -5,7 +5,7 @@ import me.hkgumbs.tictactoe.main.java.board.Board;
 public interface Player {
     Board.Mark getMark();
 
-    int evaluate(Board board);
+    int determineNextMove(Board board);
 
     boolean yesOrNo();
 }

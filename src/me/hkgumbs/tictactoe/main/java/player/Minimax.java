@@ -10,18 +10,11 @@ import java.util.List;
 public class Minimax implements Player {
 
     private Board.Mark mark;
-
-    private static class Result {
-        int value;
-    }
+    private int bestMove;
 
     private static final int MAX_SCORE = 10;
 
-    /* recursively evaluates all possible moves
-     * returns score of best outcome
-     * stores best move in result */
-    private int consider(
-            Board board, Board.Mark current, int depth, Result result) {
+    private int determineNextMove(Board board, Board.Mark current, int depth) {
         if (Rules.gameIsOver(board))
             return score(board, depth);
 
@@ -30,16 +23,21 @@ public class Minimax implements Player {
 
         for (int position : board.getEmptySpaceIds()) {
             Board copy = board.add(position, current);
-            scores.add(consider(copy, current.other(), depth + 1, result));
+            scores.add(determineNextMove(copy, current.other(), depth + 1));
             moves.add(position);
         }
 
+        return calculateBestScore(current, scores, moves);
+    }
+
+    private int calculateBestScore(
+            Board.Mark current, List<Integer> scores, List<Integer> moves) {
         int scoreIndex;
         if (current == mark)
             scoreIndex = scores.indexOf(Collections.max(scores));
         else
             scoreIndex = scores.indexOf(Collections.min(scores));
-        result.value = moves.get(scoreIndex);
+        bestMove = moves.get(scoreIndex);
         return scores.get(scoreIndex);
     }
 
@@ -65,14 +63,13 @@ public class Minimax implements Player {
 
     /* caller is responsible for ensuring that game is not over */
     @Override
-    public int evaluate(Board board) {
-        Result result = new Result();
+    public int determineNextMove(Board board) {
         if (board.isEmpty())
-            /* if board is isEmpty, calculations are not worth it */
+            /* calculations are not worth it */
             return 0;
 
-        consider(board, mark, 0, result);
-        return result.value;
+        determineNextMove(board, mark, 0);
+        return bestMove;
     }
 
     @Override

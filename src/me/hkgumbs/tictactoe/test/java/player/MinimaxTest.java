@@ -22,7 +22,7 @@ public class MinimaxTest {
 
     @Test
     public void testFirstMove() {
-        int result = new Minimax(Board.Mark.X).evaluate(board);
+        int result = new Minimax(Board.Mark.X).determineNextMove(board);
         assertEquals(0, result);
     }
 
@@ -30,7 +30,7 @@ public class MinimaxTest {
     public void blockWinningPlay() {
         board = board
                 .add(0, Board.Mark.X).add(4, Board.Mark.O).add(6, Board.Mark.X);
-        int result = new Minimax(Board.Mark.O).evaluate(board);
+        int result = new Minimax(Board.Mark.O).determineNextMove(board);
         assertEquals(3, result);
     }
 
@@ -39,7 +39,7 @@ public class MinimaxTest {
         board = board
                 .add(0, Board.Mark.X).add(1, Board.Mark.O)
                 .add(4, Board.Mark.X).add(5, Board.Mark.O);
-        int result = new Minimax(Board.Mark.X).evaluate(board);
+        int result = new Minimax(Board.Mark.X).determineNextMove(board);
         assertEquals(8, result);
     }
 
@@ -48,7 +48,7 @@ public class MinimaxTest {
         board = board
                 .add(0, Board.Mark.X).add(2, Board.Mark.O).add(1, Board.Mark.X)
                 .add(5, Board.Mark.O).add(3, Board.Mark.X);
-        int result = new Minimax(Board.Mark.O).evaluate(board);
+        int result = new Minimax(Board.Mark.O).determineNextMove(board);
         assertEquals(8, result);
     }
 
@@ -59,7 +59,7 @@ public class MinimaxTest {
         Minimax o = new Minimax(Board.Mark.O);
         while (!Rules.gameIsOver(board)) {
             Minimax current = xTurn ? x : o;
-            int move = current.evaluate(board);
+            int move = current.determineNextMove(board);
             board = board.add(move, current.getMark());
             xTurn = !xTurn;
         }

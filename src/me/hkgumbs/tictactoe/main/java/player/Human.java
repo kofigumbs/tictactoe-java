@@ -22,14 +22,14 @@ public class Human implements Player {
     }
 
     @Override
-    public int evaluate(Board board) {
+    public int determineNextMove(Board board) {
         while (true) {
             try {
                 String response = input.nextLine();
                 response = response.split(" ", 2)[0];
-                int move = Integer.parseInt(response);
-                if (Rules.validate(board, move))
-                    return move;
+                int position = Integer.parseInt(response);
+                if (Rules.validateMove(board, position))
+                    return position;
             } catch (NumberFormatException e) {
                 /* caused when non-numeric text is entered */
             }

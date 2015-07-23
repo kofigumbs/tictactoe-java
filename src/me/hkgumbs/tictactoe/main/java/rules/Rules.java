@@ -26,7 +26,7 @@ public class Rules {
         return null;
     }
 
-    public static boolean validate(Board board, int move) {
+    public static boolean validateMove(Board board, int move) {
         return board.getEmptySpaceIds().contains(move);
     }
 }

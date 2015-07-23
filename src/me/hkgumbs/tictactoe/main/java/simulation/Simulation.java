@@ -59,12 +59,12 @@ public class Simulation {
 
         } else if (state == State.HUMAN_TURN) {
             output.print(human.getMark() + PROMPT);
-            board = board.add(human.evaluate(board), human.getMark());
+            board = board.add(human.determineNextMove(board), human.getMark());
             output.println(formatter.print(board));
             state = Rules.gameIsOver(board) ? State.COMPLETED : State.CPU_TURN;
 
         } else if (state == State.CPU_TURN) {
-            int move = cpu.evaluate(board);
+            int move = cpu.determineNextMove(board);
             board = board.add(move, cpu.getMark());
             String boardFormat = formatter.print(board);
             output.println(cpu.getMark() + PROMPT + move + "\n" + boardFormat);

@@ -9,6 +9,7 @@ import me.hkgumbs.tictactoe.main.java.player.Human;
 import me.hkgumbs.tictactoe.main.java.player.Minimax;
 import me.hkgumbs.tictactoe.main.java.player.Player;
 import me.hkgumbs.tictactoe.main.java.rules.Rules;
+import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -37,6 +38,7 @@ public class DefaultSimulation implements Simulation {
     private Player[] players;
     private BoardFormatter formatter =
             new SquareBoardFormatter(3, new DefaultSlotRepresentation());
+    private Rules rules = new DefaultRules(3);
 
     private Player cpu;
     private Player human;
@@ -66,17 +68,17 @@ public class DefaultSimulation implements Simulation {
             output.print(human.getMark() + PROMPT);
             board = board.add(human.determineNextMove(board), human.getMark());
             output.println(formatter.print(board));
-            state = Rules.gameIsOver(board) ? State.COMPLETED : State.CPU_TURN;
+            state = rules.gameIsOver(board) ? State.COMPLETED : State.CPU_TURN;
 
         } else if (state == State.CPU_TURN) {
             int move = cpu.determineNextMove(board);
             board = board.add(move, cpu.getMark());
             String boardFormat = formatter.print(board);
             output.println(cpu.getMark() + PROMPT + move + "\n" + boardFormat);
-            state = Rules.gameIsOver(board) ? State.COMPLETED : State.HUMAN_TURN;
+            state = rules.gameIsOver(board) ? State.COMPLETED : State.HUMAN_TURN;
 
         } else if (state == State.COMPLETED) {
-            Board.Mark winner = Rules.determineWinner(board);
+            Board.Mark winner = rules.determineWinner(board);
             output.println((winner == null ? "Nobody" : winner) + " wins!");
             output.print(PLAY_AGAIN);
             state = human.yesOrNo() ? State.INITIAL : State.TERMINATED;
@@ -87,7 +89,7 @@ public class DefaultSimulation implements Simulation {
 
     @Override
     public Player[] getPlayers() {
-        return new Player[0];
+        return this.players;
     }
 
     public int getSize() {
@@ -101,7 +103,7 @@ public class DefaultSimulation implements Simulation {
 
     @Override
     public void setPlayers(Player... players) {
-
+        this.players = players;
     }
 
     @Override

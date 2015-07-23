@@ -2,14 +2,13 @@ package me.hkgumbs.tictactoe.test.java.player;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
-import me.hkgumbs.tictactoe.main.java.rules.Rules;
 import me.hkgumbs.tictactoe.main.java.player.Minimax;
+import me.hkgumbs.tictactoe.main.java.rules.Rules;
+import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class MinimaxTest {
 
@@ -57,13 +56,14 @@ public class MinimaxTest {
         boolean xTurn = true;
         Minimax x = new Minimax(Board.Mark.X);
         Minimax o = new Minimax(Board.Mark.O);
-        while (!Rules.gameIsOver(board)) {
+        Rules rules = new DefaultRules(3);
+        while (!rules.gameIsOver(board)) {
             Minimax current = xTurn ? x : o;
             int move = current.determineNextMove(board);
             board = board.add(move, current.getMark());
             xTurn = !xTurn;
         }
-        assertNull(Rules.determineWinner(board));
+        assertNull(rules.determineWinner(board));
         assertTrue(board.isFull());
     }
 }

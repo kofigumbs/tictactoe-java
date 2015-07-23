@@ -41,39 +41,4 @@ public class DefaultSimulationTest {
         assertEquals(DefaultSimulation.State.HUMAN_TURN, simulation.next());
         assertEquals(DefaultSimulation.State.CPU_TURN, simulation.next());
     }
-
-    @Test
-    public void simulatedGameCompletes() {
-        DefaultSimulation simulation = simulate("n\n1\n4\n");
-        assertEquals(DefaultSimulation.State.CPU_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.HUMAN_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.CPU_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.HUMAN_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.CPU_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.COMPLETED, simulation.next());
-    }
-
-    @Test
-    public void replayGame() {
-        DefaultSimulation simulation = simulate("n\n1\n4\ny\n");
-        assertEquals(DefaultSimulation.State.CPU_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.HUMAN_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.CPU_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.HUMAN_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.CPU_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.COMPLETED, simulation.next());
-        assertEquals(DefaultSimulation.State.INITIAL, simulation.next());
-    }
-
-    @Test
-    public void declineReplayGame() {
-        DefaultSimulation simulation = simulate("n\n1\n4\nn\n");
-        assertEquals(DefaultSimulation.State.CPU_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.HUMAN_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.CPU_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.HUMAN_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.CPU_TURN, simulation.next());
-        assertEquals(DefaultSimulation.State.COMPLETED, simulation.next());
-        assertEquals(DefaultSimulation.State.TERMINATED, simulation.next());
-    }
 }

@@ -3,30 +3,40 @@ package me.hkgumbs.tictactoe.test.java.rules;
 import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
 import me.hkgumbs.tictactoe.main.java.rules.Rules;
+import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-public class RulesTest {
+public class DefaultRulesTest {
 
     Board board;
+    Rules rules;
 
     @Before
     public void setup() {
         board = new SquareBoard(3);
+        rules = new DefaultRules(3);
     }
 
     @Test
     public void newGameIsNotOver() {
-        assertFalse(Rules.gameIsOver(board));
+        assertFalse(rules.gameIsOver(board));
+    }
+
+
+    @Test
+    public void determineWinner() {
+        board = board
+                .add(3, Board.Mark.X).add(4, Board.Mark.X)
+                .add(0, Board.Mark.O).add(1, Board.Mark.O).add(2, Board.Mark.O);
+        assertEquals(Board.Mark.O, rules.determineWinner(board));
     }
 
     @Test
     public void playOnceNotOver() {
-        assertFalse(Rules.gameIsOver(board.add(0, Board.Mark.X)));
+        assertFalse(rules.gameIsOver(board.add(0, Board.Mark.X)));
     }
 
     @Test
@@ -34,7 +44,7 @@ public class RulesTest {
         board = board
                 .add(0, Board.Mark.X).add(3, Board.Mark.O).add(1, Board.Mark.X)
                 .add(4, Board.Mark.O).add(2, Board.Mark.X);
-        assertTrue(Rules.gameIsOver(board));
+        assertTrue(rules.gameIsOver(board));
     }
 
     @Test
@@ -43,14 +53,14 @@ public class RulesTest {
                 .add(0, Board.Mark.X).add(4, Board.Mark.O).add(1, Board.Mark.X)
                 .add(2, Board.Mark.O).add(6, Board.Mark.X).add(3, Board.Mark.O)
                 .add(5, Board.Mark.X).add(8, Board.Mark.O).add(7, Board.Mark.X);
-        assertTrue(Rules.gameIsOver(board));
-        assertNull(Rules.determineWinner(board));
+        assertTrue(rules.gameIsOver(board));
+        assertNull(rules.determineWinner(board));
     }
 
     @Test
     public void validate() {
-        assertTrue(Rules.validateMove(board, 0));
-        assertFalse(Rules.validateMove(board, 98));
-        assertFalse(Rules.validateMove(board.add(0, Board.Mark.O), 0));
+        assertTrue(rules.validateMove(board, 0));
+        assertFalse(rules.validateMove(board, 98));
+        assertFalse(rules.validateMove(board.add(0, Board.Mark.O), 0));
     }
 }

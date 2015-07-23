@@ -3,8 +3,8 @@ package me.hkgumbs.tictactoe.main.java.simulation;
 import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
 import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
+import me.hkgumbs.tictactoe.main.java.formatter.DefaultSlotRepresentation;
 import me.hkgumbs.tictactoe.main.java.formatter.SquareBoardFormatter;
-import me.hkgumbs.tictactoe.main.java.formatter.ThreeCharacterSlot;
 import me.hkgumbs.tictactoe.main.java.player.Human;
 import me.hkgumbs.tictactoe.main.java.player.Minimax;
 import me.hkgumbs.tictactoe.main.java.player.Player;
@@ -36,7 +36,7 @@ public class DefaultSimulation implements Simulation {
     private int size = 3;
     private Player[] players;
     private BoardFormatter formatter =
-            new SquareBoardFormatter(0, new ThreeCharacterSlot());
+            new SquareBoardFormatter(3, new DefaultSlotRepresentation());
 
     private Player cpu;
     private Player human;

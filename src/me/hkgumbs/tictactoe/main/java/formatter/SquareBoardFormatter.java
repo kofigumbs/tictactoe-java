@@ -8,27 +8,19 @@ import java.util.Arrays;
 
 public class SquareBoardFormatter implements BoardFormatter {
 
-    private String horizontalDividerUnit = "-";
-    private String verticalDividerUnit = "|";
+    private static final String HORIZONTAL_DIVIDER_UNIT = "-";
+    private static final String VERTICAL_DIVIDER_UNIT = "|";
 
     private String format;
     private int dimension;
     private int padding;
     private SlotRepresentation slot;
 
-    private void createFormat() {
-        String[] rows = new String[dimension];
-        String divider = getHorizontalDivider();
-        fillHorizontalPadding(rows, "%s");
-        fillVerticalPadding(rows);
-        format = String.join(divider, rows);
-    }
-
     private void fillHorizontalPadding(String[] rows, String center) {
         for (int i = 0; i < rows.length; i++) {
             String[] slots = new String[dimension];
             fillSlotPadding(slots, center);
-            rows[i] = String.join(verticalDividerUnit, slots);
+            rows[i] = String.join(VERTICAL_DIVIDER_UNIT, slots);
         }
     }
 
@@ -44,6 +36,15 @@ public class SquareBoardFormatter implements BoardFormatter {
             rowWithPadding[padding] = rows[i];
             rows[i] = String.join("\n", rowWithPadding);
         }
+    }
+
+    private void generateFormat() {
+        generateSlotLength();
+        String[] rows = new String[dimension];
+        String divider = getHorizontalDivider();
+        fillHorizontalPadding(rows, "%s");
+        fillVerticalPadding(rows);
+        format = String.join(divider, rows);
     }
 
     private void generateSlotLength() {
@@ -70,7 +71,7 @@ public class SquareBoardFormatter implements BoardFormatter {
         StringBuilder builder = new StringBuilder();
         builder.append("\n");
         for (int i = 0; i < length; i++)
-            builder.append(horizontalDividerUnit);
+            builder.append(HORIZONTAL_DIVIDER_UNIT);
         builder.append("\n");
         return builder.toString();
     }
@@ -83,7 +84,7 @@ public class SquareBoardFormatter implements BoardFormatter {
         this.dimension = dimension;
         this.slot = slot;
         padding = 0;
-        createFormat();
+        generateFormat();
     }
 
     @Override
@@ -102,6 +103,6 @@ public class SquareBoardFormatter implements BoardFormatter {
     @Override
     public void setPadding(int padding) {
         this.padding = padding;
-        createFormat();
+        generateFormat();
     }
 }

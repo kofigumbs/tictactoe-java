@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class SquareBoard extends Board {
+public class SquareBoard implements Board {
 
     protected final Mark[] state;
     private final int capacity;

@@ -11,6 +11,7 @@ public class SquareBoardFormatter implements BoardFormatter {
     private String format;
     private int dimension;
     private int padding;
+    private SlotRepresentation slot;
 
     private String createFormat() {
         String[] rows = new String[dimension];
@@ -62,15 +63,9 @@ public class SquareBoardFormatter implements BoardFormatter {
         return builder.toString();
     }
 
-    private static String getSlotRepresentation(Board.Mark mark, int position) {
-        if (mark == null)
-            return "(" + Integer.toHexString(position) + ")";
-        else
-            return " " + mark.toString() + " ";
-    }
-
-    public SquareBoardFormatter(int dimension) {
+    public SquareBoardFormatter(int dimension, SlotRepresentation slot) {
         this.dimension = dimension;
+        this.slot = slot;
         padding = 0;
         format = createFormat();
     }
@@ -80,7 +75,7 @@ public class SquareBoardFormatter implements BoardFormatter {
         Object[] marks = new Object[board.getCapacity()];
         int i = 0;
         for (Board.Mark mark : board) {
-            marks[i] = getSlotRepresentation(mark, i);
+            marks[i] = slot.compile(mark, i);
             i++;
         }
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

@@ -2,9 +2,9 @@ package me.hkgumbs.tictactoe.main.java.board;
 
 import java.util.Set;
 
-public abstract class Board implements Iterable<Board.Mark> {
+public interface Board extends Iterable<Board.Mark> {
 
-    public enum Mark {
+    enum Mark {
         O, X;
 
         public Mark other() {
@@ -12,19 +12,19 @@ public abstract class Board implements Iterable<Board.Mark> {
         }
     }
 
-    public abstract Board add(int position, Mark mark);
+    Board add(int position, Mark mark);
 
-    public abstract int getCapacity();
+    int getCapacity();
 
-    public abstract Set<Integer> getEmptySpaceIds();
+    Set<Integer> getEmptySpaceIds();
 
-    public abstract Set<Integer> getSpaceIds(Mark mark);
+    Set<Integer> getSpaceIds(Mark mark);
 
-    public boolean isFull() {
+    default boolean isFull() {
         return getEmptySpaceIds().size() == 0;
     }
 
-    public boolean isEmpty() {
+    default boolean isEmpty() {
         return getEmptySpaceIds().size() == getCapacity();
     }
 

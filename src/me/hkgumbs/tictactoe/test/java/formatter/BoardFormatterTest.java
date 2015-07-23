@@ -2,16 +2,26 @@ package me.hkgumbs.tictactoe.test.java.formatter;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
+import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
+import me.hkgumbs.tictactoe.main.java.formatter.SlotRepresentation;
 import me.hkgumbs.tictactoe.main.java.formatter.SquareBoardFormatter;
+import me.hkgumbs.tictactoe.main.java.formatter.ThreeCharacterSlot;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 public class BoardFormatterTest {
 
+    private BoardFormatter getFormatter(int dimension, int padding) {
+        SlotRepresentation slot = new ThreeCharacterSlot();
+        BoardFormatter formatter = new SquareBoardFormatter(dimension, slot);
+        formatter.setPadding(padding);
+        return formatter;
+    }
+
     @Test
     public void emptyThreeByThreeBoard() {
-        SquareBoardFormatter formatter = new SquareBoardFormatter(3);
+        BoardFormatter formatter = getFormatter(3, 0);
         assertEquals("(0)|(1)|(2)\n" +
                         "-----------\n" +
                         "(3)|(4)|(5)\n" +
@@ -22,7 +32,7 @@ public class BoardFormatterTest {
 
     @Test
     public void threeByThreeBoardWithTwoPieces() {
-        SquareBoardFormatter formatter = new SquareBoardFormatter(3);
+        BoardFormatter formatter = getFormatter(3, 0);
         Board board = new SquareBoard(3)
                 .add(0, Board.Mark.X).add(1, Board.Mark.O);
         assertEquals(" X | O |(2)\n" +
@@ -35,7 +45,7 @@ public class BoardFormatterTest {
 
     @Test
     public void threeByThreeWithTwoPadding() {
-        SquareBoardFormatter formatter = new SquareBoardFormatter(3);
+        BoardFormatter formatter = getFormatter(3, 2);
         formatter.setPadding(2);
         Board board = new SquareBoard(3)
                 .add(0, Board.Mark.X).add(1, Board.Mark.O);
@@ -61,7 +71,7 @@ public class BoardFormatterTest {
 
     @Test
     public void fourByFourWithOnePadding() {
-        SquareBoardFormatter formatter = new SquareBoardFormatter(4);
+        BoardFormatter formatter = getFormatter(4, 1);
         formatter.setPadding(1);
         Board board = new SquareBoard(4)
                 .add(0, Board.Mark.X).add(1, Board.Mark.O);
@@ -74,13 +84,12 @@ public class BoardFormatterTest {
                         "     |     |     |     \n" +
                         "-----------------------\n" +
                         "     |     |     |     \n" +
-                        " (8) | (9) | (a) | (b) \n" +
+                        " (8) | (9) | ... | ... \n" +
                         "     |     |     |     \n" +
                         "-----------------------\n" +
                         "     |     |     |     \n" +
-                        " (c) | (d) | (e) | (f) \n" +
+                        " ... | ... | ... | ... \n" +
                         "     |     |     |     ",
                 formatter.print(board));
-
     }
 }

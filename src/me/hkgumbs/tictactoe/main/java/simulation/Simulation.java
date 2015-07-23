@@ -1,9 +1,10 @@
-package me.hkgumbs.tictactoe.main.java;
+package me.hkgumbs.tictactoe.main.java.simulation;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
 import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
 import me.hkgumbs.tictactoe.main.java.formatter.SquareBoardFormatter;
+import me.hkgumbs.tictactoe.main.java.formatter.ThreeCharacterSlot;
 import me.hkgumbs.tictactoe.main.java.player.Human;
 import me.hkgumbs.tictactoe.main.java.player.Minimax;
 import me.hkgumbs.tictactoe.main.java.player.Player;
@@ -36,11 +37,12 @@ public class Simulation {
     private PrintStream output;
     private final BoardFormatter formatter;
 
-    public Simulation(InputStream userInput, OutputStream outputStream) {
+    public Simulation(
+            InputStream userInput, OutputStream outputStream, int padding) {
         cpu = new Minimax(Board.Mark.O);
         human = new Human(Board.Mark.X, userInput, outputStream);
         output = new PrintStream(outputStream);
-        formatter = new SquareBoardFormatter(3);
+        formatter = new SquareBoardFormatter(padding, new ThreeCharacterSlot());
         output.println(ONBOARD);
     }
 
@@ -79,8 +81,8 @@ public class Simulation {
     }
 
     public static void main(String[] args) {
+        Simulation simulation = new Simulation(System.in, System.out, 0);
         try {
-            Simulation simulation = new Simulation(System.in, System.out);
             while (simulation.next() != State.TERMINATED) ;
         } catch (NoSuchElementException e) {
             /* user terminated program */

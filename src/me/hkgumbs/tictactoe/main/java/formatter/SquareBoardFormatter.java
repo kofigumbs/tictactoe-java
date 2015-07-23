@@ -14,6 +14,7 @@ public class SquareBoardFormatter implements BoardFormatter {
     private SlotRepresentation slot;
 
     private String createFormat() {
+        generateSlotLength();
         String[] rows = new String[dimension];
         String divider = getHorizontalDivider();
         fillHorizontalPadding(rows, "%s");
@@ -36,14 +37,29 @@ public class SquareBoardFormatter implements BoardFormatter {
     private void fillVerticalPadding(String[] rows) {
         for (int i = 0; i < dimension; i++) {
             String[] rowWithPadding = new String[padding * 2 + 1];
-            fillHorizontalPadding(rowWithPadding, "   ");
+            fillHorizontalPadding(rowWithPadding, getSpaces(slot.getLength()));
             rowWithPadding[padding] = rows[i];
             rows[i] = String.join("\n", rowWithPadding);
         }
     }
 
+    private void generateSlotLength() {
+        int area = dimension * dimension;
+        int digits = Integer.toString(area).length();
+        int length = digits + slot.getEmptySymbolOffset();
+        if (length > slot.getLength())
+            slot.setLength(length);
+    }
+
     private int getDividerLength() {
-        return (padding * 2 + 3) * dimension + dimension - 1;
+        return (padding * 2 + slot.getLength()) * dimension + dimension - 1;
+    }
+
+    private String getSpaces(int length) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < length; i++)
+            builder.append(" ");
+        return builder.toString();
     }
 
     private String getHorizontalDivider() {
@@ -57,10 +73,7 @@ public class SquareBoardFormatter implements BoardFormatter {
     }
 
     private String getPad() {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < padding; i++)
-            builder.append(" ");
-        return builder.toString();
+        return getSpaces(padding);
     }
 
     public SquareBoardFormatter(int dimension, SlotRepresentation slot) {

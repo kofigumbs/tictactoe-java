@@ -4,7 +4,7 @@ import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
 import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
 import me.hkgumbs.tictactoe.main.java.formatter.SquareBoardFormatter;
-import me.hkgumbs.tictactoe.main.java.formatter.ThreeCharacterSlot;
+import me.hkgumbs.tictactoe.main.java.formatter.DefaultSlotRepresentation;
 import me.hkgumbs.tictactoe.main.java.player.Human;
 import me.hkgumbs.tictactoe.main.java.player.Minimax;
 import me.hkgumbs.tictactoe.main.java.player.Player;
@@ -42,7 +42,7 @@ public class Simulation {
         cpu = new Minimax(Board.Mark.O);
         human = new Human(Board.Mark.X, userInput, outputStream);
         output = new PrintStream(outputStream);
-        formatter = new SquareBoardFormatter(padding, new ThreeCharacterSlot());
+        formatter = new SquareBoardFormatter(padding, new DefaultSlotRepresentation());
         output.println(ONBOARD);
     }
 

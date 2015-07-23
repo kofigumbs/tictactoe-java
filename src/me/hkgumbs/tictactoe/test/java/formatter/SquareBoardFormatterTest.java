@@ -5,15 +5,16 @@ import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
 import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
 import me.hkgumbs.tictactoe.main.java.formatter.SlotRepresentation;
 import me.hkgumbs.tictactoe.main.java.formatter.SquareBoardFormatter;
-import me.hkgumbs.tictactoe.main.java.formatter.ThreeCharacterSlot;
+import me.hkgumbs.tictactoe.main.java.formatter.DefaultSlotRepresentation;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class BoardFormatterTest {
+public class SquareBoardFormatterTest {
 
-    private BoardFormatter getFormatter(int dimension, int padding) {
-        SlotRepresentation slot = new ThreeCharacterSlot();
+    private BoardFormatter getFormatter(
+            int dimension, int padding) {
+        SlotRepresentation slot = new DefaultSlotRepresentation();
         BoardFormatter formatter = new SquareBoardFormatter(dimension, slot);
         formatter.setPadding(padding);
         return formatter;
@@ -75,21 +76,21 @@ public class BoardFormatterTest {
         formatter.setPadding(1);
         Board board = new SquareBoard(4)
                 .add(0, Board.Mark.X).add(1, Board.Mark.O);
-        assertEquals("     |     |     |     \n" +
-                        "  X  |  O  | (2) | (3) \n" +
-                        "     |     |     |     \n" +
-                        "-----------------------\n" +
-                        "     |     |     |     \n" +
-                        " (4) | (5) | (6) | (7) \n" +
-                        "     |     |     |     \n" +
-                        "-----------------------\n" +
-                        "     |     |     |     \n" +
-                        " (8) | (9) | ... | ... \n" +
-                        "     |     |     |     \n" +
-                        "-----------------------\n" +
-                        "     |     |     |     \n" +
-                        " ... | ... | ... | ... \n" +
-                        "     |     |     |     ",
+        assertEquals(   "      |      |      |      \n" +
+                        "   X  |   O  |  (2) |  (3) \n" +
+                        "      |      |      |      \n" +
+                        "---------------------------\n" +
+                        "      |      |      |      \n" +
+                        "  (4) |  (5) |  (6) |  (7) \n" +
+                        "      |      |      |      \n" +
+                        "---------------------------\n" +
+                        "      |      |      |      \n" +
+                        "  (8) |  (9) | (10) | (11) \n" +
+                        "      |      |      |      \n" +
+                        "---------------------------\n" +
+                        "      |      |      |      \n" +
+                        " (12) | (13) | (14) | (15) \n" +
+                        "      |      |      |      ",
                 formatter.print(board));
     }
 }

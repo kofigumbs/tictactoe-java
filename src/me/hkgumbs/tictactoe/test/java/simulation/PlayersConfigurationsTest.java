@@ -12,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,10 +26,10 @@ public class PlayersConfigurationsTest {
         InputStream inputStream = new ByteArrayInputStream(input.getBytes());
         OutputStream outputStream = new ByteArrayOutputStream();
         Simulation simulation =
-                new DefaultSimulation(inputStream, outputStream);
+                new DefaultSimulation();
         Configuration configuration =
                 new PlayersConfiguration(inputStream, outputStream);
-        List<String> args = Arrays.asList(arguments);
+        List<String> args = new ArrayList<>(Arrays.asList(arguments));
         try {
             configuration.apply(args, simulation);
         } catch (Configuration.CannotApplyException e) {

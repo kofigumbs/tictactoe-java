@@ -4,14 +4,16 @@ import java.util.List;
 
 public class SizeConfiguration implements Configuration {
 
-    private static final String key = "--size";
-    private static final int defaultSize = 3;
+    private static final String KEY = "--size";
+    private static final int DEFAULT_SIZE = 3;
 
-    private int parseSize(List<String> args) {
-        int index = args.indexOf(key);
+    private int extractSize(List<String> args) {
+        int index = args.indexOf(KEY);
         if (index == -1)
-            return defaultSize;
+            return DEFAULT_SIZE;
         String sizeString = args.get(index + 1);
+        args.remove(index);
+        args.remove(index);
         return Integer.valueOf(sizeString);
     }
 
@@ -19,7 +21,7 @@ public class SizeConfiguration implements Configuration {
     public void apply(List<String> args, Simulation simulation)
             throws CannotApplyException {
         try {
-            int size = parseSize(args);
+            int size = extractSize(args);
             simulation.setSize(size);
         } catch (NumberFormatException e) {
             throw new CannotApplyException();

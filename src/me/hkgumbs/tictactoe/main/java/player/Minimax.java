@@ -1,20 +1,36 @@
 package me.hkgumbs.tictactoe.main.java.player;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
+import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
 import me.hkgumbs.tictactoe.main.java.rules.Rules;
-import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Minimax implements Player {
 
+    private static final int MAX_SCORE = 10;
+
     private Board.Mark mark;
+    private final OutputStream outputStream;
+    private BoardFormatter formatter;
+    private Rules rules;
+
     private int bestMove;
 
-    private static final int MAX_SCORE = 10;
-    private Rules rules = new DefaultRules(3);
+    private int calculateBestScore(
+            Board.Mark current, List<Integer> scores, List<Integer> moves) {
+        int scoreIndex;
+        if (current == mark)
+            scoreIndex = scores.indexOf(Collections.max(scores));
+        else
+            scoreIndex = scores.indexOf(Collections.min(scores));
+        bestMove = moves.get(scoreIndex);
+        return scores.get(scoreIndex);
+    }
 
     private int determineNextMove(Board board, Board.Mark current, int depth) {
         if (rules.gameIsOver(board))
@@ -32,15 +48,9 @@ public class Minimax implements Player {
         return calculateBestScore(current, scores, moves);
     }
 
-    private int calculateBestScore(
-            Board.Mark current, List<Integer> scores, List<Integer> moves) {
-        int scoreIndex;
-        if (current == mark)
-            scoreIndex = scores.indexOf(Collections.max(scores));
-        else
-            scoreIndex = scores.indexOf(Collections.min(scores));
-        bestMove = moves.get(scoreIndex);
-        return scores.get(scoreIndex);
+    private void printBestMove() {
+        if (outputStream != null)
+            new PrintStream(outputStream).println(mark + " >> " + bestMove);
     }
 
     private int score(Board board, int depth) {
@@ -54,13 +64,19 @@ public class Minimax implements Player {
 
     }
 
-    public Minimax(Board.Mark mark) {
+    public Minimax(Board.Mark mark, OutputStream outputStream) {
         this.mark = mark;
+        this.outputStream = outputStream;
     }
 
     @Override
     public Board.Mark getMark() {
         return mark;
+    }
+
+    @Override
+    public BoardFormatter getFormatter() {
+        return formatter;
     }
 
     @Override
@@ -73,11 +89,15 @@ public class Minimax implements Player {
     }
 
     @Override
+    public void setFormatter(BoardFormatter formatter) {
+        this.formatter = formatter;
+    }
+
+    @Override
     public void setRules(Rules rules) {
         this.rules = rules;
     }
 
-    /* caller is responsible for ensuring that game is not over */
     @Override
     public int determineNextMove(Board board) {
         if (board.isEmpty())
@@ -85,6 +105,7 @@ public class Minimax implements Player {
             return 0;
 
         determineNextMove(board, mark, 0);
+        printBestMove();
         return bestMove;
     }
 }

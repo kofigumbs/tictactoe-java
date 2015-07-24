@@ -1,12 +1,16 @@
 package me.hkgumbs.tictactoe.test.java.simulation;
 
-import me.hkgumbs.tictactoe.main.java.simulation.*;
+import me.hkgumbs.tictactoe.main.java.simulation.Configuration;
+import me.hkgumbs.tictactoe.main.java.simulation.DefaultSimulation;
+import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
+import me.hkgumbs.tictactoe.main.java.simulation.SizeConfiguration;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,10 +22,8 @@ public class SizeConfigurationsTest {
 
 
     public Simulation configure(String... arguments) {
-        InputStream input = new ByteArrayInputStream("".getBytes());
-        OutputStream output = new ByteArrayOutputStream();
-        Simulation simulation = new DefaultSimulation(input, output);
-        List<String> args = Arrays.asList(arguments);
+        Simulation simulation = new DefaultSimulation();
+        List<String> args = new ArrayList<>(Arrays.asList(arguments));
         Configuration configuration = new SizeConfiguration();
         try {
             configuration.apply(args, simulation);
@@ -53,8 +55,8 @@ public class SizeConfigurationsTest {
     public void throwsCannotApply() {
         InputStream input = new ByteArrayInputStream("".getBytes());
         OutputStream output = new ByteArrayOutputStream();
-        Simulation simulation = new DefaultSimulation(input, output);
-        List<String> args = Arrays.asList("--size", "asdf", "5");
+        Simulation simulation = new DefaultSimulation();
+        List<String> args = new ArrayList<>(Arrays.asList("--size", "zx", "5"));
         Configuration configuration = new SizeConfiguration();
         boolean flag = false;
         try {

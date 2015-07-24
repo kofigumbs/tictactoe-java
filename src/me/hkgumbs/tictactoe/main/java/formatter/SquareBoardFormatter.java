@@ -88,7 +88,7 @@ public class SquareBoardFormatter implements BoardFormatter {
     }
 
     @Override
-    public String print(Board board) {
+    public String format(Board board) {
         Object[] marks = new Object[board.getCapacity()];
         int i = 0;
         for (Board.Mark mark : board) {

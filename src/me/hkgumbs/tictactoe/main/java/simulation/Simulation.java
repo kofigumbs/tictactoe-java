@@ -2,6 +2,7 @@ package me.hkgumbs.tictactoe.main.java.simulation;
 
 import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
 import me.hkgumbs.tictactoe.main.java.player.Player;
+import me.hkgumbs.tictactoe.main.java.rules.Rules;
 
 public interface Simulation {
 
@@ -13,6 +14,8 @@ public interface Simulation {
 
     Player[] getPlayers();
 
+    Rules getRules();
+
     int getSize();
 
     State getState();
@@ -23,5 +26,9 @@ public interface Simulation {
 
     void setPlayers(Player... players);
 
+    void setRules(Rules rules);
+
     void setSize(int size);
+
+    void start();
 }

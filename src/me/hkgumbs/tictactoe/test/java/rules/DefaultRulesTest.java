@@ -7,6 +7,8 @@ import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+
 import static org.junit.Assert.*;
 
 public class DefaultRulesTest {
@@ -62,5 +64,54 @@ public class DefaultRulesTest {
         assertTrue(rules.validateMove(board, 0));
         assertFalse(rules.validateMove(board, 98));
         assertFalse(rules.validateMove(board.add(0, Board.Mark.O), 0));
+    }
+
+    @Test
+    public void fourByFourGameOver() {
+        board = new SquareBoard(4)
+                .add(0, Board.Mark.X).add(1, Board.Mark.X)
+                .add(2, Board.Mark.X).add(3, Board.Mark.X);
+        rules = new DefaultRules(4);
+        assertEquals(Board.Mark.X, rules.determineWinner(board));
+    }
+
+    @Test
+    public void printInProgressWinnerMessage() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        rules.setMessageListener(outputStream);
+        rules.printWinnerMessage(board);
+        assertEquals("Game is in progress.\n", outputStream.toString());
+    }
+
+    @Test
+    public void printCompletedWinnerMessage() {
+        board = board
+                .add(3, Board.Mark.X).add(4, Board.Mark.X)
+                .add(0, Board.Mark.O).add(1, Board.Mark.O).add(2, Board.Mark.O);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        rules.setMessageListener(outputStream);
+        rules.printWinnerMessage(board);
+        assertEquals("O wins!\n", outputStream.toString());
+    }
+
+    @Test
+    public void printCatsGameWinnerMessage() {
+        board = board
+                .add(0, Board.Mark.X).add(4, Board.Mark.O).add(1, Board.Mark.X)
+                .add(2, Board.Mark.O).add(6, Board.Mark.X).add(3, Board.Mark.O)
+                .add(5, Board.Mark.X).add(8, Board.Mark.O).add(7, Board.Mark.X);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        rules.setMessageListener(outputStream);
+        rules.printWinnerMessage(board);
+        assertEquals("Nobody wins!\n", outputStream.toString());
+    }
+    @Test
+    public void allSpacesFilledGameIsWon() {
+        board = board
+                .add(0, Board.Mark.X).add(1, Board.Mark.X).add(2, Board.Mark.X)
+                .add(3, Board.Mark.X).add(4, Board.Mark.X).add(5, Board.Mark.X)
+                .add(6, Board.Mark.X).add(7, Board.Mark.X).add(8, Board.Mark.X);
+        assertEquals(Board.Mark.X, rules.determineWinner(board));
+        assertTrue(rules.gameIsOver(board));
     }
 }

@@ -1,6 +1,7 @@
 package me.hkgumbs.tictactoe.main.java.player;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
+import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
 import me.hkgumbs.tictactoe.main.java.rules.Rules;
 import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
 
@@ -20,34 +21,16 @@ public class Human implements Player {
     private final PrintStream output;
     private final Board.Mark mark;
     private Rules rules;
+    private BoardFormatter formatter;
 
-    public Human(Board.Mark mark,
-                 InputStream inputStream, OutputStream outputStream) {
-        this.mark = mark;
-        input = new Scanner(inputStream);
-        output = new PrintStream(outputStream);
-        rules = new DefaultRules(3);
+    private void printMovePrompt(Board board) {
+        output.println();
+        if (formatter != null)
+            output.println(formatter.format(board));
+        output.print(mark + " >> ");
     }
 
-    public boolean respondYesOrNo(String question) {
-        output.print(question);
-        return respondYesOrNo();
-    }
-
-    public boolean respondYesOrNo() {
-        while (true) {
-            String response = input.nextLine().toLowerCase();
-            response = response.split(" ", 2)[0];
-            if (response.equals("y") || response.equals("yes"))
-                return true;
-            else if (response.equals("n") || response.equals("no"))
-                return false;
-            output.print("Invalid response! ");
-        }
-    }
-
-    @Override
-    public int determineNextMove(Board board) {
+    private int respondValidMove(Board board) {
         while (true) {
             try {
                 String response = input.nextLine();
@@ -62,9 +45,45 @@ public class Human implements Player {
         }
     }
 
+    private boolean respondYesOrNo() {
+        while (true) {
+            String response = input.nextLine().toLowerCase();
+            response = response.split(" ", 2)[0];
+            if (response.equals("y") || response.equals("yes"))
+                return true;
+            else if (response.equals("n") || response.equals("no"))
+                return false;
+            output.print("Invalid response! ");
+        }
+    }
+
+    public Human(Board.Mark mark,
+                 InputStream inputStream, OutputStream outputStream) {
+        this.mark = mark;
+        input = new Scanner(inputStream);
+        output = new PrintStream(outputStream);
+        rules = new DefaultRules(3);
+    }
+
+    public boolean respondYesOrNo(String question) {
+        output.print(question);
+        return respondYesOrNo();
+    }
+
+    @Override
+    public int determineNextMove(Board board) {
+        printMovePrompt(board);
+        return respondValidMove(board);
+    }
+
     @Override
     public Board.Mark getMark() {
         return mark;
+    }
+
+    @Override
+    public BoardFormatter getFormatter() {
+        return formatter;
     }
 
     @Override
@@ -75,6 +94,11 @@ public class Human implements Player {
     @Override
     public boolean playAgain() {
         return respondYesOrNo(PLAY_AGAIN);
+    }
+
+    @Override
+    public void setFormatter(BoardFormatter formatter) {
+        this.formatter = formatter;
     }
 
     @Override

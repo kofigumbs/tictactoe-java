@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class HumanTest {
 
@@ -44,22 +45,22 @@ public class HumanTest {
     @Test
     public void multiWordResponse() {
         Human human = birth("foo bar y\nn\nasdf asdf\n0\n");
-        assertFalse(human.respondYesOrNo());
+        assertFalse(human.respondYesOrNo(""));
         assertEquals(0, human.determineNextMove(board));
     }
-//
-//    @Test
-//    public void parseYesNoUppercase() {
-//        Player human = birth("asdf\nNO\nYES");
-//        assertFalse(human.onboard());
-//        assertTrue(human.respondYesOrNo());
-//    }
-//
-//    @Test
-//    public void parseYNLowercaseWithInvalid() {
-//        Human human = birth("asdf\nNOPE\ny\nn");
-//        assertTrue(human.respondYesOrNo());
-//        assertFalse(human.respondYesOrNo());
-//    }
+
+    @Test
+    public void parseYesNoUppercase() {
+        Human human = birth("asdf\nNO\nYES");
+        assertFalse(human.respondYesOrNo(""));
+        assertTrue(human.respondYesOrNo(""));
+    }
+
+    @Test
+    public void parseYNLowercaseWithInvalid() {
+        Human human = birth("asdf\nNOPE\ny\nn");
+        assertTrue(human.respondYesOrNo(""));
+        assertFalse(human.respondYesOrNo(""));
+    }
 
 }

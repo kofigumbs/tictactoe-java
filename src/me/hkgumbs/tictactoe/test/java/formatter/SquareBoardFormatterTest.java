@@ -28,7 +28,7 @@ public class SquareBoardFormatterTest {
                         "(3)|(4)|(5)\n" +
                         "-----------\n" +
                         "(6)|(7)|(8)",
-                formatter.print(new SquareBoard(3)));
+                formatter.format(new SquareBoard(3)));
     }
 
     @Test
@@ -41,7 +41,7 @@ public class SquareBoardFormatterTest {
                         "(3)|(4)|(5)\n" +
                         "-----------\n" +
                         "(6)|(7)|(8)",
-                formatter.print(board));
+                formatter.format(board));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class SquareBoardFormatterTest {
                         "  (6)  |  (7)  |  (8)  \n" +
                         "       |       |       \n" +
                         "       |       |       ",
-                formatter.print(board));
+                formatter.format(board));
     }
 
     @Test
@@ -91,6 +91,6 @@ public class SquareBoardFormatterTest {
                         "      |      |      |      \n" +
                         " (12) | (13) | (14) | (15) \n" +
                         "      |      |      |      ",
-                formatter.print(board));
+                formatter.format(board));
     }
 }

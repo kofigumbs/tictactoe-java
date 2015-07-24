@@ -2,6 +2,8 @@ package me.hkgumbs.tictactoe.main.java.rules;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +11,7 @@ public class DefaultRules implements Rules {
 
     private Set<Set<Integer>> winningCombinations;
     private int dimension;
+    private OutputStream outputStream;
 
     private void generateColumns() {
         for (int i = 0; i < dimension; i++) {
@@ -42,6 +45,15 @@ public class DefaultRules implements Rules {
         winningCombinations.add(right);
     }
 
+    public String generateWinnerMessage(Board board) {
+        if (gameIsOver(board)) {
+            Board.Mark winner = determineWinner(board);
+            String label = winner == null ? "Nobody" : winner.toString();
+            return label + " wins!";
+        } else
+            return "Game is in progress.";
+    }
+
     public DefaultRules(int dimension) {
         winningCombinations = new HashSet<>();
         this.dimension = dimension;
@@ -60,10 +72,24 @@ public class DefaultRules implements Rules {
     public Board.Mark determineWinner(Board board) {
         for (Board.Mark mark : Board.Mark.values()) {
             Set<Integer> marks = board.getSpaceIds(mark);
-            if (winningCombinations.contains(marks))
-                return mark;
+            for (Set combination : winningCombinations)
+                if (marks.containsAll(combination))
+                    return mark;
         }
         return null;
+    }
+
+    @Override
+    public void printWinnerMessage(Board board) {
+        if (outputStream != null) {
+            String message = generateWinnerMessage(board);
+            new PrintStream(outputStream).println(message);
+        }
+    }
+
+    @Override
+    public void setMessageListener(OutputStream outputStream) {
+        this.outputStream = outputStream;
     }
 
     @Override

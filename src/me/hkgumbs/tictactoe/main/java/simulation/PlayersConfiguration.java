@@ -19,6 +19,36 @@ public class PlayersConfiguration implements Configuration {
     private InputStream inputStream;
     private OutputStream outputStream;
 
+    private Player[] getTwoMinimax() {
+        Player x = new Minimax(Board.Mark.X, outputStream);
+        Player o = new Minimax(Board.Mark.O, outputStream);
+        return new Player[]{x, o};
+    }
+
+    private Player[] getTwoHumans() {
+        Player x = new Human(Board.Mark.X, inputStream, outputStream);
+        Player o = new Human(Board.Mark.O, inputStream, outputStream);
+        return new Player[]{x, o};
+    }
+
+    private Player[] getHumanAndMinimax() {
+        Human human = new Human(Board.Mark.X, inputStream, outputStream);
+        Player minimax = new Minimax(Board.Mark.O, outputStream);
+        int humanPosition = human.respondYesOrNo(GO_FIRST) ? 0 : 1;
+        Player[] players = new Player[2];
+        players[humanPosition] = human;
+        players[1 - humanPosition] = minimax;
+        return players;
+    }
+
+    private void initialize(Player[] players, Simulation simulation) {
+        for (Player player : players) {
+            player.onboard();
+            player.setRules(simulation.getRules());
+            player.setFormatter(simulation.getFormatter());
+        }
+    }
+
     public PlayersConfiguration(
             InputStream inputStream, OutputStream outputStream) {
         this.inputStream = inputStream;
@@ -31,33 +61,13 @@ public class PlayersConfiguration implements Configuration {
         Player[] players;
         if (args.contains(MINIMAX_ONLY_KEY)) {
             players = getTwoMinimax();
+            args.remove(MINIMAX_ONLY_KEY);
         } else if (args.contains(HUMANS_ONLY_KEY)) {
             players = getTwoHumans();
-        } else {
+            args.remove(HUMANS_ONLY_KEY);
+        } else
             players = getHumanAndMinimax();
-        }
+        initialize(players, simulation);
         simulation.setPlayers(players);
-    }
-
-    private Player[] getTwoMinimax() {
-        Player x = new Minimax(Board.Mark.X);
-        Player o = new Minimax(Board.Mark.O);
-        return new Player[]{x, o};
-    }
-
-    private Player[] getTwoHumans() {
-        Player x = new Human(Board.Mark.X, inputStream, outputStream);
-        Player o = new Human(Board.Mark.O, inputStream, outputStream);
-        return new Player[]{x, o};
-    }
-
-    private Player[] getHumanAndMinimax() {
-        Human human = new Human(Board.Mark.X, inputStream, outputStream);
-        Player minimax = new Minimax(Board.Mark.O);
-        int humanPosition = human.respondYesOrNo(GO_FIRST) ? 0 : 1;
-        Player[] players = new Player[2];
-        players[humanPosition] = human;
-        players[1 - humanPosition] = minimax;
-        return players;
     }
 }

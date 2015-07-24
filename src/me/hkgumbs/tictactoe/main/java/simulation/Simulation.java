@@ -5,11 +5,19 @@ import me.hkgumbs.tictactoe.main.java.player.Player;
 
 public interface Simulation {
 
+    enum State {
+        INITIAL, IN_PROGRESS, COMPLETED, TERMINATED;
+    }
+
     BoardFormatter getFormatter();
 
     Player[] getPlayers();
 
     int getSize();
+
+    State getState();
+
+    State nextState();
 
     void setFormatter(BoardFormatter formatter);
 

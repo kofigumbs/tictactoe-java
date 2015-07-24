@@ -7,9 +7,7 @@ public class SizeConfiguration implements Configuration {
     private static final String key = "--size";
     private static final int defaultSize = 3;
 
-    private final List<String> args;
-
-    private int parseSize() {
+    private int parseSize(List<String> args) {
         int index = args.indexOf(key);
         if (index == -1)
             return defaultSize;
@@ -17,16 +15,13 @@ public class SizeConfiguration implements Configuration {
         return Integer.valueOf(sizeString);
     }
 
-    public SizeConfiguration(List<String> args) {
-        this.args = args;
-    }
-
     @Override
-    public void applyTo(Simulation simulation) throws CannotApplyException {
+    public void apply(List<String> args, Simulation simulation)
+            throws CannotApplyException {
         try {
-            int size = parseSize();
+            int size = parseSize(args);
             simulation.setSize(size);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             throw new CannotApplyException();
         }
     }

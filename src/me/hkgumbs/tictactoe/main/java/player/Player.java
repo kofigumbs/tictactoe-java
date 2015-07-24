@@ -8,7 +8,10 @@ public interface Player {
 
     Board.Mark getMark();
 
+    void onboard();
+
+    boolean playAgain();
+
     void setRules(Rules rules);
 
-    boolean yesOrNo();
 }

@@ -11,17 +11,39 @@ import java.util.Scanner;
 
 public class Human implements Player {
 
+    private static final String ONBOARD = "Welcome to Tic Tac Toe!\n" +
+            "Make a move by entering an empty space id\n";
+    private static final String PLAY_AGAIN =
+            "Would you like to play again? (y/n) ";
+
     private final Scanner input;
-    private final PrintStream error;
+    private final PrintStream output;
     private final Board.Mark mark;
     private Rules rules;
 
     public Human(Board.Mark mark,
-                 InputStream inputStream, OutputStream errorStream) {
+                 InputStream inputStream, OutputStream outputStream) {
         this.mark = mark;
         input = new Scanner(inputStream);
-        error = new PrintStream(errorStream);
+        output = new PrintStream(outputStream);
         rules = new DefaultRules(3);
+    }
+
+    public boolean respondYesOrNo(String question) {
+        output.print(question);
+        return respondYesOrNo();
+    }
+
+    public boolean respondYesOrNo() {
+        while (true) {
+            String response = input.nextLine().toLowerCase();
+            response = response.split(" ", 2)[0];
+            if (response.equals("y") || response.equals("yes"))
+                return true;
+            else if (response.equals("n") || response.equals("no"))
+                return false;
+            output.print("Invalid response! ");
+        }
     }
 
     @Override
@@ -36,7 +58,7 @@ public class Human implements Player {
             } catch (NumberFormatException e) {
                 /* caused when non-numeric text is entered */
             }
-            error.print("Invalid move! ");
+            output.print("Invalid move! ");
         }
     }
 
@@ -46,20 +68,17 @@ public class Human implements Player {
     }
 
     @Override
-    public void setRules(Rules rules) {
-        this.rules = rules;
+    public void onboard() {
+        output.print(ONBOARD);
     }
 
     @Override
-    public boolean yesOrNo() {
-        while (true) {
-            String response = input.nextLine().toLowerCase();
-            response = response.split(" ", 2)[0];
-            if (response.equals("y") || response.equals("yes"))
-                return true;
-            else if (response.equals("n") || response.equals("no"))
-                return false;
-            error.print("Invalid response! ");
-        }
+    public boolean playAgain() {
+        return respondYesOrNo(PLAY_AGAIN);
+    }
+
+    @Override
+    public void setRules(Rules rules) {
+        this.rules = rules;
     }
 }

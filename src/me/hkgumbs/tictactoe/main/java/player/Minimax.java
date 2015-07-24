@@ -64,6 +64,15 @@ public class Minimax implements Player {
     }
 
     @Override
+    public void onboard() {
+    }
+
+    @Override
+    public boolean playAgain() {
+        return false;
+    }
+
+    @Override
     public void setRules(Rules rules) {
         this.rules = rules;
     }
@@ -77,10 +86,5 @@ public class Minimax implements Player {
 
         determineNextMove(board, mark, 0);
         return bestMove;
-    }
-
-    @Override
-    public boolean yesOrNo() {
-        return false;
     }
 }

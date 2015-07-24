@@ -1,6 +1,7 @@
 package me.hkgumbs.tictactoe.main.java;
 
 import me.hkgumbs.tictactoe.main.java.simulation.DefaultSimulation;
+import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 
 import java.util.NoSuchElementException;
 
@@ -8,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         DefaultSimulation simulation = new DefaultSimulation(System.in, System.out);
         try {
-            while (simulation.next() != DefaultSimulation.State.TERMINATED) ;
+            while (simulation.nextState() != Simulation.State.TERMINATED) ;
         } catch (NoSuchElementException e) {
             /* user terminated program */
         }

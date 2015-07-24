@@ -17,71 +17,57 @@ import java.io.PrintStream;
 
 public class DefaultSimulation implements Simulation {
 
-
-    public enum State {
-        INITIAL, HUMAN_TURN, CPU_TURN, COMPLETED, TERMINATED;
-    }
-
     private static final String PROMPT = " >> ";
-    private static final String GO_FIRST = "Would you like to go first? (y/n) ";
 
-    private static final String ONBOARD = "Welcome to Tic Tac Toe!\n" +
-            "Make a move by entering an empty space id\n";
-
-    private static final String PLAY_AGAIN =
-            "Would you like to play again? (y/n) ";
 
     private State state = State.INITIAL;
     private Board board;
 
-    private int size = 3;
+    private int size;
     private Player[] players;
     private BoardFormatter formatter =
             new SquareBoardFormatter(3, new DefaultSlotRepresentation());
     private Rules rules = new DefaultRules(3);
+    int turn = 0;
 
-    private Player cpu;
-    private Player human;
     private PrintStream output;
 
     public DefaultSimulation(
             InputStream userInput, OutputStream outputStream) {
-        cpu = new Minimax(Board.Mark.O);
-        human = new Human(Board.Mark.X, userInput, outputStream);
+        Player cpu = new Minimax(Board.Mark.O);
+        Player human = new Human(Board.Mark.X, userInput, outputStream);
         output = new PrintStream(outputStream);
         players = new Player[]{human, cpu};
-        output.println(ONBOARD);
+        for (Player player : players)
+            player.onboard();
     }
 
+    @Override
     public State getState() {
         return state;
     }
 
-    public State next() {
+    @Override
+    public State nextState() {
         if (state == State.INITIAL) {
             board = new SquareBoard(size);
             output.println(formatter.print(board));
-            output.print(GO_FIRST);
-            state = human.yesOrNo() ? State.HUMAN_TURN : State.CPU_TURN;
+            state = State.IN_PROGRESS;
 
-        } else if (state == State.HUMAN_TURN) {
-            output.print(human.getMark() + PROMPT);
-            board = board.add(human.determineNextMove(board), human.getMark());
-            output.println(formatter.print(board));
-            state = rules.gameIsOver(board) ? State.COMPLETED : State.CPU_TURN;
-
-        } else if (state == State.CPU_TURN) {
-            int move = cpu.determineNextMove(board);
-            board = board.add(move, cpu.getMark());
-            String boardFormat = formatter.print(board);
-            output.println(cpu.getMark() + PROMPT + move + "\n" + boardFormat);
-            state = rules.gameIsOver(board) ? State.COMPLETED : State.HUMAN_TURN;
+        } else if (state == State.IN_PROGRESS) {
+            Player player = players[turn];
+            int move = player.determineNextMove(board);
+            board = board.add(move, player.getMark());
+            state = rules.gameIsOver(board) ?  State.COMPLETED : State.IN_PROGRESS;
+            turn = (turn + 1) % players.length;
 
         } else if (state == State.COMPLETED) {
             Board.Mark winner = rules.determineWinner(board);
             output.println((winner == null ? "Nobody" : winner) + " wins!");
-            output.print(PLAY_AGAIN);
-            state = human.yesOrNo() ? State.INITIAL : State.TERMINATED;
+            boolean playAgain = true;
+            for (Player player : players)
+                playAgain &= player.playAgain();
+            state = playAgain ? State.INITIAL : State.TERMINATED;
         }
 
         return state;

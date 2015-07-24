@@ -38,9 +38,9 @@ public class DefaultSimulation implements Simulation {
 
         } else if (state == State.COMPLETED) {
             rules.printWinnerMessage(board);
-            boolean playAgain = true;
+            boolean playAgain = false;
             for (Player player : players)
-                playAgain &= player.playAgain();
+                playAgain |= player.playAgain();
             state = playAgain ? State.INITIAL : State.TERMINATED;
         }
 

@@ -102,9 +102,9 @@ public class Minimax implements Player {
     public int determineNextMove(Board board) {
         if (board.isEmpty())
             /* calculations are not worth it */
-            return 0;
-
-        determineNextMove(board, mark, 0);
+            bestMove = 0;
+        else
+            determineNextMove(board, mark, 0);
         printBestMove();
         return bestMove;
     }

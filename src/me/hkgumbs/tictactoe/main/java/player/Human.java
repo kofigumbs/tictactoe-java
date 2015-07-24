@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Human implements Player {
 
-    private static final String ONBOARD = "Welcome to Tic Tac Toe!\n" +
+    private static final String ONBOARD =
             "Make a move by entering an empty space id\n";
     private static final String PLAY_AGAIN =
             "Would you like to play again? (y/n) ";

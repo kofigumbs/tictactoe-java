@@ -33,7 +33,7 @@ public class DefaultSimulation implements Simulation {
             int move = player.determineNextMove(board);
             board = board.add(move, player.getMark());
             boolean completed = rules.gameIsOver(board);
-            state = completed ?  State.COMPLETED : State.IN_PROGRESS;
+            state = completed ? State.COMPLETED : State.IN_PROGRESS;
             turn = (turn + 1) % players.length;
 
         } else if (state == State.COMPLETED) {
@@ -88,6 +88,7 @@ public class DefaultSimulation implements Simulation {
 
     @Override
     public void start() {
-        while (nextState() != State.TERMINATED);
+        while (nextState() != State.TERMINATED) {
+        }
     }
 }

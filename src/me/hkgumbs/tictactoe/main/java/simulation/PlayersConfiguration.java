@@ -11,7 +11,8 @@ import java.util.List;
 
 public class PlayersConfiguration implements Configuration {
 
-    private static final String GO_FIRST = "Would you like to go first? (y/n) ";
+    private static final String GO_FIRST = "Welcome to Tic Tac Toe!\n\n" +
+            "Would you like to go first? (y/n) ";
 
     private static final String HUMANS_ONLY_KEY = "--humans";
     private static final String MINIMAX_ONLY_KEY = "--minimax";

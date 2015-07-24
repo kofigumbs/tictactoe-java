@@ -1,8 +1,9 @@
-package me.hkgumbs.tictactoe.test.java;
+package me.hkgumbs.tictactoe.test.java.player;
 
-import me.hkgumbs.tictactoe.main.java.Board;
-import me.hkgumbs.tictactoe.main.java.Game;
-import me.hkgumbs.tictactoe.main.java.Minimax;
+import me.hkgumbs.tictactoe.main.java.board.Board;
+import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
+import me.hkgumbs.tictactoe.main.java.rules.Rules;
+import me.hkgumbs.tictactoe.main.java.player.Minimax;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,12 +17,12 @@ public class MinimaxTest {
 
     @Before
     public void setup() {
-        board = new Board();
+        board = new SquareBoard(3);
     }
 
     @Test
     public void testFirstMove() {
-        int result = new Minimax(Board.Mark.X).consider(board);
+        int result = new Minimax(Board.Mark.X).evaluate(board);
         assertEquals(0, result);
     }
 
@@ -29,7 +30,7 @@ public class MinimaxTest {
     public void blockWinningPlay() {
         board = board
                 .add(0, Board.Mark.X).add(4, Board.Mark.O).add(6, Board.Mark.X);
-        int result = new Minimax(Board.Mark.O).consider(board);
+        int result = new Minimax(Board.Mark.O).evaluate(board);
         assertEquals(3, result);
     }
 
@@ -38,7 +39,7 @@ public class MinimaxTest {
         board = board
                 .add(0, Board.Mark.X).add(1, Board.Mark.O)
                 .add(4, Board.Mark.X).add(5, Board.Mark.O);
-        int result = new Minimax(Board.Mark.X).consider(board);
+        int result = new Minimax(Board.Mark.X).evaluate(board);
         assertEquals(8, result);
     }
 
@@ -47,7 +48,7 @@ public class MinimaxTest {
         board = board
                 .add(0, Board.Mark.X).add(2, Board.Mark.O).add(1, Board.Mark.X)
                 .add(5, Board.Mark.O).add(3, Board.Mark.X);
-        int result = new Minimax(Board.Mark.O).consider(board);
+        int result = new Minimax(Board.Mark.O).evaluate(board);
         assertEquals(8, result);
     }
 
@@ -56,13 +57,13 @@ public class MinimaxTest {
         boolean xTurn = true;
         Minimax x = new Minimax(Board.Mark.X);
         Minimax o = new Minimax(Board.Mark.O);
-        while (!Game.over(board)) {
+        while (!Rules.gameIsOver(board)) {
             Minimax current = xTurn ? x : o;
-            int move = current.consider(board);
-            board = board.add(move, current.mark);
+            int move = current.evaluate(board);
+            board = board.add(move, current.getMark());
             xTurn = !xTurn;
         }
-        assertNull(Game.winner(board));
-        assertTrue(board.full());
+        assertNull(Rules.determineWinner(board));
+        assertTrue(board.isFull());
     }
 }

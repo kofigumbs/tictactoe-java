@@ -1,10 +1,15 @@
-package me.hkgumbs.tictactoe.main.java;
+package me.hkgumbs.tictactoe.main.java.player;
+
+import me.hkgumbs.tictactoe.main.java.board.Board;
+import me.hkgumbs.tictactoe.main.java.rules.Rules;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Minimax extends Player {
+public class Minimax implements Player {
+
+    private Board.Mark mark;
 
     private static class Result {
         int value;
@@ -17,13 +22,13 @@ public class Minimax extends Player {
      * stores best move in result */
     private int consider(
             Board board, Board.Mark current, int depth, Result result) {
-        if (Game.over(board))
+        if (Rules.gameIsOver(board))
             return score(board, depth);
 
         List<Integer> scores = new ArrayList<>();
         List<Integer> moves = new ArrayList<>();
 
-        for (int position : board.getEmpty()) {
+        for (int position : board.getEmptySpaceIds()) {
             Board copy = board.add(position, current);
             scores.add(consider(copy, current.other(), depth + 1, result));
             moves.add(position);
@@ -39,7 +44,7 @@ public class Minimax extends Player {
     }
 
     private int score(Board board, int depth) {
-        Board.Mark winner = Game.winner(board);
+        Board.Mark winner = Rules.determineWinner(board);
         if (winner == mark)
             return MAX_SCORE - depth;
         else if (winner == mark.other())
@@ -50,18 +55,28 @@ public class Minimax extends Player {
     }
 
     public Minimax(Board.Mark mark) {
-        super(mark);
+        this.mark = mark;
+    }
+
+    @Override
+    public Board.Mark getMark() {
+        return mark;
     }
 
     /* caller is responsible for ensuring that game is not over */
     @Override
-    public int consider(Board board) {
+    public int evaluate(Board board) {
         Result result = new Result();
-        if (board.empty())
-            /* if board is empty, calculations are not worth it */
+        if (board.isEmpty())
+            /* if board is isEmpty, calculations are not worth it */
             return 0;
 
         consider(board, mark, 0, result);
         return result.value;
+    }
+
+    @Override
+    public boolean yesOrNo() {
+        return false;
     }
 }

@@ -1,6 +1,6 @@
-package me.hkgumbs.tictactoe.test.java;
+package me.hkgumbs.tictactoe.test.java.simulation;
 
-import me.hkgumbs.tictactoe.main.java.Simulation;
+import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -13,7 +13,7 @@ public class SimulationTest {
     private Simulation simulate(String contents) {
         return new Simulation(
                 new ByteArrayInputStream(contents.getBytes()),
-                new ByteArrayOutputStream());
+                new ByteArrayOutputStream(), 0);
     }
 
     @Test

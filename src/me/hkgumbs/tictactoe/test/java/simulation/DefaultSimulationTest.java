@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class DefaultSimulationTest {
 
@@ -19,7 +20,7 @@ public class DefaultSimulationTest {
             new PlayersConfiguration(null, null).apply(args, simulation);
             new RulesConfiguration(null).apply(args, simulation);
         } catch (Configuration.CannotApplyException e) {
-            e.printStackTrace();
+            fail("Could not apply configurations");
         }
         return simulation;
     }

@@ -12,19 +12,15 @@ import static org.junit.Assert.assertEquals;
 
 public class RulesConfigurationTest {
     @Test
-    public void defaultRules() {
+    public void defaultRules() throws Configuration.CannotApplyException {
         Simulation simulation = new DefaultSimulation();
         OutputStream outputStream = new ByteArrayOutputStream();
         Configuration[] configurations = new Configuration[]{
                 new SizeConfiguration(),
                 new RulesConfiguration(outputStream)
         };
-        try {
-            for (Configuration configuration : configurations)
-                configuration.apply(Arrays.asList(), simulation);
-        } catch (Configuration.CannotApplyException e) {
-            e.printStackTrace();
-        }
+        for (Configuration configuration : configurations)
+            configuration.apply(Arrays.asList(), simulation);
         simulation.getRules().printWinnerMessage(new SquareBoard(3));
         assertEquals("Game is in progress.\n", outputStream.toString());
     }

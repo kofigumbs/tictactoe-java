@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class FormatterConfigurationTest {
 
@@ -23,7 +24,7 @@ public class FormatterConfigurationTest {
             for (Configuration configuration : configurations)
                 configuration.apply(arguments, simulation);
         } catch (Configuration.CannotApplyException e) {
-            e.printStackTrace();
+            fail("Could not apply configurations");
         }
         return simulation;
     }

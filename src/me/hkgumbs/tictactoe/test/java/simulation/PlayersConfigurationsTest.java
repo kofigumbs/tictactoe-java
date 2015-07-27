@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 public class PlayersConfigurationsTest {
@@ -33,7 +34,7 @@ public class PlayersConfigurationsTest {
         try {
             configuration.apply(args, simulation);
         } catch (Configuration.CannotApplyException e) {
-            e.printStackTrace();
+            fail("Could not apply configurations");
         }
         return simulation;
     }

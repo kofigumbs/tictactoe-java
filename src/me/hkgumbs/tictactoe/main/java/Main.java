@@ -11,7 +11,7 @@ public class Main {
     private static final String USAGE = "usage: java -jar tictactoe-java.jar" +
             " [--size <number>]" +
             " [--padding <number>]" +
-            " [--human|--minimax]";
+            " [--humans|--minimax]";
 
     private static final Configuration[] CONFIGURATIONS = new Configuration[]{
             new SizeConfiguration(),

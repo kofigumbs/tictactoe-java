@@ -1,27 +1,28 @@
 package me.hkgumbs.tictactoe.test.java.simulation;
 
+import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
-import me.hkgumbs.tictactoe.main.java.simulation.*;
+import me.hkgumbs.tictactoe.main.java.simulation.Configuration;
+import me.hkgumbs.tictactoe.main.java.simulation.RulesConfiguration;
+import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class RulesConfigurationTest {
     @Test
     public void defaultRules() throws Configuration.CannotApplyException {
-        Simulation simulation = new DefaultSimulation();
-        OutputStream outputStream = new ByteArrayOutputStream();
+        Simulation simulation = new StubSimulation();
         Configuration[] configurations = new Configuration[]{
-                new SizeConfiguration(),
-                new RulesConfiguration(outputStream)
+                new RulesConfiguration(null)
         };
+
+        simulation.size = 3;
         for (Configuration configuration : configurations)
             configuration.apply(Arrays.asList(), simulation);
-        simulation.getRules().printWinnerMessage(new SquareBoard(3));
-        assertEquals("Game is in progress.\n", outputStream.toString());
+        Board.Mark mark = simulation.rules.determineWinner(new SquareBoard(3));
+        assertNull(null, mark);
     }
 }

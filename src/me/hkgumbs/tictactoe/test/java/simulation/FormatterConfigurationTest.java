@@ -1,25 +1,27 @@
 package me.hkgumbs.tictactoe.test.java.simulation;
 
-import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
-import me.hkgumbs.tictactoe.main.java.simulation.*;
+import me.hkgumbs.tictactoe.main.java.formatter.SquareBoardFormatter;
+import me.hkgumbs.tictactoe.main.java.simulation.Configuration;
+import me.hkgumbs.tictactoe.main.java.simulation.FormatterConfiguration;
+import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class FormatterConfigurationTest {
 
     private Simulation configure(String... args) {
-        Simulation simulation = new DefaultSimulation();
+        Simulation simulation = new StubSimulation();
         List<String> arguments = new ArrayList<>(Arrays.asList(args));
         Configuration[] configurations = new Configuration[]{
-                new SizeConfiguration(),
                 new FormatterConfiguration()
         };
+
+        simulation.size = 3;
         try {
             for (Configuration configuration : configurations)
                 configuration.apply(arguments, simulation);
@@ -32,35 +34,12 @@ public class FormatterConfigurationTest {
     @Test
     public void defaultFormatter() {
         Simulation simulation = configure();
-        String board = simulation.getFormatter().format(new SquareBoard(3));
-        assertEquals("(0)|(1)|(2)\n" +
-                "-----------\n" +
-                "(3)|(4)|(5)\n" +
-                "-----------\n" +
-                "(6)|(7)|(8)", board);
+        assertTrue(simulation.formatter instanceof SquareBoardFormatter);
     }
 
     @Test
     public void onePadding() {
         Simulation simulation = configure("--padding", "2");
-        String board = simulation.getFormatter().format(new SquareBoard(3));
-        assertEquals("       |       |       \n" +
-                        "       |       |       \n" +
-                        "  (0)  |  (1)  |  (2)  \n" +
-                        "       |       |       \n" +
-                        "       |       |       \n" +
-                        "-----------------------\n" +
-                        "       |       |       \n" +
-                        "       |       |       \n" +
-                        "  (3)  |  (4)  |  (5)  \n" +
-                        "       |       |       \n" +
-                        "       |       |       \n" +
-                        "-----------------------\n" +
-                        "       |       |       \n" +
-                        "       |       |       \n" +
-                        "  (6)  |  (7)  |  (8)  \n" +
-                        "       |       |       \n" +
-                        "       |       |       ",
-                board);
+        assertEquals(2, simulation.formatter.getPadding());
     }
 }

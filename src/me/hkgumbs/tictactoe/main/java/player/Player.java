@@ -1,21 +1,21 @@
 package me.hkgumbs.tictactoe.main.java.player;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
-import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
-import me.hkgumbs.tictactoe.main.java.rules.Rules;
 
 public interface Player {
+
+    enum Response {
+        YES, NO, DEFAULT
+    }
+
     int determineNextMove(Board board);
 
     Board.Mark getMark();
 
-    BoardFormatter getFormatter();
-
     void onboard();
 
-    boolean playAgain();
+    Response requestGoFirst();
 
-    void setFormatter(BoardFormatter formatter);
+    Response requestPlayAgain();
 
-    void setRules(Rules rules);
 }

@@ -3,8 +3,11 @@ package me.hkgumbs.tictactoe.test.java.player;
 import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
 import me.hkgumbs.tictactoe.main.java.player.Minimax;
+import me.hkgumbs.tictactoe.main.java.player.Player;
 import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
 import me.hkgumbs.tictactoe.main.java.rules.Rules;
+import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
+import me.hkgumbs.tictactoe.test.java.simulation.StubSimulation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,8 +18,9 @@ public class MinimaxTest {
     Board board;
 
     private Minimax generate(Board.Mark mark) {
-        Minimax minimax = new Minimax(mark, null);
-        minimax.setRules(new DefaultRules(3));
+        Simulation simulation = new StubSimulation();
+        simulation.rules = new DefaultRules(3, null, simulation);
+        Minimax minimax = new Minimax(mark, null, simulation);
         return minimax;
     }
 
@@ -63,9 +67,7 @@ public class MinimaxTest {
         boolean xTurn = true;
         Minimax x = generate(Board.Mark.X);
         Minimax o = generate(Board.Mark.O);
-        Rules rules = new DefaultRules(3);
-        x.setRules(rules);
-        o.setRules(rules);
+        Rules rules = new DefaultRules(3, null, new StubSimulation());
         while (!rules.gameIsOver(board)) {
             Minimax current = xTurn ? x : o;
             int move = current.determineNextMove(board);
@@ -74,5 +76,12 @@ public class MinimaxTest {
         }
         assertNull(rules.determineWinner(board));
         assertTrue(board.isFull());
+    }
+
+    @Test
+    public void allRequestsDefault() {
+        Minimax x = generate(Board.Mark.X);
+        assertEquals(Player.Response.DEFAULT, x.requestGoFirst());
+        assertEquals(Player.Response.DEFAULT, x.requestPlayAgain());
     }
 }

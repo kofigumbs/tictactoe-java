@@ -93,4 +93,12 @@ public class SquareBoardFormatterTest {
                         "      |      |      |      ",
                 formatter.format(board));
     }
+
+    @Test
+    public void getPadding() {
+        BoardFormatter formatter = getFormatter(1, 1);
+        assertEquals(1, formatter.getPadding());
+        formatter.setPadding(6);
+        assertEquals(6, formatter.getPadding());
+    }
 }

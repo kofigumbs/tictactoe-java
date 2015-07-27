@@ -4,7 +4,6 @@ import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
 import me.hkgumbs.tictactoe.main.java.formatter.DefaultSlotRepresentation;
 import me.hkgumbs.tictactoe.main.java.formatter.SlotRepresentation;
 import me.hkgumbs.tictactoe.main.java.formatter.SquareBoardFormatter;
-import me.hkgumbs.tictactoe.main.java.player.Player;
 
 import java.util.List;
 
@@ -16,14 +15,12 @@ public class FormatterConfiguration implements Configuration {
             new DefaultSlotRepresentation();
 
     @Override
-    public void apply(List<String> args, Simulation simulation)
+    public void apply(List<String> arguments, Simulation simulation)
             throws CannotApplyException {
-        int size = simulation.getSize();
-        int padding = Extractor.parseInt(args, KEY, DEFAULT_PADDING);
+        int size = simulation.size;
+        int padding = Extractor.parseInt(arguments, KEY, DEFAULT_PADDING);
         BoardFormatter formatter = new SquareBoardFormatter(size, SLOT);
-        simulation.setFormatter(formatter);
+        simulation.formatter = formatter;
         formatter.setPadding(padding);
-        for (Player player : simulation.getPlayers())
-            player.setFormatter(formatter);
     }
 }

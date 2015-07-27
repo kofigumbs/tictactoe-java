@@ -7,4 +7,6 @@ public interface BoardFormatter {
     String format(Board board);
 
     void setPadding(int padding);
+
+    int getPadding();
 }

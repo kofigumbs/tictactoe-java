@@ -1,7 +1,6 @@
 package me.hkgumbs.tictactoe.test.java.simulation;
 
 import me.hkgumbs.tictactoe.main.java.simulation.Configuration;
-import me.hkgumbs.tictactoe.main.java.simulation.DefaultSimulation;
 import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 import me.hkgumbs.tictactoe.main.java.simulation.SizeConfiguration;
 import org.junit.Test;
@@ -10,18 +9,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 public class SizeConfigurationsTest {
 
 
-    public Simulation configure(String... arguments) {
-        Simulation simulation = new DefaultSimulation();
-        List<String> args = new ArrayList<>(Arrays.asList(arguments));
+    public Simulation configure(String... args) {
+        Simulation simulation = new StubSimulation();
         Configuration configuration = new SizeConfiguration();
+        List<String> arguments = new ArrayList<>(Arrays.asList(args));
         try {
-            configuration.apply(args, simulation);
+            configuration.apply(arguments, simulation);
         } catch (Configuration.CannotApplyException e) {
             fail("Could not apply configurations");
         }
@@ -31,24 +31,24 @@ public class SizeConfigurationsTest {
     @Test
     public void sizeThreeDefault() {
         Simulation simulation = configure();
-        assertEquals(3, simulation.getSize());
+        assertEquals(3, simulation.size);
     }
 
     @Test
     public void sizeThreeFromArgs() {
         Simulation simulation = configure("--size", "3");
-        assertEquals(3, simulation.getSize());
+        assertEquals(3, simulation.size);
     }
 
     @Test
     public void sizeFiveFromArgs() {
         Simulation simulation = configure("--size", "5");
-        assertEquals(5, simulation.getSize());
+        assertEquals(5, simulation.size);
     }
 
     @Test(expected = Configuration.CannotApplyException.class)
     public void throwsCannotApply() throws Configuration.CannotApplyException {
-        Simulation simulation = new DefaultSimulation();
+        Simulation simulation = null; // new DefaultSimulation();
         List<String> args = new ArrayList<>(Arrays.asList("--size", "zx", "5"));
         Configuration configuration = new SizeConfiguration();
         configuration.apply(args, simulation);

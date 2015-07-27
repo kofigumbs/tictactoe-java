@@ -2,8 +2,8 @@ package me.hkgumbs.tictactoe.test.java.simulation;
 
 import me.hkgumbs.tictactoe.main.java.player.Human;
 import me.hkgumbs.tictactoe.main.java.player.Minimax;
+import me.hkgumbs.tictactoe.main.java.player.Player;
 import me.hkgumbs.tictactoe.main.java.simulation.Configuration;
-import me.hkgumbs.tictactoe.main.java.simulation.DefaultSimulation;
 import me.hkgumbs.tictactoe.main.java.simulation.PlayersConfiguration;
 import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 import org.junit.Test;
@@ -16,18 +16,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 
 public class PlayersConfigurationsTest {
 
-    public Simulation configure(String input, String... arguments) {
-        InputStream inputStream = new ByteArrayInputStream(input.getBytes());
+    public Simulation configure(String... arguments) {
+        InputStream inputStream = new ByteArrayInputStream("".getBytes());
         OutputStream outputStream = new ByteArrayOutputStream();
-        Simulation simulation =
-                new DefaultSimulation();
+        Simulation simulation = new StubSimulation();
         Configuration configuration =
                 new PlayersConfiguration(inputStream, outputStream);
         List<String> args = new ArrayList<>(Arrays.asList(arguments));
@@ -41,26 +38,33 @@ public class PlayersConfigurationsTest {
 
     @Test
     public void oneHumanOneMinimaxDefault() {
-        Simulation simulation = configure("y\n");
-        assertTrue(simulation.getPlayers()[0] instanceof Human);
-        assertTrue(simulation.getPlayers()[1] instanceof Minimax);
-        assertEquals(2, simulation.getPlayers().length);
+        Simulation simulation = configure();
+        int humanCount = 0;
+        int minimaxCount = 0;
+        for (Player player : simulation.players)
+            if (player instanceof Human)
+                humanCount++;
+            else if (player instanceof Minimax)
+                minimaxCount++;
+        assertEquals(1, humanCount);
+        assertEquals(1, minimaxCount);
+        assertEquals(2, simulation.players.length);
     }
 
     @Test
     public void twoMinimax() {
-        Simulation simulation = configure("", "--minimax");
-        assertTrue(simulation.getPlayers()[0] instanceof Minimax);
-        assertTrue(simulation.getPlayers()[1] instanceof Minimax);
-        assertEquals(2, simulation.getPlayers().length);
+        Simulation simulation = configure("--minimax");
+        assertTrue(simulation.players[0] instanceof Minimax);
+        assertTrue(simulation.players[1] instanceof Minimax);
+        assertEquals(2, simulation.players.length);
     }
 
     @Test
     public void twoHumans() {
-        Simulation simulation = configure("", "--humans");
-        assertTrue(simulation.getPlayers()[0] instanceof Human);
-        assertTrue(simulation.getPlayers()[1] instanceof Human);
-        assertEquals(2, simulation.getPlayers().length);
+        Simulation simulation = configure("--humans");
+        assertTrue(simulation.players[0] instanceof Human);
+        assertTrue(simulation.players[1] instanceof Human);
+        assertEquals(2, simulation.players.length);
     }
 
 }

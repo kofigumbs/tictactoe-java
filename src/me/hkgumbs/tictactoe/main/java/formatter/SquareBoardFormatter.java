@@ -101,6 +101,11 @@ public class SquareBoardFormatter implements BoardFormatter {
     }
 
     @Override
+    public int getPadding() {
+        return padding;
+    }
+
+    @Override
     public void setPadding(int padding) {
         this.padding = padding;
         generateFormat();

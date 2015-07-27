@@ -4,31 +4,22 @@ import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
 import me.hkgumbs.tictactoe.main.java.player.Player;
 import me.hkgumbs.tictactoe.main.java.rules.Rules;
 
-public interface Simulation {
+public abstract class Simulation {
 
-    enum State {
-        INITIAL, IN_PROGRESS, COMPLETED, TERMINATED;
+    public enum State {
+        INITIAL, IN_PROGRESS, COMPLETED, TERMINATED
     }
 
-    BoardFormatter getFormatter();
+    public int size;
 
-    Player[] getPlayers();
+    public BoardFormatter formatter = null;
 
-    Rules getRules();
+    public Player[] players = {};
 
-    int getSize();
+    public Rules rules = null;
 
-    State getState();
+    public abstract State getState();
 
-    State nextState();
-
-    void setFormatter(BoardFormatter formatter);
-
-    void setPlayers(Player... players);
-
-    void setRules(Rules rules);
-
-    void setSize(int size);
-
-    void start();
+    public class AlreadyStartedException extends Throwable {
+    }
 }

@@ -8,11 +8,11 @@ public class SizeConfiguration implements Configuration {
     private static final int DEFAULT_SIZE = 3;
 
     @Override
-    public void apply(List<String> args, Simulation simulation)
+    public void apply(List<String> arguments, Simulation simulation)
             throws CannotApplyException {
         try {
-            int size = Extractor.parseInt(args, KEY, DEFAULT_SIZE);
-            simulation.setSize(size);
+            int size = Extractor.parseInt(arguments, KEY, DEFAULT_SIZE);
+            simulation.size = size;
         } catch (NumberFormatException e) {
             throw new CannotApplyException();
         }

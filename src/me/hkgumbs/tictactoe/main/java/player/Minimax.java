@@ -1,8 +1,7 @@
 package me.hkgumbs.tictactoe.main.java.player;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
-import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
-import me.hkgumbs.tictactoe.main.java.rules.Rules;
+import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -14,10 +13,9 @@ public class Minimax implements Player {
 
     private static final int MAX_SCORE = 10;
 
-    private Board.Mark mark;
+    private final Board.Mark mark;
     private final OutputStream outputStream;
-    private BoardFormatter formatter;
-    private Rules rules;
+    private final Simulation simulation;
 
     private int bestMove;
 
@@ -33,7 +31,7 @@ public class Minimax implements Player {
     }
 
     private int determineNextMove(Board board, Board.Mark current, int depth) {
-        if (rules.gameIsOver(board))
+        if (simulation.rules.gameIsOver(board))
             return score(board, depth);
 
         List<Integer> scores = new ArrayList<>();
@@ -54,7 +52,7 @@ public class Minimax implements Player {
     }
 
     private int score(Board board, int depth) {
-        Board.Mark winner = rules.determineWinner(board);
+        Board.Mark winner = simulation.rules.determineWinner(board);
         if (winner == mark)
             return MAX_SCORE - depth;
         else if (winner == mark.other())
@@ -64,9 +62,11 @@ public class Minimax implements Player {
 
     }
 
-    public Minimax(Board.Mark mark, OutputStream outputStream) {
+    public Minimax(
+            Board.Mark mark, OutputStream outputStream, Simulation simulation) {
         this.mark = mark;
         this.outputStream = outputStream;
+        this.simulation = simulation;
     }
 
     @Override
@@ -74,28 +74,19 @@ public class Minimax implements Player {
         return mark;
     }
 
-    @Override
-    public BoardFormatter getFormatter() {
-        return formatter;
-    }
 
     @Override
     public void onboard() {
     }
 
     @Override
-    public boolean playAgain() {
-        return false;
+    public Response requestGoFirst() {
+        return Response.DEFAULT;
     }
 
     @Override
-    public void setFormatter(BoardFormatter formatter) {
-        this.formatter = formatter;
-    }
-
-    @Override
-    public void setRules(Rules rules) {
-        this.rules = rules;
+    public Response requestPlayAgain() {
+        return Response.DEFAULT;
     }
 
     @Override

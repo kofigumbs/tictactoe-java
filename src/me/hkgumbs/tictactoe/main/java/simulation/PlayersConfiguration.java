@@ -11,43 +11,32 @@ import java.util.List;
 
 public class PlayersConfiguration implements Configuration {
 
-    private static final String GO_FIRST = "Welcome to Tic Tac Toe!\n\n" +
-            "Would you like to go first? (y/n) ";
-
     private static final String HUMANS_ONLY_KEY = "--humans";
     private static final String MINIMAX_ONLY_KEY = "--minimax";
 
-    private InputStream inputStream;
-    private OutputStream outputStream;
+    private final InputStream inputStream;
+    private final OutputStream outputStream;
+    private Simulation simulation;
 
     private Player[] getTwoMinimax() {
-        Player x = new Minimax(Board.Mark.X, outputStream);
-        Player o = new Minimax(Board.Mark.O, outputStream);
-        return new Player[]{x, o};
+        return new Player[]{
+                new Minimax(Board.Mark.X, outputStream, simulation),
+                new Minimax(Board.Mark.O, outputStream, simulation),
+        };
     }
 
     private Player[] getTwoHumans() {
-        Player x = new Human(Board.Mark.X, inputStream, outputStream);
-        Player o = new Human(Board.Mark.O, inputStream, outputStream);
-        return new Player[]{x, o};
+        return new Player[]{
+                new Human(Board.Mark.X, inputStream, outputStream, simulation),
+                new Human(Board.Mark.O, inputStream, outputStream, simulation)
+        };
     }
 
     private Player[] getHumanAndMinimax() {
-        Human human = new Human(Board.Mark.X, inputStream, outputStream);
-        Player minimax = new Minimax(Board.Mark.O, outputStream);
-        int humanPosition = human.respondYesOrNo(GO_FIRST) ? 0 : 1;
-        Player[] players = new Player[2];
-        players[humanPosition] = human;
-        players[1 - humanPosition] = minimax;
-        return players;
-    }
-
-    private void initialize(Player[] players, Simulation simulation) {
-        for (Player player : players) {
-            player.onboard();
-            player.setRules(simulation.getRules());
-            player.setFormatter(simulation.getFormatter());
-        }
+        return new Player[]{
+                new Minimax(Board.Mark.X, outputStream, simulation),
+                new Human(Board.Mark.O, inputStream, outputStream, simulation)
+        };
     }
 
     public PlayersConfiguration(
@@ -57,18 +46,16 @@ public class PlayersConfiguration implements Configuration {
     }
 
     @Override
-    public void apply(List<String> args, Simulation simulation)
+    public void apply(List<String> arguments, Simulation simulation)
             throws CannotApplyException {
-        Player[] players;
-        if (args.contains(MINIMAX_ONLY_KEY)) {
-            players = getTwoMinimax();
-            args.remove(MINIMAX_ONLY_KEY);
-        } else if (args.contains(HUMANS_ONLY_KEY)) {
-            players = getTwoHumans();
-            args.remove(HUMANS_ONLY_KEY);
+        this.simulation = simulation;
+        if (arguments.contains(MINIMAX_ONLY_KEY)) {
+            simulation.players = getTwoMinimax();
+            arguments.remove(MINIMAX_ONLY_KEY);
+        } else if (arguments.contains(HUMANS_ONLY_KEY)) {
+            simulation.players = getTwoHumans();
+            arguments.remove(HUMANS_ONLY_KEY);
         } else
-            players = getHumanAndMinimax();
-        initialize(players, simulation);
-        simulation.setPlayers(players);
+            simulation.players = getHumanAndMinimax();
     }
 }

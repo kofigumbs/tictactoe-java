@@ -2,25 +2,45 @@ package me.hkgumbs.tictactoe.test.java.player;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
+import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
 import me.hkgumbs.tictactoe.main.java.player.Human;
 import me.hkgumbs.tictactoe.main.java.player.Player;
+import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
+import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
+import me.hkgumbs.tictactoe.test.java.simulation.StubSimulation;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class HumanTest {
 
     private Board board = new SquareBoard(3);
 
     private Human birth(String contents) {
+        Simulation simulation = new StubSimulation();
+        simulation.rules = new DefaultRules(3, null, simulation);
+        simulation.formatter = new BoardFormatter() {
+            @Override
+            public String format(Board board) {
+                return null;
+            }
+
+            @Override
+            public void setPadding(int padding) {
+            }
+
+            @Override
+            public int getPadding() {
+                return 0;
+            }
+        };
+
         return new Human(Board.Mark.X,
                 new ByteArrayInputStream(contents.getBytes()),
-                new ByteArrayOutputStream());
+                new ByteArrayOutputStream(), simulation);
     }
 
     @Test
@@ -44,23 +64,38 @@ public class HumanTest {
 
     @Test
     public void multiWordResponse() {
-        Human human = birth("foo bar y\nn\nasdf asdf\n0\n");
-        assertFalse(human.respondYesOrNo(""));
+        String input = "foo bar y\nn\nasdf asdf\n0\n";
+        Human human = birth(input);
+        assertEquals(Player.Response.NO, human.requestGoFirst());
+        assertEquals(0, human.determineNextMove(board));
+
+        human = birth(input);
+        assertEquals(Player.Response.NO, human.requestPlayAgain());
         assertEquals(0, human.determineNextMove(board));
     }
 
     @Test
     public void parseYesNoUppercase() {
-        Human human = birth("asdf\nNO\nYES");
-        assertFalse(human.respondYesOrNo(""));
-        assertTrue(human.respondYesOrNo(""));
+        String input = "asdf\nNO\nYES\n";
+        Human human = birth(input);
+        assertEquals(Player.Response.NO, human.requestGoFirst());
+        assertEquals(Player.Response.YES, human.requestGoFirst());
+
+        human = birth(input);
+        assertEquals(Player.Response.NO, human.requestPlayAgain());
+        assertEquals(Player.Response.YES, human.requestPlayAgain());
     }
 
     @Test
     public void parseYNLowercaseWithInvalid() {
-        Human human = birth("asdf\nNOPE\ny\nn");
-        assertTrue(human.respondYesOrNo(""));
-        assertFalse(human.respondYesOrNo(""));
+        String input = "asdf\nNOPE\ny\nn";
+        Human human = birth(input);
+        assertEquals(Player.Response.YES, human.requestGoFirst());
+        assertEquals(Player.Response.NO, human.requestGoFirst());
+
+        human = birth(input);
+        assertEquals(Player.Response.YES, human.requestPlayAgain());
+        assertEquals(Player.Response.NO, human.requestPlayAgain());
     }
 
 }

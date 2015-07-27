@@ -11,7 +11,7 @@ public class SizeConfiguration implements Configuration {
     public void apply(List<String> args, Simulation simulation)
             throws CannotApplyException {
         try {
-            int size = Extractor.extract(args, KEY, DEFAULT_SIZE);
+            int size = Extractor.parseInt(args, KEY, DEFAULT_SIZE);
             simulation.setSize(size);
         } catch (NumberFormatException e) {
             throw new CannotApplyException();

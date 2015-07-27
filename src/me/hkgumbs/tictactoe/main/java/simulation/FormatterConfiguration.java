@@ -19,7 +19,7 @@ public class FormatterConfiguration implements Configuration {
     public void apply(List<String> args, Simulation simulation)
             throws CannotApplyException {
         int size = simulation.getSize();
-        int padding = Extractor.extract(args, KEY, DEFAULT_PADDING);
+        int padding = Extractor.parseInt(args, KEY, DEFAULT_PADDING);
         BoardFormatter formatter = new SquareBoardFormatter(size, SLOT);
         simulation.setFormatter(formatter);
         formatter.setPadding(padding);

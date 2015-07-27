@@ -14,28 +14,28 @@ public class ExtractorTest {
     @Test
     public void extractTen() {
         List<String> args = new ArrayList<>(Arrays.asList("--key", "10"));
-        assertEquals(10, Extractor.extract(args, "--key", 5));
+        assertEquals(10, Extractor.parseInt(args, "--key", 5));
         assertEquals(0, args.size());
     }
 
     @Test
     public void extractFiftyFive() {
         List<String> args = new ArrayList<>(Arrays.asList("--key", "55"));
-        assertEquals(55, Extractor.extract(args, "--key", 5));
+        assertEquals(55, Extractor.parseInt(args, "--key", 5));
         assertEquals(0, args.size());
     }
 
     @Test(expected = NumberFormatException.class)
     public void numberFormateException() {
         List<String> args = new ArrayList<>(Arrays.asList("--key", "asdf"));
-        assertEquals(55, Extractor.extract(args, "--key", 5));
+        assertEquals(55, Extractor.parseInt(args, "--key", 5));
         fail("Should have thrown NumberFormatException");
     }
 
     @Test
     public void defaultValue() {
         List<String> args = Arrays.asList("--someOtherConfiguration");
-        assertEquals(5, Extractor.extract(args, "--key", 5));
+        assertEquals(5, Extractor.parseInt(args, "--key", 5));
         assertEquals(1, args.size());
     }
 }

@@ -3,7 +3,7 @@ package me.hkgumbs.tictactoe.main.java.simulation;
 import java.util.List;
 
 public class Extractor {
-    public static int extract(List<String> args, String key, int defaultValue)
+    public static int parseInt(List<String> args, String key, int defaultValue)
             throws NumberFormatException {
         int index = args.indexOf(key);
         if (index == -1)

@@ -67,6 +67,7 @@ public class DefaultController {
         }
 
         void start() {
+            players[0].onboard();
             while (state != State.TERMINATED) {
                 checkSnapshot();
                 if (state == State.INITIAL)
@@ -79,8 +80,6 @@ public class DefaultController {
         }
 
         void stateInitial() {
-            for (Player player : players)
-                player.onboard();
             turn = players[0].requestGoFirst() ? 0 : 1;
             board = new SquareBoard(size);
             state = State.IN_PROGRESS;

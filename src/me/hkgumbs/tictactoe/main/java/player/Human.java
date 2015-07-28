@@ -13,7 +13,7 @@ public class Human implements Player {
     private static final String GO_FIRST =
             "Would you (%s) like to go first? (y/n) ";
     private static final String ONBOARD =
-            "Make a move by entering an empty space id\n";
+            "Make a move by entering an empty space id\n\n";
     private static final String PLAY_AGAIN =
             "Would you (%s) like to play again? (y/n) ";
 

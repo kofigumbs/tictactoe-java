@@ -10,16 +10,20 @@ import me.hkgumbs.tictactoe.test.java.simulation.StubSimulation;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+
 import static org.junit.Assert.*;
 
 public class MinimaxTest {
 
     Board board;
+    OutputStream outputStream = new ByteArrayOutputStream();
 
     private Minimax generate(Board.Mark mark) {
         Simulation simulation = new StubSimulation();
-        simulation.rules = new DefaultRules(3, null, simulation);
-        Minimax minimax = new Minimax(mark, null, simulation);
+        simulation.rules = new DefaultRules(3, outputStream, simulation);
+        Minimax minimax = new Minimax(mark, outputStream, simulation);
         return minimax;
     }
 
@@ -78,21 +82,21 @@ public class MinimaxTest {
     }
 
     @Test
-    public void allRequestsDefault() {
+    public void allRequestsFalse() {
         Minimax x = generate(Board.Mark.X);
         assertFalse(x.requestGoFirst());
         assertFalse(x.requestPlayAgain());
     }
 
     @Test
-    public void fourByFourLessThanThirtySeconds() {
+    public void fourByFourVeryFast() {
         Simulation simulation = new StubSimulation();
-        simulation.rules = new DefaultRules(4, null, simulation);
-        Minimax x = new Minimax(Board.Mark.X, null, simulation);
+        simulation.rules = new DefaultRules(4, outputStream, simulation);
+        Minimax x = new Minimax(Board.Mark.X, outputStream, simulation);
         board = new SquareBoard(4).add(0, Board.Mark.O);
         long start = System.currentTimeMillis();
         x.determineNextMove(board);
         long end = System.currentTimeMillis();
-        assertTrue(end - start < 30000l);
+        assertTrue(end - start < 1500l);
     }
 }

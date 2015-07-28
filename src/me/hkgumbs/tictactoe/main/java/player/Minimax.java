@@ -5,20 +5,38 @@ import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.TreeMap;
 
 public class Minimax implements Player {
+
+    private class MoveScore {
+        final int move;
+        final int score;
+
+        MoveScore(int move, int score) {
+            this.move = move;
+            this.score = score;
+        }
+    }
 
     private static final int MAX_SCORE = 10;
 
     private final Board.Mark mark;
     private final OutputStream outputStream;
     private final Simulation simulation;
+    private final HashMap<String, MoveScore> cache;
 
     private int bestMove;
 
     private int determineNextMove(Board board, Board.Mark current, int depth,
                                   int alpha, int beta) {
+        if (cache.containsKey(board.toString())) {
+            MoveScore moveScore = cache.get(board.toString());
+            bestMove = moveScore.move;
+            return moveScore.score;
+        }
+
         if (simulation.rules.gameIsOver(board))
             return score(board, depth);
 
@@ -38,6 +56,7 @@ public class Minimax implements Player {
                 beta = Integer.min(cutoff, beta);
             }
 
+            cache.put(copy.toString(), new MoveScore(position, score));
             scores.putIfAbsent(score, position);
             if (beta <= alpha)
                 break;
@@ -49,8 +68,7 @@ public class Minimax implements Player {
     }
 
     private void printBestMove() {
-        if (outputStream != null)
-            new PrintStream(outputStream).println(mark + " >> " + bestMove);
+        new PrintStream(outputStream).println(mark + " >> " + bestMove);
     }
 
     private int score(Board board, int depth) {
@@ -69,6 +87,7 @@ public class Minimax implements Player {
         this.mark = mark;
         this.outputStream = outputStream;
         this.simulation = simulation;
+        cache = new HashMap<>();
     }
 
     @Override
@@ -96,9 +115,11 @@ public class Minimax implements Player {
         if (board.isEmpty())
             /* calculations are not worth it */
             bestMove = 0;
-        else
+        else {
+            cache.clear();
             determineNextMove(
                     board, mark, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        }
         printBestMove();
         return bestMove;
     }

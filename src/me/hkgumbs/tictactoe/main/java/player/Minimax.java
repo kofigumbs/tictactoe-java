@@ -5,9 +5,7 @@ import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.TreeMap;
 
 public class Minimax implements Player {
 
@@ -19,31 +17,35 @@ public class Minimax implements Player {
 
     private int bestMove;
 
-    private int calculateBestScore(
-            Board.Mark current, List<Integer> scores, List<Integer> moves) {
-        int scoreIndex;
-        if (current == mark)
-            scoreIndex = scores.indexOf(Collections.max(scores));
-        else
-            scoreIndex = scores.indexOf(Collections.min(scores));
-        bestMove = moves.get(scoreIndex);
-        return scores.get(scoreIndex);
-    }
-
-    private int determineNextMove(Board board, Board.Mark current, int depth) {
+    private int determineNextMove(Board board, Board.Mark current, int depth,
+                                  int alpha, int beta) {
         if (simulation.rules.gameIsOver(board))
             return score(board, depth);
 
-        List<Integer> scores = new ArrayList<>();
-        List<Integer> moves = new ArrayList<>();
+        TreeMap<Integer, Integer> scores = new TreeMap<>();
+        int cutoff = mark == current ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 
         for (int position : board.getEmptySpaceIds()) {
             Board copy = board.add(position, current);
-            scores.add(determineNextMove(copy, current.other(), depth + 1));
-            moves.add(position);
+            int score = determineNextMove(
+                    copy, current.other(), depth + 1, alpha, beta);
+
+            if (mark == current) {
+                cutoff = Integer.max(score, cutoff);
+                alpha = Integer.max(cutoff, alpha);
+            } else {
+                cutoff = Integer.min(score, cutoff);
+                beta = Integer.min(cutoff, beta);
+            }
+
+            scores.putIfAbsent(score, position);
+            if (beta <= alpha)
+                break;
         }
 
-        return calculateBestScore(current, scores, moves);
+        int key = mark == current ? scores.lastKey() : scores.firstKey();
+        bestMove = scores.get(key);
+        return key;
     }
 
     private void printBestMove() {
@@ -95,7 +97,8 @@ public class Minimax implements Player {
             /* calculations are not worth it */
             bestMove = 0;
         else
-            determineNextMove(board, mark, 0);
+            determineNextMove(
+                    board, mark, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
         printBestMove();
         return bestMove;
     }

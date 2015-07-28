@@ -84,4 +84,16 @@ public class MinimaxTest {
         assertEquals(Player.Response.DEFAULT, x.requestGoFirst());
         assertEquals(Player.Response.DEFAULT, x.requestPlayAgain());
     }
+
+    @Test
+    public void fourByFourLessThanThirtySeconds() {
+        Simulation simulation = new StubSimulation();
+        simulation.rules = new DefaultRules(4, null, simulation);
+        Minimax x = new Minimax(Board.Mark.X, null, simulation);
+        board = new SquareBoard(4).add(0, Board.Mark.O);
+        long start = System.currentTimeMillis();
+        x.determineNextMove(board);
+        long end = System.currentTimeMillis();
+        assertTrue(end - start < 30000l);
+    }
 }

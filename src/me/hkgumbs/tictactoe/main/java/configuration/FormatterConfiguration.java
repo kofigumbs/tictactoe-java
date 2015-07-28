@@ -1,9 +1,11 @@
-package me.hkgumbs.tictactoe.main.java.simulation;
+package me.hkgumbs.tictactoe.main.java.configuration;
 
 import me.hkgumbs.tictactoe.main.java.formatter.BoardFormatter;
 import me.hkgumbs.tictactoe.main.java.formatter.DefaultSlotRepresentation;
 import me.hkgumbs.tictactoe.main.java.formatter.SlotRepresentation;
 import me.hkgumbs.tictactoe.main.java.formatter.SquareBoardFormatter;
+import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
+import me.hkgumbs.tictactoe.main.java.utility.Extractor;
 
 import java.util.List;
 

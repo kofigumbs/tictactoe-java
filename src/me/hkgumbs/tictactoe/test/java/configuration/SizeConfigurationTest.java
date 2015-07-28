@@ -1,8 +1,9 @@
-package me.hkgumbs.tictactoe.test.java.simulation;
+package me.hkgumbs.tictactoe.test.java.configuration;
 
-import me.hkgumbs.tictactoe.main.java.simulation.Configuration;
+import me.hkgumbs.tictactoe.main.java.configuration.Configuration;
 import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
-import me.hkgumbs.tictactoe.main.java.simulation.SizeConfiguration;
+import me.hkgumbs.tictactoe.main.java.configuration.SizeConfiguration;
+import me.hkgumbs.tictactoe.test.java.simulation.StubSimulation;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 
-public class SizeConfigurationsTest {
+public class SizeConfigurationTest {
 
 
     public Simulation configure(String... args) {

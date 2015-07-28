@@ -1,6 +1,6 @@
-package me.hkgumbs.tictactoe.test.java.simulation;
+package me.hkgumbs.tictactoe.test.java.utility;
 
-import me.hkgumbs.tictactoe.main.java.simulation.Extractor;
+import me.hkgumbs.tictactoe.main.java.utility.Extractor;
 import org.junit.Test;
 
 import java.util.ArrayList;

@@ -2,7 +2,9 @@ package me.hkgumbs.tictactoe.main.java.simulation;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
+import me.hkgumbs.tictactoe.main.java.configuration.*;
 import me.hkgumbs.tictactoe.main.java.player.Player;
+import me.hkgumbs.tictactoe.main.java.utility.Snapshot;
 
 import java.io.InputStream;
 import java.io.OutputStream;

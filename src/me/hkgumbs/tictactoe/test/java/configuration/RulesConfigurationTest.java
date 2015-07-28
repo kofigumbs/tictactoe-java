@@ -1,10 +1,11 @@
-package me.hkgumbs.tictactoe.test.java.simulation;
+package me.hkgumbs.tictactoe.test.java.configuration;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
-import me.hkgumbs.tictactoe.main.java.simulation.Configuration;
-import me.hkgumbs.tictactoe.main.java.simulation.RulesConfiguration;
+import me.hkgumbs.tictactoe.main.java.configuration.Configuration;
+import me.hkgumbs.tictactoe.main.java.configuration.RulesConfiguration;
 import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
+import me.hkgumbs.tictactoe.test.java.simulation.StubSimulation;
 import org.junit.Test;
 
 import java.util.Arrays;

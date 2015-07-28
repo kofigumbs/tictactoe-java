@@ -1,4 +1,6 @@
-package me.hkgumbs.tictactoe.main.java.simulation;
+package me.hkgumbs.tictactoe.main.java.configuration;
+
+import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 
 import java.util.List;
 

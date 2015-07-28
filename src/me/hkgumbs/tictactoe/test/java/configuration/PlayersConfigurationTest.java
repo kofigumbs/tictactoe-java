@@ -1,11 +1,12 @@
-package me.hkgumbs.tictactoe.test.java.simulation;
+package me.hkgumbs.tictactoe.test.java.configuration;
 
 import me.hkgumbs.tictactoe.main.java.player.Human;
 import me.hkgumbs.tictactoe.main.java.player.Minimax;
 import me.hkgumbs.tictactoe.main.java.player.Player;
-import me.hkgumbs.tictactoe.main.java.simulation.Configuration;
-import me.hkgumbs.tictactoe.main.java.simulation.PlayersConfiguration;
+import me.hkgumbs.tictactoe.main.java.configuration.Configuration;
+import me.hkgumbs.tictactoe.main.java.configuration.PlayersConfiguration;
 import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
+import me.hkgumbs.tictactoe.test.java.simulation.StubSimulation;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -19,7 +20,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 
-public class PlayersConfigurationsTest {
+public class PlayersConfigurationTest {
 
     public Simulation configure(String... arguments) {
         InputStream inputStream = new ByteArrayInputStream("".getBytes());

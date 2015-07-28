@@ -5,7 +5,7 @@ import me.hkgumbs.tictactoe.main.java.formatter.SquareBoardFormatter;
 import me.hkgumbs.tictactoe.main.java.player.Human;
 import me.hkgumbs.tictactoe.main.java.player.Minimax;
 import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
-import me.hkgumbs.tictactoe.main.java.simulation.Configuration;
+import me.hkgumbs.tictactoe.main.java.configuration.Configuration;
 import me.hkgumbs.tictactoe.main.java.simulation.DefaultController;
 import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 import org.junit.Test;

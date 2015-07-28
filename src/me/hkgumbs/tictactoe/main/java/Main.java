@@ -1,6 +1,6 @@
 package me.hkgumbs.tictactoe.main.java;
 
-import me.hkgumbs.tictactoe.main.java.simulation.Configuration;
+import me.hkgumbs.tictactoe.main.java.configuration.Configuration;
 import me.hkgumbs.tictactoe.main.java.simulation.DefaultController;
 
 import java.util.NoSuchElementException;

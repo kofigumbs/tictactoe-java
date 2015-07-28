@@ -1,9 +1,10 @@
-package me.hkgumbs.tictactoe.test.java.simulation;
+package me.hkgumbs.tictactoe.test.java.configuration;
 
 import me.hkgumbs.tictactoe.main.java.formatter.SquareBoardFormatter;
-import me.hkgumbs.tictactoe.main.java.simulation.Configuration;
-import me.hkgumbs.tictactoe.main.java.simulation.FormatterConfiguration;
+import me.hkgumbs.tictactoe.main.java.configuration.Configuration;
+import me.hkgumbs.tictactoe.main.java.configuration.FormatterConfiguration;
 import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
+import me.hkgumbs.tictactoe.test.java.simulation.StubSimulation;
 import org.junit.Test;
 
 import java.util.ArrayList;

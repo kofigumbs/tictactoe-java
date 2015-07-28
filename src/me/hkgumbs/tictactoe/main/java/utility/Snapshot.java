@@ -1,4 +1,4 @@
-package me.hkgumbs.tictactoe.main.java.simulation;
+package me.hkgumbs.tictactoe.main.java.utility;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;

@@ -1,7 +1,8 @@
-package me.hkgumbs.tictactoe.main.java.simulation;
+package me.hkgumbs.tictactoe.main.java.configuration;
 
 import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
 import me.hkgumbs.tictactoe.main.java.rules.Rules;
+import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 
 import java.io.OutputStream;
 import java.util.List;

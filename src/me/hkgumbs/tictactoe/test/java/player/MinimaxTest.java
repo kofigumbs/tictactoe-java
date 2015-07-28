@@ -3,7 +3,6 @@ package me.hkgumbs.tictactoe.test.java.player;
 import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
 import me.hkgumbs.tictactoe.main.java.player.Minimax;
-import me.hkgumbs.tictactoe.main.java.player.Player;
 import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
 import me.hkgumbs.tictactoe.main.java.rules.Rules;
 import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
@@ -81,8 +80,8 @@ public class MinimaxTest {
     @Test
     public void allRequestsDefault() {
         Minimax x = generate(Board.Mark.X);
-        assertEquals(Player.Response.DEFAULT, x.requestGoFirst());
-        assertEquals(Player.Response.DEFAULT, x.requestPlayAgain());
+        assertFalse(x.requestGoFirst());
+        assertFalse(x.requestPlayAgain());
     }
 
     @Test

@@ -35,8 +35,8 @@ public class PlayersConfiguration implements Configuration {
 
     private Player[] getHumanAndMinimax() {
         return new Player[]{
-                new Minimax(Board.Mark.X, outputStream, simulation),
-                new Human(Board.Mark.O, inputStream, outputStream, simulation)
+                new Human(Board.Mark.O, inputStream, outputStream, simulation),
+                new Minimax(Board.Mark.X, outputStream, simulation)
         };
     }
 

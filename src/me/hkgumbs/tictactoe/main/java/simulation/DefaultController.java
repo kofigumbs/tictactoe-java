@@ -61,31 +61,9 @@ public class DefaultController {
     }
 
     private class DefaultSimulation extends Simulation {
-
-        void assignTurn() {
-            turn = 0;
-            for (int i = 0; i < players.length; i++)
-                if (players[i].requestGoFirst() == Player.Response.YES) {
-                    turn = i;
-                    break;
-                }
-        }
-
         void checkSnapshot() {
             if (!new Snapshot(this).equals(snapshot))
                 throw new ConcurrentModificationException();
-        }
-
-        boolean determineReplay() {
-            boolean replay = false;
-            for (Player player : players) {
-                Player.Response response = player.requestPlayAgain();
-                if (response == Player.Response.YES)
-                    replay = true;
-                else if (response == Player.Response.NO)
-                    return false;
-            }
-            return replay;
         }
 
         void start() {
@@ -103,7 +81,7 @@ public class DefaultController {
         void stateInitial() {
             for (Player player : players)
                 player.onboard();
-            assignTurn();
+            turn = players[0].requestGoFirst() ? 0 : 1;
             board = new SquareBoard(size);
             state = State.IN_PROGRESS;
         }
@@ -119,8 +97,7 @@ public class DefaultController {
 
         void stateCompleted() {
             rules.printWinnerMessage(board);
-            boolean replay = determineReplay();
-            if (replay)
+            if (players[0].requestPlayAgain())
                 state = State.INITIAL;
             else
                 state = State.TERMINATED;

@@ -63,8 +63,8 @@ public class DefaultControllerTest {
         assertEquals(3, simulation.size);
         assertTrue(simulation.formatter instanceof SquareBoardFormatter);
         assertTrue(simulation.rules instanceof DefaultRules);
-        assertTrue(simulation.players[0] instanceof Minimax);
-        assertTrue(simulation.players[1] instanceof Human);
+        assertTrue(simulation.players[0] instanceof Human);
+        assertTrue(simulation.players[1] instanceof Minimax);
     }
 
     @Test(expected = Configuration.CannotApplyException.class)

@@ -82,13 +82,13 @@ public class Minimax implements Player {
     }
 
     @Override
-    public Response requestGoFirst() {
-        return Response.DEFAULT;
+    public boolean requestGoFirst() {
+        return false;
     }
 
     @Override
-    public Response requestPlayAgain() {
-        return Response.DEFAULT;
+    public boolean requestPlayAgain() {
+        return false;
     }
 
     @Override

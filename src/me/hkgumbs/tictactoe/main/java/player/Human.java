@@ -37,9 +37,9 @@ public class Human implements Player {
         }
     }
 
-    private Response getResponse(String question) {
+    private boolean getResponse(String question) {
         output.format(question, mark);
-        return getResponse() ? Response.YES : Response.NO;
+        return getResponse();
     }
 
     private boolean getResponse() {
@@ -83,12 +83,12 @@ public class Human implements Player {
     }
 
     @Override
-    public Response requestGoFirst() {
+    public boolean requestGoFirst() {
         return getResponse(GO_FIRST);
     }
 
     @Override
-    public Response requestPlayAgain() {
+    public boolean requestPlayAgain() {
         return getResponse(PLAY_AGAIN);
     }
 

@@ -66,11 +66,11 @@ public class HumanTest {
     public void multiWordResponse() {
         String input = "foo bar y\nn\nasdf asdf\n0\n";
         Human human = birth(input);
-        assertEquals(Player.Response.NO, human.requestGoFirst());
+        assertFalse(human.requestGoFirst());
         assertEquals(0, human.determineNextMove(board));
 
         human = birth(input);
-        assertEquals(Player.Response.NO, human.requestPlayAgain());
+        assertFalse(human.requestPlayAgain());
         assertEquals(0, human.determineNextMove(board));
     }
 
@@ -78,24 +78,24 @@ public class HumanTest {
     public void parseYesNoUppercase() {
         String input = "asdf\nNO\nYES\n";
         Human human = birth(input);
-        assertEquals(Player.Response.NO, human.requestGoFirst());
-        assertEquals(Player.Response.YES, human.requestGoFirst());
+        assertFalse(human.requestGoFirst());
+        assertTrue(human.requestGoFirst());
 
         human = birth(input);
-        assertEquals(Player.Response.NO, human.requestPlayAgain());
-        assertEquals(Player.Response.YES, human.requestPlayAgain());
+        assertFalse(human.requestPlayAgain());
+        assertTrue(human.requestPlayAgain());
     }
 
     @Test
     public void parseYNLowercaseWithInvalid() {
         String input = "asdf\nNOPE\ny\nn";
         Human human = birth(input);
-        assertEquals(Player.Response.YES, human.requestGoFirst());
-        assertEquals(Player.Response.NO, human.requestGoFirst());
+        assertTrue(human.requestGoFirst());
+        assertFalse(human.requestGoFirst());
 
         human = birth(input);
-        assertEquals(Player.Response.YES, human.requestPlayAgain());
-        assertEquals(Player.Response.NO, human.requestPlayAgain());
+        assertTrue(human.requestPlayAgain());
+        assertFalse(human.requestPlayAgain());
     }
 
 }

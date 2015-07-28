@@ -4,18 +4,14 @@ import me.hkgumbs.tictactoe.main.java.board.Board;
 
 public interface Player {
 
-    enum Response {
-        YES, NO, DEFAULT
-    }
-
     int determineNextMove(Board board);
 
     Board.Mark getMark();
 
     void onboard();
 
-    Response requestGoFirst();
+    boolean requestGoFirst();
 
-    Response requestPlayAgain();
+    boolean requestPlayAgain();
 
 }

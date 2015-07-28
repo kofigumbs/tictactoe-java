@@ -20,12 +20,12 @@ public class SnapshotTest {
     @Before
     public void setup() {
         mock = new MockObject();
-        snapshot = Snapshot.of(mock);
+        snapshot = new Snapshot(mock);
     }
 
     @Test
     public void notModified() {
-        assertEquals(snapshot, Snapshot.of(mock));
+        assertEquals(snapshot, new Snapshot(mock));
     }
 
     @Test
@@ -35,24 +35,24 @@ public class SnapshotTest {
 
     @Test
     public void differentClassNotEqual() {
-        assertNotEquals(snapshot, Snapshot.of(new Object()));
+        assertNotEquals(snapshot, new Snapshot(new Object()));
     }
 
     @Test
     public void modifyIntField() {
         mock.intField = 2;
-        assertNotEquals(snapshot, Snapshot.of(mock));
+        assertNotEquals(snapshot, new Snapshot(mock));
     }
 
     @Test
     public void modifyObjectField() {
         mock.objectField = new Object();
-        assertNotEquals(snapshot, Snapshot.of(mock));
+        assertNotEquals(snapshot, new Snapshot(mock));
     }
 
     @Test
     public void modifyArrayField() {
         mock.arrayField[1] = "modification";
-        assertNotEquals(snapshot, Snapshot.of(mock));
+        assertNotEquals(snapshot, new Snapshot(mock));
     }
 }

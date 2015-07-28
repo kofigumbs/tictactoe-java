@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class Snapshot {
     private final int hashCode;
 
-    private Snapshot(Object object) {
+    public Snapshot(Object object) {
         Field[] fields = object.getClass().getFields();
         Object[] values = new Object[fields.length];
         for (int i = 0; i < fields.length; i++)
@@ -29,7 +29,4 @@ public class Snapshot {
         return hashCode == ((Snapshot) obj).hashCode;
     }
 
-    public static Snapshot of(Object object) {
-        return new Snapshot(object);
-    }
 }

@@ -19,7 +19,4 @@ public abstract class Simulation {
     public Rules rules = null;
 
     public abstract State getState();
-
-    public class AlreadyStartedException extends Throwable {
-    }
 }

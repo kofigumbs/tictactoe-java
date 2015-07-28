@@ -35,7 +35,7 @@ public class DefaultController {
     private void makeSimulation() throws Configuration.CannotApplyException {
         simulation = new DefaultSimulation();
         applyConfigurations();
-        snapshot = Snapshot.of(simulation);
+        snapshot = new Snapshot(simulation);
         state = Simulation.State.INITIAL;
     }
 
@@ -72,8 +72,20 @@ public class DefaultController {
         }
 
         void checkSnapshot() {
-            if (!Snapshot.of(this).equals(snapshot))
+            if (!new Snapshot(this).equals(snapshot))
                 throw new ConcurrentModificationException();
+        }
+
+        boolean determineReplay() {
+            boolean replay = false;
+            for (Player player : players) {
+                Player.Response response = player.requestPlayAgain();
+                if (response == Player.Response.YES)
+                    replay = true;
+                else if (response == Player.Response.NO)
+                    return false;
+            }
+            return replay;
         }
 
         void start() {
@@ -88,7 +100,7 @@ public class DefaultController {
             }
         }
 
-        private void stateInitial() {
+        void stateInitial() {
             for (Player player : players)
                 player.onboard();
             assignTurn();
@@ -96,7 +108,7 @@ public class DefaultController {
             state = State.IN_PROGRESS;
         }
 
-        private void stateInProgress() {
+        void stateInProgress() {
             Player current = players[turn];
             int position = current.determineNextMove(board);
             board = board.add(position, current.getMark());
@@ -105,23 +117,13 @@ public class DefaultController {
                 state = State.COMPLETED;
         }
 
-        private void stateCompleted() {
+        void stateCompleted() {
             rules.printWinnerMessage(board);
-            boolean replay = false;
-            for (Player player : players) {
-                Player.Response response = player.requestPlayAgain();
-                if (response == Player.Response.YES)
-                    replay = true;
-                else if (response == Player.Response.NO) {
-                    replay = false;
-                    break;
-                }
-            }
+            boolean replay = determineReplay();
             if (replay)
                 state = State.INITIAL;
             else
                 state = State.TERMINATED;
-
         }
 
         @Override

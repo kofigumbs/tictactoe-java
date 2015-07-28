@@ -147,10 +147,13 @@ public class DefaultControllerTest {
     }
 
     @Test
-    public void fullSimulationWithTwoMinimax()
-            throws Configuration.CannotApplyException {
+    public void fullSimulationWithTwoMinimax() {
         String[] args = new String[]{"--minimax"};
-        saveDefaultSimulation("", args);
+        try {
+            saveDefaultSimulation("", args);
+        } catch (Configuration.CannotApplyException e) {
+            fail("--minimax should be a valid option");
+        }
         assertSimulationState(Simulation.State.TERMINATED);
     }
 }

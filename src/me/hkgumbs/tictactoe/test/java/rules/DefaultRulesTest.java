@@ -111,6 +111,7 @@ public class DefaultRulesTest {
         rules.printWinnerMessage(board);
         assertTrue(outputStream.toString().endsWith("Nobody wins!\n"));
     }
+
     @Test
     public void allSpacesFilledGameIsWon() {
         board = board

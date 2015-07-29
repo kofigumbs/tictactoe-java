@@ -1,7 +1,7 @@
 apply plugin: 'application'
 apply plugin: 'java'
 apply plugin: 'jacoco'
-mainClassName = 'me.hkgumbs.tictactoe.main.java.simulation.Simulation'
+mainClassName = 'me.hkgumbs.tictactoe.main.java.Main'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 repositories {

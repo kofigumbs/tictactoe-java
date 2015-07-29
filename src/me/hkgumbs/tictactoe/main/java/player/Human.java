@@ -1,7 +1,7 @@
 package me.hkgumbs.tictactoe.main.java.player;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
-import me.hkgumbs.tictactoe.main.java.rules.Rules;
+import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,40 +10,39 @@ import java.util.Scanner;
 
 public class Human implements Player {
 
+    private static final String GO_FIRST =
+            "Would you (%s) like to go first? (y/n) ";
+    private static final String ONBOARD =
+            "Make a move by entering an empty space id\n\n";
+    private static final String PLAY_AGAIN =
+            "Would you (%s) like to play again? (y/n) ";
+
     private final Scanner input;
-    private final PrintStream error;
+    private final PrintStream output;
     private final Board.Mark mark;
+    private final Simulation simulation;
 
-    public Human(Board.Mark mark,
-                 InputStream inputStream, OutputStream errorStream) {
-        this.mark = mark;
-        input = new Scanner(inputStream);
-        error = new PrintStream(errorStream);
-    }
-
-    @Override
-    public int evaluate(Board board) {
+    private int respondValidMove(Board board) {
         while (true) {
             try {
                 String response = input.nextLine();
                 response = response.split(" ", 2)[0];
-                int move = Integer.parseInt(response);
-                if (Rules.validate(board, move))
-                    return move;
+                int position = Integer.parseInt(response);
+                if (simulation.rules.validateMove(board, position))
+                    return position;
             } catch (NumberFormatException e) {
                 /* caused when non-numeric text is entered */
             }
-            error.print("Invalid move! ");
+            output.print("Invalid move! ");
         }
     }
 
-    @Override
-    public Board.Mark getMark() {
-        return mark;
+    private boolean getResponse(String question) {
+        output.format(question, mark);
+        return getResponse();
     }
 
-    @Override
-    public boolean yesOrNo() {
+    private boolean getResponse() {
         while (true) {
             String response = input.nextLine().toLowerCase();
             response = response.split(" ", 2)[0];
@@ -51,7 +50,46 @@ public class Human implements Player {
                 return true;
             else if (response.equals("n") || response.equals("no"))
                 return false;
-            error.print("Invalid response! ");
+            output.print("Invalid response! ");
         }
     }
+
+    public Human(Board.Mark mark,
+                 InputStream inputStream,
+                 OutputStream outputStream,
+                 Simulation simulation) {
+        this.mark = mark;
+        this.simulation = simulation;
+        input = new Scanner(inputStream);
+        output = new PrintStream(outputStream);
+    }
+
+    @Override
+    public int determineNextMove(Board board) {
+        output.println(simulation.formatter.format(board));
+        output.print(mark + " >> ");
+        return respondValidMove(board);
+    }
+
+    @Override
+    public Board.Mark getMark() {
+        return mark;
+    }
+
+
+    @Override
+    public void onboard() {
+        output.print(ONBOARD);
+    }
+
+    @Override
+    public boolean requestGoFirst() {
+        return getResponse(GO_FIRST);
+    }
+
+    @Override
+    public boolean requestPlayAgain() {
+        return getResponse(PLAY_AGAIN);
+    }
+
 }

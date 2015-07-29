@@ -13,7 +13,7 @@ Playable, unbeatable tic tac toe game.
 
     ```
     gradle jar
-    java -jar build/libs/tictactoe-java.jar
+    java -jar build/libs/tictactoe-java.jar [--size <number>] [--padding <number>] [--humans|--minimax]
     ```
 
 - See jUnit test report:

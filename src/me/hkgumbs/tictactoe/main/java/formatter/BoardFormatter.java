@@ -4,7 +4,9 @@ import me.hkgumbs.tictactoe.main.java.board.Board;
 
 public interface BoardFormatter {
 
-    String print(Board board);
+    String format(Board board);
 
     void setPadding(int padding);
+
+    int getPadding();
 }

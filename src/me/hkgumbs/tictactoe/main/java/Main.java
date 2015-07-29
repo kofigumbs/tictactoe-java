@@ -14,7 +14,6 @@ public class Main {
             "\nPLAYER must be one of the following: human, minimax, naive";
 
     public static void main(String[] args) {
-        System.out.println(Arrays.asList(args));
         try {
             DefaultController controller =
                     new DefaultController(System.in, System.out, args);

@@ -1,7 +1,7 @@
 package me.hkgumbs.tictactoe.test.java.configuration;
 
+import me.hkgumbs.tictactoe.main.java.player.Computer;
 import me.hkgumbs.tictactoe.main.java.player.Human;
-import me.hkgumbs.tictactoe.main.java.player.Minimax;
 import me.hkgumbs.tictactoe.main.java.player.Player;
 import me.hkgumbs.tictactoe.main.java.configuration.Configuration;
 import me.hkgumbs.tictactoe.main.java.configuration.PlayersConfiguration;
@@ -45,7 +45,7 @@ public class PlayersConfigurationTest {
         for (Player player : simulation.players)
             if (player instanceof Human)
                 humanCount++;
-            else if (player instanceof Minimax)
+            else if (player instanceof Computer)
                 minimaxCount++;
         assertEquals(1, humanCount);
         assertEquals(1, minimaxCount);
@@ -55,8 +55,8 @@ public class PlayersConfigurationTest {
     @Test
     public void twoMinimax() {
         Simulation simulation = configure("--minimax");
-        assertTrue(simulation.players[0] instanceof Minimax);
-        assertTrue(simulation.players[1] instanceof Minimax);
+        assertTrue(simulation.players[0] instanceof Computer);
+        assertTrue(simulation.players[1] instanceof Computer);
         assertEquals(2, simulation.players.length);
     }
 

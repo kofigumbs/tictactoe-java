@@ -5,8 +5,6 @@ import me.hkgumbs.tictactoe.main.java.board.Board;
 public interface Rules {
     Board.Mark determineWinner(Board board);
 
-    void printWinnerMessage(Board board);
-
     boolean gameIsOver(Board board);
 
     boolean validateMove(Board board, int position);

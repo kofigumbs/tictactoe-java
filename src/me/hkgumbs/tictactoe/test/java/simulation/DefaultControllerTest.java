@@ -2,8 +2,8 @@ package me.hkgumbs.tictactoe.test.java.simulation;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.formatter.SquareBoardFormatter;
+import me.hkgumbs.tictactoe.main.java.player.Computer;
 import me.hkgumbs.tictactoe.main.java.player.Human;
-import me.hkgumbs.tictactoe.main.java.player.Minimax;
 import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
 import me.hkgumbs.tictactoe.main.java.configuration.Configuration;
 import me.hkgumbs.tictactoe.main.java.simulation.DefaultController;
@@ -64,7 +64,7 @@ public class DefaultControllerTest {
         assertTrue(simulation.formatter instanceof SquareBoardFormatter);
         assertTrue(simulation.rules instanceof DefaultRules);
         assertTrue(simulation.players[0] instanceof Human);
-        assertTrue(simulation.players[1] instanceof Minimax);
+        assertTrue(simulation.players[1] instanceof Computer);
     }
 
     @Test(expected = Configuration.CannotApplyException.class)
@@ -86,8 +86,8 @@ public class DefaultControllerTest {
     @Test(expected = ConcurrentModificationException.class)
     public void concurrentModificationWhenSwappingPlayer() {
         saveDefaultSimulation();
-        simulation.players[1] = new Minimax(
-                Board.Mark.O, outputStream, simulation);
+        simulation.players[1] = new Human(
+                Board.Mark.O, inputStream, outputStream, simulation);
         controller.startSimulation();
         fail("Simulation should be uneditable once initialized");
     }

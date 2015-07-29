@@ -2,100 +2,81 @@ package me.hkgumbs.tictactoe.test.java.player;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
+import me.hkgumbs.tictactoe.main.java.player.Algorithm;
 import me.hkgumbs.tictactoe.main.java.player.Minimax;
 import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
 import me.hkgumbs.tictactoe.main.java.rules.Rules;
-import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
-import me.hkgumbs.tictactoe.test.java.simulation.StubSimulation;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 
 import static org.junit.Assert.*;
 
 public class MinimaxTest {
 
-    Board board;
-    OutputStream outputStream = new ByteArrayOutputStream();
-
-    private Minimax generate(Board.Mark mark) {
-        Simulation simulation = new StubSimulation();
-        simulation.rules = new DefaultRules(3, outputStream, simulation);
-        Minimax minimax = new Minimax(mark, outputStream, simulation);
-        return minimax;
-    }
+    Rules defaultRules = new DefaultRules(3);
+    Board squareBoard;
 
     @Before
     public void setup() {
-        board = new SquareBoard(3);
+        squareBoard = new SquareBoard(3);
     }
 
     @Test
-    public void testFirstMove() {
-        Minimax minimax = generate(Board.Mark.X);
-        int result = minimax.determineNextMove(board);
-        assertEquals(0, result);
+    public void emptyBoard() {
+        Algorithm minimax = new Minimax(Board.Mark.X, defaultRules);
+        assertEquals(0, minimax.run(squareBoard));
     }
 
     @Test
     public void blockWinningPlay() {
-        board = board
+        squareBoard = squareBoard
                 .add(0, Board.Mark.X).add(4, Board.Mark.O).add(6, Board.Mark.X);
-        int result = generate(Board.Mark.O).determineNextMove(board);
-        assertEquals(3, result);
+        Algorithm minimax = new Minimax(Board.Mark.O, defaultRules);
+        assertEquals(3, minimax.run(squareBoard));
     }
 
     @Test
     public void xMakeWinningPlay() {
-        board = board
+        squareBoard = squareBoard
                 .add(0, Board.Mark.X).add(1, Board.Mark.O)
                 .add(4, Board.Mark.X).add(5, Board.Mark.O);
-        int result = generate(Board.Mark.X).determineNextMove(board);
-        assertEquals(8, result);
+        Algorithm minimax = new Minimax(Board.Mark.X, defaultRules);
+        assertEquals(8, minimax.run(squareBoard));
     }
 
     @Test
     public void oMakeWinningPlay() {
-        board = board
+        squareBoard = squareBoard
                 .add(0, Board.Mark.X).add(2, Board.Mark.O).add(1, Board.Mark.X)
                 .add(5, Board.Mark.O).add(3, Board.Mark.X);
-        int result = generate(Board.Mark.O).determineNextMove(board);
-        assertEquals(8, result);
+        Algorithm minimax = new Minimax(Board.Mark.O, defaultRules);
+        assertEquals(8, minimax.run(squareBoard));
     }
 
     @Test
-    public void twoSolversTie() {
+    public void twoMinimaxTie() {
         boolean xTurn = true;
-        Minimax x = generate(Board.Mark.X);
-        Minimax o = generate(Board.Mark.O);
-        Rules rules = new DefaultRules(3, null, new StubSimulation());
-        while (!rules.gameIsOver(board)) {
-            Minimax current = xTurn ? x : o;
-            int move = current.determineNextMove(board);
-            board = board.add(move, current.getMark());
+        Algorithm x = new Minimax(Board.Mark.X, defaultRules);
+        Algorithm o = new Minimax(Board.Mark.O, defaultRules);
+        while (!defaultRules.gameIsOver(squareBoard)) {
+            Algorithm current = xTurn ? x : o;
+            Board.Mark mark = xTurn ? Board.Mark.X : Board.Mark.O;
+            int move = current.run(squareBoard);
+            squareBoard = squareBoard.add(move, mark);
             xTurn = !xTurn;
         }
-        assertNull(rules.determineWinner(board));
-        assertTrue(board.isFull());
-    }
-
-    @Test
-    public void allRequestsFalse() {
-        Minimax x = generate(Board.Mark.X);
-        assertFalse(x.requestGoFirst());
-        assertFalse(x.requestPlayAgain());
+        assertNull(defaultRules.determineWinner(squareBoard));
+        assertTrue(squareBoard.isFull());
     }
 
     @Test
     public void fourByFourVeryFast() {
-        Simulation simulation = new StubSimulation();
-        simulation.rules = new DefaultRules(4, outputStream, simulation);
-        Minimax x = new Minimax(Board.Mark.X, outputStream, simulation);
-        board = new SquareBoard(4).add(0, Board.Mark.O);
+        defaultRules = new DefaultRules(4);
+        squareBoard = new SquareBoard(4);
+        squareBoard = squareBoard.add(0, Board.Mark.O);
+        Algorithm minimax = new Minimax(Board.Mark.X, defaultRules);
         long start = System.currentTimeMillis();
-        x.determineNextMove(board);
+        minimax.run(squareBoard);
         long end = System.currentTimeMillis();
         assertTrue(end - start < 1500l);
     }

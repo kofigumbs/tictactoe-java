@@ -16,7 +16,7 @@ public class RulesConfigurationTest {
     public void defaultRules() throws Configuration.CannotApplyException {
         Simulation simulation = new StubSimulation();
         Configuration[] configurations = new Configuration[]{
-                new RulesConfiguration(null)
+                new RulesConfiguration()
         };
 
         simulation.size = 3;

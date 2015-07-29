@@ -8,6 +8,7 @@ import me.hkgumbs.tictactoe.main.java.utility.Snapshot;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
@@ -17,6 +18,7 @@ public class DefaultController {
 
     private final Configuration[] configurations;
     private final List<String> arguments;
+    private final PrintStream printStream;
 
     private DefaultSimulation simulation;
     private Simulation.State state;
@@ -42,13 +44,14 @@ public class DefaultController {
     public DefaultController(
             InputStream inputStream, OutputStream outputStream, String[] args)
             throws Configuration.CannotApplyException {
+        arguments = new ArrayList<>(Arrays.asList(args));
+        printStream = new PrintStream(outputStream);
         configurations = new Configuration[]{
                 new SizeConfiguration(),
-                new RulesConfiguration(outputStream),
+                new RulesConfiguration(),
                 new FormatterConfiguration(),
                 new PlayersConfiguration(inputStream, outputStream)
         };
-        arguments = new ArrayList<>(Arrays.asList(args));
         makeSimulation();
     }
 
@@ -95,7 +98,9 @@ public class DefaultController {
         }
 
         void stateCompleted() {
-            rules.printWinnerMessage(board);
+            Board.Mark winner = rules.determineWinner(board);
+            String label = (winner == null ? "Nobody" : winner) + " wins!";
+            printStream.println(formatter.format(board) + "\n" + label);
             if (players[0].requestPlayAgain())
                 state = State.INITIAL;
             else

@@ -1,9 +1,7 @@
 package me.hkgumbs.tictactoe.main.java.configuration;
 
 import me.hkgumbs.tictactoe.main.java.board.Board;
-import me.hkgumbs.tictactoe.main.java.player.Human;
-import me.hkgumbs.tictactoe.main.java.player.Minimax;
-import me.hkgumbs.tictactoe.main.java.player.Player;
+import me.hkgumbs.tictactoe.main.java.player.*;
 import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 
 import java.io.InputStream;
@@ -20,9 +18,11 @@ public class PlayersConfiguration implements Configuration {
     private Simulation simulation;
 
     private Player[] getTwoMinimax() {
+        Algorithm x = new Minimax(Board.Mark.X, simulation.rules);
+        Algorithm o = new Minimax(Board.Mark.O, simulation.rules);
         return new Player[]{
-                new Minimax(Board.Mark.X, outputStream, simulation),
-                new Minimax(Board.Mark.O, outputStream, simulation),
+                new Computer(Board.Mark.X, outputStream, x),
+                new Computer(Board.Mark.O, outputStream, o),
         };
     }
 
@@ -34,9 +34,10 @@ public class PlayersConfiguration implements Configuration {
     }
 
     private Player[] getHumanAndMinimax() {
+        Algorithm minimax = new Minimax(Board.Mark.X, simulation.rules);
         return new Player[]{
                 new Human(Board.Mark.O, inputStream, outputStream, simulation),
-                new Minimax(Board.Mark.X, outputStream, simulation)
+                new Computer(Board.Mark.X, outputStream, minimax)
         };
     }
 

@@ -21,7 +21,7 @@ public class HumanTest {
 
     private Human birth(String contents) {
         Simulation simulation = new StubSimulation();
-        simulation.rules = new DefaultRules(3, null, simulation);
+        simulation.rules = new DefaultRules(3);
         simulation.formatter = new BoardFormatter() {
             @Override
             public String format(Board board) {

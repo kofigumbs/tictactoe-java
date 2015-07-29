@@ -52,7 +52,6 @@ public class ComputerTest {
     @Test
     public void allRequestsFalse() {
         Player x = generate(Board.Mark.X);
-        assertFalse(x.requestGoFirst());
         assertFalse(x.requestPlayAgain());
     }
 

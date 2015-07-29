@@ -83,11 +83,6 @@ public class Human implements Player {
     }
 
     @Override
-    public boolean requestGoFirst() {
-        return getResponse(GO_FIRST);
-    }
-
-    @Override
     public boolean requestPlayAgain() {
         return getResponse(PLAY_AGAIN);
     }

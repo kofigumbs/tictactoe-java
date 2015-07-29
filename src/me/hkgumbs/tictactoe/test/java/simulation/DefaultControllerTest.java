@@ -1,11 +1,8 @@
 package me.hkgumbs.tictactoe.test.java.simulation;
 
-import me.hkgumbs.tictactoe.main.java.board.Board;
-import me.hkgumbs.tictactoe.main.java.formatter.SquareBoardFormatter;
-import me.hkgumbs.tictactoe.main.java.player.Computer;
-import me.hkgumbs.tictactoe.main.java.player.Human;
-import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
 import me.hkgumbs.tictactoe.main.java.configuration.Configuration;
+import me.hkgumbs.tictactoe.main.java.formatter.SquareBoardFormatter;
+import me.hkgumbs.tictactoe.main.java.rules.DefaultRules;
 import me.hkgumbs.tictactoe.main.java.simulation.DefaultController;
 import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 import org.junit.Test;
@@ -18,7 +15,8 @@ import static org.junit.Assert.*;
 
 public class DefaultControllerTest {
 
-    private static final String[] defaultArgs = {"human", "minimax"};
+    private static final String HUMAN_ERROR =
+            "Human v human simulation should be valid input";
 
     Simulation simulation;
     OutputStream outputStream;
@@ -33,30 +31,21 @@ public class DefaultControllerTest {
         }
     }
 
-    private void assertSimulationState(Simulation.State state) {
-        controller.startSimulation();
-        assertEquals(state, simulation.getState());
-        assertInputStreamEmpty();
-    }
-
-    private void saveSimulation(String input, String... args)
+    private void saveSimulation(String input)
             throws Configuration.CannotApplyException {
+        String[] args = {"human", "human"};
         outputStream = new ByteArrayOutputStream();
         inputStream = new ByteArrayInputStream(input.getBytes());
         controller = new DefaultController(inputStream, outputStream, args);
         simulation = controller.getSimulation();
     }
 
-    private void saveDefaultSimulation(String input) {
-        try {
-            saveSimulation(input, defaultArgs);
-        } catch (Configuration.CannotApplyException e) {
-            fail("Default arguments should always be valid");
-        }
-    }
-
     private void saveDefaultSimulation() {
-        saveDefaultSimulation("");
+        try {
+            saveSimulation("");
+        } catch (Configuration.CannotApplyException e) {
+            fail(HUMAN_ERROR);
+        }
     }
 
     @Test
@@ -65,15 +54,15 @@ public class DefaultControllerTest {
         assertEquals(3, simulation.size);
         assertTrue(simulation.formatter instanceof SquareBoardFormatter);
         assertTrue(simulation.rules instanceof DefaultRules);
-        assertTrue(simulation.players[0] instanceof Human);
-        assertTrue(simulation.players[1] instanceof Computer);
     }
 
     @Test(expected = Configuration.CannotApplyException.class)
     public void throwsExceptionOnNonsenseOption()
             throws Configuration.CannotApplyException {
-        saveSimulation("", "--asdf", "human", "human");
-        controller.getSimulation();
+        String[] args = {"--nonsense", "human", "human"};
+        InputStream inputStream = new ByteArrayInputStream("".getBytes());
+        OutputStream outputStream = new ByteArrayOutputStream();
+        new DefaultController(inputStream, outputStream, args);
         fail("Should fail because of nonsense option");
     }
 
@@ -88,8 +77,7 @@ public class DefaultControllerTest {
     @Test(expected = ConcurrentModificationException.class)
     public void concurrentModificationWhenSwappingPlayer() {
         saveDefaultSimulation();
-        simulation.players[1] = new Human(
-                Board.Mark.O, inputStream, outputStream, simulation);
+        simulation.players[1] = simulation.players[0];
         controller.startSimulation();
         fail("Simulation should be uneditable once initialized");
     }
@@ -102,7 +90,7 @@ public class DefaultControllerTest {
 
     @Test
     public void haltPlayerInputThenCheckInProgress() {
-        saveDefaultSimulation("y\n");
+        saveDefaultSimulation();
         try {
             controller.startSimulation();
         } catch (NoSuchElementException e) {
@@ -113,48 +101,16 @@ public class DefaultControllerTest {
     }
 
     @Test
-    public void haltPlayerThenCheckCompleted() {
-        saveDefaultSimulation("n\n5\n3\n");
+    public void haltPlayerThenCheckReplayInProgress() {
         try {
+            saveSimulation("0\n6\n1\n7\n2\n");
             controller.startSimulation();
-        } catch (NoSuchElementException e) {
-        }
-
-        assertEquals(Simulation.State.COMPLETED, simulation.getState());
-        assertInputStreamEmpty();
-    }
-
-    @Test
-    public void haltPlayerThenCheckInitialAgain() {
-        saveDefaultSimulation("n\n5\n3\ny\n");
-        try {
-            controller.startSimulation();
-        } catch (NoSuchElementException e) {
-        }
-
-        assertEquals(Simulation.State.INITIAL, simulation.getState());
-        assertInputStreamEmpty();
-    }
-
-    @Test
-    public void fullSimulation() {
-        saveDefaultSimulation("n\n5\n3\nn\n");
-        assertSimulationState(Simulation.State.TERMINATED);
-    }
-
-    @Test
-    public void fullSimulatioWithReplay() {
-        saveDefaultSimulation("n\n5\n3\ny\nn\n5\n3\nn\n");
-        assertSimulationState(Simulation.State.TERMINATED);
-    }
-
-    @Test
-    public void fullSimulationWithTwoMinimax() {
-        try {
-            saveSimulation("", "minimax", "minimax");
         } catch (Configuration.CannotApplyException e) {
-            fail("minimax should be a valid option");
+            fail(HUMAN_ERROR);
+        } catch (NoSuchElementException e) {
         }
-        assertSimulationState(Simulation.State.TERMINATED);
+
+        assertEquals(Simulation.State.IN_PROGRESS, simulation.getState());
+        assertInputStreamEmpty();
     }
 }

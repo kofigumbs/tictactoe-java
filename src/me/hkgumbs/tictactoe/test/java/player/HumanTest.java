@@ -65,11 +65,7 @@ public class HumanTest {
     @Test
     public void multiWordResponse() {
         String input = "foo bar y\nn\nasdf asdf\n0\n";
-        Human human = birth(input);
-        assertFalse(human.requestGoFirst());
-        assertEquals(0, human.determineNextMove(board));
-
-        human = birth(input);
+        Player human = birth(input);
         assertFalse(human.requestPlayAgain());
         assertEquals(0, human.determineNextMove(board));
     }
@@ -77,11 +73,7 @@ public class HumanTest {
     @Test
     public void parseYesNoUppercase() {
         String input = "asdf\nNO\nYES\n";
-        Human human = birth(input);
-        assertFalse(human.requestGoFirst());
-        assertTrue(human.requestGoFirst());
-
-        human = birth(input);
+        Player human = birth(input);
         assertFalse(human.requestPlayAgain());
         assertTrue(human.requestPlayAgain());
     }
@@ -89,11 +81,7 @@ public class HumanTest {
     @Test
     public void parseYNLowercaseWithInvalid() {
         String input = "asdf\nNOPE\ny\nn";
-        Human human = birth(input);
-        assertTrue(human.requestGoFirst());
-        assertFalse(human.requestGoFirst());
-
-        human = birth(input);
+        Player human = birth(input);
         assertTrue(human.requestPlayAgain());
         assertFalse(human.requestPlayAgain());
     }

@@ -10,8 +10,6 @@ public interface Player {
 
     void onboard();
 
-    boolean requestGoFirst();
-
     boolean requestPlayAgain();
 
 }

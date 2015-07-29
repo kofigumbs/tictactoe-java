@@ -3,6 +3,7 @@ package me.hkgumbs.tictactoe.main.java;
 import me.hkgumbs.tictactoe.main.java.configuration.Configuration;
 import me.hkgumbs.tictactoe.main.java.simulation.DefaultController;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public class Main {
@@ -10,9 +11,10 @@ public class Main {
             " [--size <number>]" +
             " [--padding <number>]" +
             " PLAYER1 PLAYER2" +
-            "\n PLAYER must one of the following: human, minimax";
+            "\nPLAYER must be one of the following: human, minimax, naive";
 
     public static void main(String[] args) {
+        System.out.println(Arrays.asList(args));
         try {
             DefaultController controller =
                     new DefaultController(System.in, System.out, args);

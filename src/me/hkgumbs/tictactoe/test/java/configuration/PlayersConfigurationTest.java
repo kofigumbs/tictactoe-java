@@ -2,10 +2,7 @@ package me.hkgumbs.tictactoe.test.java.configuration;
 
 import me.hkgumbs.tictactoe.main.java.configuration.Configuration;
 import me.hkgumbs.tictactoe.main.java.configuration.PlayersConfiguration;
-import me.hkgumbs.tictactoe.main.java.player.Computer;
-import me.hkgumbs.tictactoe.main.java.player.Human;
-import me.hkgumbs.tictactoe.main.java.player.Minimax;
-import me.hkgumbs.tictactoe.main.java.player.Player;
+import me.hkgumbs.tictactoe.main.java.player.*;
 import me.hkgumbs.tictactoe.main.java.simulation.Simulation;
 import me.hkgumbs.tictactoe.test.java.simulation.StubSimulation;
 import org.junit.Test;
@@ -73,9 +70,25 @@ public class PlayersConfigurationTest {
         assertEquals(2, simulation.players.length);
     }
 
+    @Test
+    public void twoNaive() throws Configuration.CannotApplyException {
+        Simulation simulation = configure("naive", "naive");
+        for (Player player : simulation.players) {
+            assertTrue(player instanceof Computer);
+            assertEquals(NaiveChoice.class, ((Computer) player).getAlgorithm());
+        }
+        assertEquals(2, simulation.players.length);
+    }
+
     @Test(expected = Configuration.CannotApplyException.class)
     public void nonsense() throws Configuration.CannotApplyException {
         configure("human", "nonsense");
+        fail("Nonsense is not a valid player");
+    }
+
+    @Test(expected = Configuration.CannotApplyException.class)
+    public void notEnoughPlayers() throws Configuration.CannotApplyException {
+        configure("human");
         fail("Nonsense is not a valid player");
     }
 

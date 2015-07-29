@@ -33,11 +33,6 @@ public class Computer implements Player {
     }
 
     @Override
-    public boolean requestGoFirst() {
-        return false;
-    }
-
-    @Override
     public boolean requestPlayAgain() {
         return false;
     }

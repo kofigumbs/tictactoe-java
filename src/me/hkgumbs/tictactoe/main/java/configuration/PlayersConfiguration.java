@@ -12,6 +12,7 @@ public class PlayersConfiguration implements Configuration {
 
     private static final String HUMAN_KEY = "human";
     private static final String MINIMAX_KEY = "minimax";
+    private static final String NAIVE_KEY = "naive";
 
     private final InputStream inputStream;
     private final OutputStream outputStream;
@@ -22,11 +23,15 @@ public class PlayersConfiguration implements Configuration {
     private Player assignPlayer(String key) throws CannotApplyException {
         Player player;
 
-        if (key == MINIMAX_KEY) {
+        if (key.equals(MINIMAX_KEY)) {
             Algorithm minimax = new Minimax(next, simulation.rules);
             player = new Computer(next, outputStream, minimax);
 
-        } else if (key == HUMAN_KEY)
+        } else if (key.equals(NAIVE_KEY)) {
+            Algorithm naive = new NaiveChoice();
+            player = new Computer(next, outputStream, naive);
+
+        } else if (key.equals(HUMAN_KEY))
             player = new Human(next, inputStream, outputStream, simulation);
 
         else
@@ -45,12 +50,17 @@ public class PlayersConfiguration implements Configuration {
     @Override
     public void apply(List<String> arguments, Simulation simulation)
             throws CannotApplyException {
-        int length = arguments.size();
+        if (arguments.size() < 2)
+            throw new CannotApplyException();
+
         this.simulation = simulation;
-        simulation.players = new Player[2];
-        simulation.players[0] = assignPlayer(arguments.get(length - 2));
-        simulation.players[1] = assignPlayer(arguments.get(length - 1));
-        arguments.remove(length - 1);
-        arguments.remove(length - 2);
+        Player[] players = new Player[2];
+
+        for (int i = players.length - 1; i >= 0; i--) {
+            int index = arguments.size() - 1;
+            String key = arguments.remove(index);
+            players[i] = assignPlayer(key);
+        }
+        simulation.players = players;
     }
 }

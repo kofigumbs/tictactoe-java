@@ -18,6 +18,8 @@ import static org.junit.Assert.*;
 
 public class DefaultControllerTest {
 
+    private static final String[] defaultArgs = {"human", "minimax"};
+
     Simulation simulation;
     OutputStream outputStream;
     InputStream inputStream;
@@ -37,7 +39,7 @@ public class DefaultControllerTest {
         assertInputStreamEmpty();
     }
 
-    private void saveDefaultSimulation(String input, String[] args)
+    private void saveSimulation(String input, String... args)
             throws Configuration.CannotApplyException {
         outputStream = new ByteArrayOutputStream();
         inputStream = new ByteArrayInputStream(input.getBytes());
@@ -47,9 +49,9 @@ public class DefaultControllerTest {
 
     private void saveDefaultSimulation(String input) {
         try {
-            saveDefaultSimulation(input, new String[]{});
+            saveSimulation(input, defaultArgs);
         } catch (Configuration.CannotApplyException e) {
-            fail("Default configurations should always be valid");
+            fail("Default arguments should always be valid");
         }
     }
 
@@ -70,7 +72,7 @@ public class DefaultControllerTest {
     @Test(expected = Configuration.CannotApplyException.class)
     public void throwsExceptionOnNonsenseOption()
             throws Configuration.CannotApplyException {
-        saveDefaultSimulation("", new String[]{"--asdf"});
+        saveSimulation("", "--asdf", "human", "human");
         controller.getSimulation();
         fail("Should fail because of nonsense option");
     }
@@ -148,11 +150,10 @@ public class DefaultControllerTest {
 
     @Test
     public void fullSimulationWithTwoMinimax() {
-        String[] args = new String[]{"--minimax"};
         try {
-            saveDefaultSimulation("", args);
+            saveSimulation("", "minimax", "minimax");
         } catch (Configuration.CannotApplyException e) {
-            fail("--minimax should be a valid option");
+            fail("minimax should be a valid option");
         }
         assertSimulationState(Simulation.State.TERMINATED);
     }

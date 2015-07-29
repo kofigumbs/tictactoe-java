@@ -4,6 +4,7 @@ import me.hkgumbs.tictactoe.main.java.board.Board;
 import me.hkgumbs.tictactoe.main.java.board.SquareBoard;
 import me.hkgumbs.tictactoe.main.java.player.Algorithm;
 import me.hkgumbs.tictactoe.main.java.player.Computer;
+import me.hkgumbs.tictactoe.main.java.player.Player;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -34,7 +35,7 @@ public class ComputerTest {
 
     @Test
     public void firstMove() {
-        Computer computer = generate(Board.Mark.X);
+        Player computer = generate(Board.Mark.X);
         int result = computer.determineNextMove(board);
         assertEquals(0, result);
         assertEquals(outputStream.toString(), "X >> 0\n");
@@ -42,7 +43,7 @@ public class ComputerTest {
 
     @Test
     public void secondMove() {
-        Computer computer = generate(Board.Mark.O);
+        Player computer = generate(Board.Mark.O);
         int result = computer.determineNextMove(board.add(0, Board.Mark.X));
         assertEquals(5, result);
         assertEquals(outputStream.toString(), "O >> 5\n");
@@ -50,9 +51,15 @@ public class ComputerTest {
 
     @Test
     public void allRequestsFalse() {
-        Computer x = generate(Board.Mark.X);
+        Player x = generate(Board.Mark.X);
         assertFalse(x.requestGoFirst());
         assertFalse(x.requestPlayAgain());
+    }
+
+    @Test
+    public void getAlgorithm() {
+        Class algorithm = generate(Board.Mark.X).getAlgorithm();
+        assertEquals(MockAlgorithm.class, algorithm);
     }
 
 }

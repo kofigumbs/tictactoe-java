@@ -1,6 +1,6 @@
 package me.hkgumbs.tictactoe.main.java.board;
 
-import java.util.Set;
+import java.util.List;
 
 public interface Board extends Iterable<Board.Mark> {
 
@@ -16,9 +16,9 @@ public interface Board extends Iterable<Board.Mark> {
 
     int getCapacity();
 
-    Set<Integer> getEmptySpaceIds();
+    List<Integer> getEmptySpaceIds();
 
-    Set<Integer> getSpaceIds(Mark mark);
+    List<Integer> getSpaceIds(Mark mark);
 
     default boolean isFull() {
         return getEmptySpaceIds().size() == 0;

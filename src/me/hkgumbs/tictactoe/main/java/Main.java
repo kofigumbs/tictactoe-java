@@ -9,7 +9,8 @@ public class Main {
     private static final String USAGE = "usage: java -jar tictactoe-java.jar" +
             " [--size <number>]" +
             " [--padding <number>]" +
-            " [--humans|--minimax]";
+            " PLAYER1 PLAYER2" +
+            "\n PLAYER must one of the following: human, minimax";
 
     public static void main(String[] args) {
         try {

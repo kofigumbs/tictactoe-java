@@ -1,8 +1,6 @@
 package me.hkgumbs.tictactoe.main.java.board;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class SquareBoard implements Board {
 
@@ -33,13 +31,13 @@ public class SquareBoard implements Board {
     }
 
     @Override
-    public Set<Integer> getEmptySpaceIds() {
+    public List<Integer> getEmptySpaceIds() {
         return getSpaceIds(null);
     }
 
     @Override
-    public Set<Integer> getSpaceIds(Mark mark) {
-        Set<Integer> result = new HashSet<>();
+    public List<Integer> getSpaceIds(Mark mark) {
+        List<Integer> result = new LinkedList<>();
         for (int position = 0; position < state.length; position++)
             if (state[position] == mark)
                 result.add(position);

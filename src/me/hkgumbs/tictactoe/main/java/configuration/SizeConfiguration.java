@@ -7,7 +7,7 @@ import java.util.List;
 
 public class SizeConfiguration implements Configuration {
 
-    private static final String KEY = "--size";
+    public static final String KEY = "--size";
     private static final int DEFAULT_SIZE = 3;
 
     @Override

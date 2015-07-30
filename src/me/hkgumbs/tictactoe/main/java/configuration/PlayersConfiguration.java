@@ -10,9 +10,9 @@ import java.util.List;
 
 public class PlayersConfiguration implements Configuration {
 
-    private static final String HUMAN_KEY = "human";
-    private static final String MINIMAX_KEY = "minimax";
-    private static final String NAIVE_KEY = "naive";
+    public static final String HUMAN_KEY = "human";
+    public static final String MINIMAX_KEY = "minimax";
+    public static final String NAIVE_KEY = "naive";
 
     private final InputStream inputStream;
     private final OutputStream outputStream;

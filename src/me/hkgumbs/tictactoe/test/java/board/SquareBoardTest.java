@@ -6,8 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -57,8 +56,8 @@ public class SquareBoardTest {
     @Test
     public void getTwoMovesByX() {
         board = board.add(0, Board.Mark.X).add(1, Board.Mark.X);
-        Set<Integer> movesByX = board.getSpaceIds(Board.Mark.X);
-        assertEquals(new HashSet<>(Arrays.asList(0, 1)), movesByX);
+        List<Integer> movesByX = board.getSpaceIds(Board.Mark.X);
+        assertEquals(Arrays.asList(0, 1), movesByX);
     }
 
     @Test

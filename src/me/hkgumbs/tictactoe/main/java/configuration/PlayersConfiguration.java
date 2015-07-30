@@ -10,35 +10,35 @@ import java.util.List;
 
 public class PlayersConfiguration implements Configuration {
 
-    private static final String HUMANS_ONLY_KEY = "--humans";
-    private static final String MINIMAX_ONLY_KEY = "--minimax";
+    public static final String HUMAN_KEY = "human";
+    public static final String MINIMAX_KEY = "minimax";
+    public static final String NAIVE_KEY = "naive";
 
     private final InputStream inputStream;
     private final OutputStream outputStream;
+
+    private Board.Mark next = Board.Mark.X;
     private Simulation simulation;
 
-    private Player[] getTwoMinimax() {
-        Algorithm x = new Minimax(Board.Mark.X, simulation.rules);
-        Algorithm o = new Minimax(Board.Mark.O, simulation.rules);
-        return new Player[]{
-                new Computer(Board.Mark.X, outputStream, x),
-                new Computer(Board.Mark.O, outputStream, o),
-        };
-    }
+    private Player assignPlayer(String key) throws CannotApplyException {
+        Player player;
 
-    private Player[] getTwoHumans() {
-        return new Player[]{
-                new Human(Board.Mark.X, inputStream, outputStream, simulation),
-                new Human(Board.Mark.O, inputStream, outputStream, simulation)
-        };
-    }
+        if (key.equals(MINIMAX_KEY)) {
+            Algorithm minimax = new Minimax(next, simulation.rules);
+            player = new Computer(next, outputStream, minimax);
 
-    private Player[] getHumanAndMinimax() {
-        Algorithm minimax = new Minimax(Board.Mark.X, simulation.rules);
-        return new Player[]{
-                new Human(Board.Mark.O, inputStream, outputStream, simulation),
-                new Computer(Board.Mark.X, outputStream, minimax)
-        };
+        } else if (key.equals(NAIVE_KEY)) {
+            Algorithm naive = new NaiveChoice();
+            player = new Computer(next, outputStream, naive);
+
+        } else if (key.equals(HUMAN_KEY))
+            player = new Human(next, inputStream, outputStream, simulation);
+
+        else
+            throw new CannotApplyException();
+
+        next = next.other();
+        return player;
     }
 
     public PlayersConfiguration(
@@ -50,14 +50,17 @@ public class PlayersConfiguration implements Configuration {
     @Override
     public void apply(List<String> arguments, Simulation simulation)
             throws CannotApplyException {
+        if (arguments.size() < 2)
+            throw new CannotApplyException();
+
         this.simulation = simulation;
-        if (arguments.contains(MINIMAX_ONLY_KEY)) {
-            simulation.players = getTwoMinimax();
-            arguments.remove(MINIMAX_ONLY_KEY);
-        } else if (arguments.contains(HUMANS_ONLY_KEY)) {
-            simulation.players = getTwoHumans();
-            arguments.remove(HUMANS_ONLY_KEY);
-        } else
-            simulation.players = getHumanAndMinimax();
+        Player[] players = new Player[2];
+
+        for (int i = players.length - 1; i >= 0; i--) {
+            int index = arguments.size() - 1;
+            String key = arguments.remove(index);
+            players[i] = assignPlayer(key);
+        }
+        simulation.players = players;
     }
 }

@@ -3,6 +3,7 @@ package me.hkgumbs.tictactoe.main.java.rules;
 import me.hkgumbs.tictactoe.main.java.board.Board;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class DefaultRules implements Rules {
@@ -59,7 +60,7 @@ public class DefaultRules implements Rules {
     @Override
     public Board.Mark determineWinner(Board board) {
         for (Board.Mark mark : Board.Mark.values()) {
-            Set<Integer> marks = board.getSpaceIds(mark);
+            List<Integer> marks = board.getSpaceIds(mark);
             for (Set combination : winningCombinations)
                 if (marks.containsAll(combination))
                     return mark;

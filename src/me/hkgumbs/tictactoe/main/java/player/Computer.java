@@ -18,6 +18,10 @@ public class Computer implements Player {
         this.algorithm = algorithm;
     }
 
+    public Class<? extends Algorithm> getAlgorithm() {
+        return algorithm.getClass();
+    }
+
     @Override
     public Board.Mark getMark() {
         return mark;
@@ -26,11 +30,6 @@ public class Computer implements Player {
 
     @Override
     public void onboard() {
-    }
-
-    @Override
-    public boolean requestGoFirst() {
-        return false;
     }
 
     @Override

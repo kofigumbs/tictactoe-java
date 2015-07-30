@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FormatterConfiguration implements Configuration {
 
-    private static final String KEY = "--padding";
+    public static final String KEY = "--padding";
     private static final int DEFAULT_PADDING = 0;
     private static final SlotRepresentation SLOT =
             new DefaultSlotRepresentation();

@@ -83,7 +83,7 @@ public class DefaultController {
         }
 
         void stateInitial() {
-            turn = players[0].requestGoFirst() ? 0 : 1;
+            turn = 0;
             board = new SquareBoard(size);
             state = State.IN_PROGRESS;
         }
